@@ -105,13 +105,13 @@ function MonthToString($month){
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo">
+		<!-- <div class="page-logo">
 			<a href="index.html">
 			<img src="<?php echo base_url(); ?>assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
 			</a>
 			<div class="menu-toggler sidebar-toggler">
 			</div>
-		</div>
+		</div> -->
 		<!-- END LOGO -->
 		<!-- BEGIN HORIZANTAL MENU -->
 		<!-- DOC: Remove "hor-menu-light" class to have a horizontal menu with theme background instead of white background -->
@@ -137,13 +137,9 @@ function MonthToString($month){
 										<ul class="mega-menu-submenu">
 											<li <?php if ($menu2 == 'grub_kode_akun') { echo "class = 'active'";} ?> >
 												<a href="<?php echo base_url(); ?>grub_kode_akuntansi_c">
-												<i class="fa fa-bank"></i> Master Grub Kode Akun </a>
-											</li>
-												<li <?php if ($menu2 == 'kategori_akun') { echo "class = 'active'";} ?> >
-												<a href="<?php echo base_url(); ?>kategori_akun_c">
-												<i class="fa fa-bank"></i> Master Kategori Akun </a>
-											</li>
-												<li <?php if ($menu2 == 'kode_akuntansi') { echo "class = 'active'";} ?> >
+												<i class="fa fa-bank"></i> Master Grup Kode Akun </a>
+											</li>	
+											<li <?php if ($menu2 == 'kode_akuntansi') { echo "class = 'active'";} ?> >
 												<a href="<?php echo base_url(); ?>kode_akuntansi_c">
 												<i class="fa fa-bank"></i> Master Kode Akuntansi </a>
 											</li>
@@ -377,10 +373,10 @@ function MonthToString($month){
 					Akunting Sistem<i class="fa fa-angle-down"></i><span class="selected"></span>
 					</a>
 					<ul class="dropdown-menu pull-left" style="min-width: 400px;">
-						<li>
+						<!-- <li>
 							<a href="<?php echo base_url(); ?>kasie_c">
 							<i class="fa fa-envelope-o"></i> Kasie / Wakasie</a>
-						</li>
+						</li> -->
 						<li class="dropdown-submenu">
 							<a href="javascript:;">
 							<i class="fa fa-envelope-o"></i> Gudang </a>
@@ -478,45 +474,6 @@ function MonthToString($month){
 									<a href="<?php echo base_url(); ?>lap_pemakaian_barang_c">
 									<i class="fa fa-bank"></i> Laporan Pemakaian Barang </a>
 								</li>
-							</ul>
-
-						</li>
-
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Keuangan </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_keuangan_c">
-									<i class="fa fa-bank"></i> Laporan Keuangan </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_giro_keluar_c">
-									<i class="fa fa-bank"></i> Laporan Giro Keluar </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_bank_harian_c">
-									<i class="fa fa-bank"></i> Laporan Bank Harian </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_kas_harian_c">
-									<i class="fa fa-bank"></i> Laporan Kas Harian </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_mutasi_harian_c">
-									<i class="fa fa-bank"></i> Laporan Mutasi Harian </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_cash_flow_c">
-									<i class="fa fa-bank"></i> Laporan Cash Flow </a>
-								</li>
-
 							</ul>
 
 						</li>
