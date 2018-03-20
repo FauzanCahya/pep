@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Kode_akuntansi_c extends CI_Controller {
+class Pengakuan_hutang_c extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('kode_akuntansi_m','model');
+		$this->load->model('pengakuan_hutang_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -17,12 +17,12 @@ class Kode_akuntansi_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	 		=> 'Master Kode Akuntansi',
-				'page'  	 		=> 'kode_akuntansi_v',
+				'title' 	 		=> 'Pengakuan Hutang',
+				'page'  	 		=> 'pengakuan_hutang_v',
 				'sub_menu' 	 		=> 'master data',
 				'sub_menu1'	 		=> 'master kode akuntansi',
-				'menu' 	   	 		=> 'master_data',
-				'menu2'		 		=> 'kode_akuntansi',
+				'menu' 	   	 		=> 'flow_sistem',
+				'menu2'		 		=> 'pengakuan_hutang',
 				'lihat_data' 		=> $this->model->lihat_data_kode_akun(),
 				'lihat_data_grup' 	=> $this->model->lihat_data_grup(),
 				'url_simpan' 		=> base_url().'kode_akuntansi_c/simpan',

@@ -24,15 +24,15 @@ $(document).ready(function(){
 	});
 
 	$("#tambah_kode_akun").click(function(){
-		$("#tambah_kode_akun").fadeOut('slow');
-		$("#table_kode_akun").fadeOut('slow');
-		$("#form_kode_akun").fadeIn('slow');
+		$("#tambah_kode_akun").hide();
+		$("#table_kode_akun").hide();
+		$("#form_kode_akun").show();
 	});
 
 	$("#batal").click(function(){
-		$("#form_kode_akun").fadeOut('slow');
-		$("#tambah_kode_akun").fadeIn('slow');
-		$("#table_kode_akun").fadeIn('slow');
+		$("#form_kode_akun").hide();
+		$("#tambah_kode_akun").show();
+		$("#table_kode_akun").show();
 	});
 });
 
@@ -108,17 +108,11 @@ function ubah_kode_akun(id)
 				$('#kode_akun_modal').val(row['KODE_AKUN']);
 				$('#nama_akun_modal').val(row['NAMA_AKUN']);
 				$('#tipe_modal').val(row['TIPE']);
-				$('#kategori_modal').val(row['KATEGORI']);
-				$('#deskripsi_modal').val(row['DESKRIPSI']);
-				$('#level_modal').val(row['LEVEL']);
-				$('#anak_dari_modal').val(row['ANAK_DARI']);
-				$('#id_klien_modal').val(row['ID_KLIEN']);
-				$('#approve_modal').val(row['APPROVE']);
-				$('#user_input_modal').val(row['USER_INPUT']);
-				$('#tgl_input_modal').val(row['TGL_INPUT']);
-				$('#kode_grub_modal').val(row['KODE_GRUP']);
-				$('#kode_sub_modal').val(row['KODE_SUB']);
-				$('#unit_modal').val(row['UNIT']);
+				$('#grup_modal').val(row['KODE_GRUP']);
+
+				$("#grup_modal").select2("destroy");
+
+				$("#grup_modal").select2();
 			}
 		});
 }
@@ -150,18 +144,9 @@ function berhasil(){
 			<div class="portlet-title">
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
-					<span class="caption-subject bold uppercase"> Form Kode Akuntansi </span>
+					<span class="caption-subject bold uppercase"> Form Tambah Kode Akuntansi </span>
 				</div>
 				<div class="actions">
-					<a class="btn btn-circle btn-icon-only blue" href="javascript:;">
-					<i class="icon-cloud-upload"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only green" href="javascript:;">
-					<i class="icon-wrench"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only red" href="javascript:;">
-					<i class="icon-trash"></i>
-					</a>
 					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
 					</a>
 				</div>
@@ -169,126 +154,49 @@ function berhasil(){
 			<div class="portlet-body form">
 				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
 					<div class="form-body">
-						<div class="form-group form-md-line-input">
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Grup Kode Akun</label>
+							<div class="col-md-4">
+								<select onchange="$('#kode_akun').val(this.value); $('#kode_akun').focus();" class="form-control input-large select2me input-sm" id="grup" name="grup" data-placeholder="Select..." required>
+									<option value=""></option>
+									<?php 
+										foreach ($lihat_data_grup as $value){
+									?>
+										<option value="<?php echo $value->KODE_GRUP; ?>"><?php echo $value->KODE_GRUP; ?></option>
+									<?php	
+										}
+									?>
+								</select>	
+							</div>
+						</div>
+
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Kode Akun</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="kode_akun" name="kode_akun" >
+								<input type="text" class="form-control" id="kode_akun" name="kode_akun" required>
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Nama Divisi</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="nama_divisi" name="nama_divisi" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
+
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Nama Akun</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="nama_akun" name="nama_akun" >
+								<input type="text" class="form-control" id="nama_akun" name="nama_akun" required>
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Tipe</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="tipe" name="tipe" >
-								<div class="form-control-focus">
-								</div>
+								<select class="form-control" name="tipe" id="tipe">
+									<option value="D">Debet</option>
+									<option value="K">Kredit</option>
+								</select>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Kategori</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="kategori" name="kategori" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Deskripsi</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="deskripsi" name="deskripsi" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Level</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="level" name="level" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Anak Dari</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="anak_dari" name="anak_dari" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">ID Klien</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="id_klien" name="id_klien" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Approve</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="approve" name="approve" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">User Input</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="user_input" name="user_input" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Tgl Input</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="tgl_input" name="tgl_input" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Kode Grup</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="kode_grup" name="kode_grup" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Kode Sub</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="kode_sub" name="kode_sub" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Unit</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="unit" name="unit" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
+
 					</div>
 					<div class="form-actions">
 						<div class="row">
@@ -335,8 +243,10 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 				<thead>
 				<tr>
 					<th style="text-align:center;"> No</th>
+					<th style="text-align:center;"> Grup Akun</th>
 					<th style="text-align:center;"> Kode Akun</th>
 					<th style="text-align:center;"> Nama Akun</th>
+					<th style="text-align:center;"> Tipe</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
 				</thead>
@@ -348,8 +258,10 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 					?>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->KODE_GRUP; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->KODE_AKUN; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->NAMA_AKUN; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->NAMA_AKUN; ?></td>
+					<td style="text-align:left; vertical-align:"><?php if($value->TIPE == "D"){ echo "Debet"; } else { echo "Kredit"; } ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_kode_akun(<?php echo $value->ID?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_divisi(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
@@ -383,8 +295,22 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 					<form role="form" class="form-horizontal" method="post" action="<?php echo $url_ubah;?>">
 						<div class="form-body">
 							<input type="hidden" name="id_akun_modal" id="id_akun_modal">
-
-							<div class="form-group form-md-line-input">
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="form_control_1">Grup Kode Akun</label>
+								<div class="col-md-4">
+									<select class="form-control input-large select2me input-sm" data-placeholder="Select..." id="grup_modal" name="grup_modal" required>
+										<option value=""></option>
+										<?php 
+											foreach ($lihat_data_grup as $value){
+										?>
+											<option value="<?php echo $value->KODE_GRUP; ?>"><?php echo $value->KODE_GRUP; ?></option>
+										<?php	
+											}
+										?>
+									</select>	
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-md-3 control-label" for="form_control_1">Kode Akun</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="kode_akun_modal" id="kode_akun_modal" >
@@ -393,12 +319,22 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
+							<div class="form-group">
 								<label class="col-md-3 control-label" for="form_control_1">Nama Akun</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="nama_akun_modal" id="nama_akun_modal" >
 									<div class="form-control-focus">
 									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="form_control_1">Tipe</label>
+								<div class="col-md-3">
+									<select class="form-control" name="tipe_modal" id="tipe_modal">
+										<option value="D">Debet</option>
+										<option value="K">Kredit</option>
+									</select>
 								</div>
 							</div>
 
