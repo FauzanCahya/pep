@@ -47,13 +47,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td style="width: 50%;text-align: left;">Sumangko Wringin Anom Gresik</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">Tgl</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">9-11-2018</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->tanggal;?></td>
 	</tr>
 	<tr>
 		<td style="width: 50%;text-align: left;">Jawa Timur - Indonesia</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">No</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">0000001</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->id_permintaan;?></td>
 	</tr>
 </table>
 
@@ -65,14 +65,14 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             <h4 style="text-decoration: underline;">
                 SURAT PERMINTAAN BARANG (SPB)
             </h4><br>
-            <h5>00001/SPB/SIE_LISTRIK/2017</h5>
+            <h5><?=$dt->no_spb;?></h5>
         </td>
     </tr>
 </table>
 <br>
 <br>
 <div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;border: 1px solid black;">
-	<h5>Divisi : SIE LISTRIK</h5>
+	<h5>Divisi : <?=$dt->nama_divisi;?></h5>
 </div>
 <br>
 <div style="height: 300px;">
@@ -85,44 +85,21 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<th style="width: 15%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Satuan</th>
 			<th style="width: 35%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
 		</tr>
-	
+		<?php 
+		$i = 0;
+			foreach ($dt_det as $key => $value) {
+			$i++;	
+		?>
 		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>0</td>
+			<td><?php echo $i; ?></td>
+			<td><?=$value->nama_produk;?></td>
+			<td><?=$value->kuantitas;?></td>
+			<td><?=$value->satuan;?></td>
+			<td><?=$value->keterangan;?></td>
 			
 		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>0</td>
-			
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>701,000</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>25</td>
-			<td>Kg</td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>25</td>
-			<td>Kg</td>
-			<td>4,201,000</td>
-		</tr>
+		<?php } ?>
+		
 	
 </table>
 </div>

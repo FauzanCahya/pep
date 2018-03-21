@@ -12,6 +12,9 @@ class Permintaan_barang_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -133,16 +136,17 @@ class Permintaan_barang_c extends CI_Controller {
 
 	function cetak($id=""){
 
-		$dt = $this->model->get_data_trx($id);
-		$dt_det = $this->model->get_data_trx_detail($id);
+		$dt = $this->permintaan->get_data_trx($id);
+		$dt_det = $this->permintaan->get_data_trx_detail($id);
+
 
 		$data =  array(
-			'page' => "transaksi_penjualan_c", 
+			'page' => "permintaan_barang_c", 
 			'dt' => $dt,
 			'dt_det' => $dt_det,
 		);
 		
-		$this->load->view('pdf/report_delivery_order_solar_pdf', $data);
+		$this->load->view('pdf/report_surat_permintaan_barang_pdf', $data);
 	}
 }
 
