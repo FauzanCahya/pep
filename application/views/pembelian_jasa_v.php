@@ -35,17 +35,17 @@ $(document).ready(function(){
 		$('#popup_ubah').hide();
 	});
 
-	$("#tambah_pengembalian_barang").click(function(){
-		$("#tambah_pengembalian_barang").fadeOut('slow');
-		$("#table_pengembalian_barang").fadeOut('slow');
-		$("#form_pengembalian_barang").fadeIn('slow');
+	$("#tambah_pembelian_jasa").click(function(){
+		$("#tambah_pembelian_jasa").fadeOut('slow');
+		$("#table_pembelian_jasa").fadeOut('slow');
+		$("#form_pembelian_jasa").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
 
 	$("#batal").click(function(){
-		$("#tambah_pengembalian_barang").fadeIn('slow');
-		$("#table_pengembalian_barang").fadeIn('slow');
-		$("#form_pengembalian_barang").fadeOut('slow');
+		$("#tambah_pembelian_jasa").fadeIn('slow');
+		$("#table_pembelian_jasa").fadeIn('slow');
+		$("#form_pembelian_jasa").fadeOut('slow');
 		$("#tabel_total").fadeOut('slow');
 
 		$("#no_spb").val('');
@@ -66,7 +66,7 @@ function hapus_pengembalian(id)
 	$('#popup_hapus').show();
 
 		$.ajax({
-		url : '<?php echo base_url(); ?>pengembalian_barang_c/data_pengembalian_id',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_pengembalian_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
@@ -94,13 +94,13 @@ function hapus_row_pertama()
 
 function ubah_data_pengembalian(id)
 {
-	$("#tambah_pengembalian_barang").fadeOut('slow');
-	$("#table_pengembalian_barang").fadeOut('slow');
-	$("#form_pengembalian_barang").fadeIn('slow');
+	$("#tambah_pembelian_jasa").fadeOut('slow');
+	$("#table_pembelian_jasa").fadeOut('slow');
+	$("#form_pembelian_jasa").fadeIn('slow');
 	$("#tabel_total").fadeIn('slow');
 
 	$.ajax({
-		url : '<?php echo base_url(); ?>pengembalian_barang_c/data_pengembalian_id',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_pengembalian_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
@@ -119,7 +119,7 @@ function ubah_data_pengembalian(id)
 
 function ubah_detail(id){
 	$.ajax({
-		url : '<?php echo base_url(); ?>pengembalian_barang_c/data_pengembalian_detail_id',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_pengembalian_detail_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
@@ -229,7 +229,7 @@ function get_popup_produk(){
 function ajax_produk(id_form){
     var keyword = $('#search_koang_pro').val();
     $.ajax({
-        url : '<?php echo base_url(); ?>pengembalian_barang_c/get_produk_popup',
+        url : '<?php echo base_url(); ?>pembelian_jasa_c/get_produk_popup',
         type : "POST",
         dataType : "json",
         data : {
@@ -265,7 +265,7 @@ function ajax_produk(id_form){
 function get_produk_detail(id, no_form){
 	var id_produk = id;
     $.ajax({
-		url : '<?php echo base_url(); ?>pengembalian_barang_c/get_produk_detail',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/get_produk_detail',
 		data : {id_barang:id},
 		type : "GET",
 		dataType : "json",
@@ -343,44 +343,45 @@ function tambah_data(){
 
 }
 
-function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
+
+function add_row(id_peminjaman_detail,nama,keterangan,no_opek){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
 	var isi = 	'<tr id="tr_'+i+'">'+
+					
 					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="span12">'+
-							'<div class="control-group">'+
-								'<div class="controls">'+
-									'<div class="input-append" style="width: 100%;">'+
-										'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;" value="'+nama_produk+'">'+
-										'<input type="text" id="id_produk_'+i+'" value="'+kode_barang+'" name="produk[]" readonly style="background:#FFF;" value="0">'+
-										'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
-									'</div>'+
-								'</div>'+
-							'</div>'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+nama+'" name="nama[]" id="keterangan_'+i+'">'+
+							'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+keterangan+'" name="keterangan[]" id="kuantitas_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="" name="harga[]" id="harga_awal_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+satuan+'" name="satuan[]" id="satuan_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="harga_disc('+i+');hitung_total_semua();" type="text" class="form-control" value="" name="disc[]" id="disc_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+no_spb+'" name="reff_no[]" id="ref_no_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_disc_'+i+'">'+
 						'</div>'+
 					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+no_opek+'" name="no_opek[]" id="satuan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
@@ -397,37 +398,103 @@ function hapus(i){
 	$('#tr_'+i).remove();
 }
 
-function hitung_total(id){
+function harga_disc(id){
 
-	var kuantitas = $('#kuantitas_'+id).val();
-	kuantitas = kuantitas.split(',').join('');
+	var harga_awal = $('#harga_awal_'+id).val();
+	harga_awal = harga_awal.split(',').join('');
 
-	if(kuantitas == ""){
-		kuantitas = 0;
+	if(harga_awal == ""){
+		harga_awal = 0;
 	}
 
-	var harga = $('#harga_'+id).val();
-	harga = harga.split(',').join('');
+	var disc = $('#disc_'+id).val();
+	disc = disc.split(',').join('');
 
-	if(harga == "" || harga== null){
-		harga = 0;
+	if(disc == "" || disc== null){
+		disc = 0;
 	}
 
-	var total = parseFloat(kuantitas) * parseFloat(harga);
+	var total = (parseFloat(harga_awal) - (parseFloat(disc)/100) * parseFloat(harga_awal))  ;
 
-	var pajak = 0;
 
-	total = total + pajak;
-
-	$('#jumlah_'+id).val(acc_format(total, "").split('.00').join('') );
+	$('#total_disc_'+id).val(acc_format(total, "").split('.00').join('') );
 
 	hitung_total_semua();
+}
+
+function po(disc){
+
+	var harga_awal = $('#subtotal_txt').html();
+	harga_awal = harga_awal.split(',').join('');
+	harga_awal = harga_awal.split('Rp. ').join('');
+
+
+
+	if(harga_awal == ""){
+		harga_awal = 0;
+	}
+
+
+	var total = (parseFloat(disc)/100) * parseFloat(harga_awal)  ;
+	var accu = parseFloat(harga_awal) - total;
+
+	$('#total_po').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#po_text').val(total);
+
+	
+}
+
+function ppn_ici(disc){
+
+	var total_po = $('#total_po').html();
+	total_po = total_po.split(',').join('');
+	total_po = total_po.split('Rp. ').join('');
+
+
+	if(total_po == ""){
+		total_po = 0;
+	}
+
+	
+	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
+	var accu = parseFloat(total_po) + total;
+
+	
+	$('#total_ppn').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#ppn_text').val(total);
+	
+}
+
+function pph_ici(disc){
+
+	var total_po = $('#total_po').html();
+	total_po = total_po.split(',').join('');
+	total_po = total_po.split('Rp. ').join('');
+
+	var total_ppn = $('#total_ppn').html();
+	total_ppn = total_ppn.split(',').join('');
+	total_ppn = total_ppn.split('Rp. ').join('');
+
+
+	if(total_po == ""){
+		total_po = 0;
+	}
+
+	
+	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
+	var accu = parseFloat(total_ppn) - total;
+
+	
+	$('#total_pph').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#pph_text').val(total);
+	$('#total_semua').val(accu);
+	
 }
 
 function hitung_total_semua(){
 	var sum = 0;
 	var pajak_prosen = 0
-	$("input[name='jumlah[]']").each(function(idx, elm) {
+	$("input[name='total[]']").each(function(idx, elm) {
 		var tot = elm.value.split(',').join('');
 		if(tot > 0){
     		sum += parseFloat(tot);
@@ -435,6 +502,7 @@ function hitung_total_semua(){
     });
 
     $('#subtotal_txt').html('Rp. '+acc_format(sum, ""));
+    $('#subtotal_text').val(sum);
 }
 
 function acc_format(n, currency) {
@@ -461,7 +529,7 @@ function simpan_add_produk(){
 		alert("Harga Produk Harus di isi.");
 	} else {
 		$.ajax({
-			url : '<?php echo base_url(); ?>pengembalian_barang_c/simpan',
+			url : '<?php echo base_url(); ?>pembelian_jasa_c/simpan',
 			data : {
 				nama_produk:nama_produk,
 				keterangan:keterangan,
@@ -523,7 +591,7 @@ function get_transaction(id) {
 
         
         $.ajax({
-            url : '<?php echo base_url(); ?>pengembalian_barang_c/get_transaction_info',
+            url : '<?php echo base_url(); ?>pembelian_jasa_c/get_transaction_info',
             data : {id:id},
             type : "POST",
             dataType : "json",
@@ -533,13 +601,11 @@ function get_transaction(id) {
                     $.each(result,function(i,res){
 
                         isine += '<tr>'+
-                                    '<td style="text-align:center;">'+res.kode_barang+'</td>'+
-                                    '<td style="text-align:center;">'+res.nama_barang+'</td>'+
-                                    '<td style="text-align:center;">'+res.sisa_jumlah+'</td>'+
-                                    '<td style="text-align:center;">'+res.satuan+'</td>'+
-                                    '<td style="text-align:center;">'+res.no_spb+'</td>'+
+                                    '<td style="text-align:center;">'+res.nama+'</td>'+
+                                    '<td style="text-align:center;">'+res.keterangan+'</td>'+
+                                    '<td style="text-align:center;">'+res.no_opek+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.kode_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.satuan+'&quot;,&quot;'+res.no_spb+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opek+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -564,7 +630,7 @@ function get_transaction(id) {
 <input type="hidden" id="jml_tr" value="1">
 <input type="hidden" id="id_pengembalian" name="id_pengembalian">
 
-<div class="row" id="form_pengembalian_barang" style="display:none; ">
+<div class="row" id="form_pembelian_jasa" style="display:none; ">
 	<div class="col-md-12 col-sm-6">
 		<!-- BEGIN PORTLET-->
 		<div class="portlet light ">
@@ -620,22 +686,14 @@ function get_transaction(id) {
 						<table class="table table-bordered table-striped table-condensed flip-content">
 							<thead class="flip-content">
 								<tr>
-									<th style="text-align: center;  width: 10%;">Kode Barang</th>
-									<th style="text-align: center;  width: 30%;">Nama Barang</th>
-									<th style="text-align: center; ">Kuantitas</th>
-									<th style="text-align: center; ">Satuan</th>
-									<th style="text-align: center; width: 30%; ">No Reff</th>
+									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center; ">Keterangan</th>
+									<th style="text-align: center; ">No OPEK</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
 							<tbody id="data_transaction">
 								<tr>
-									<td align="center" style="vertical-align:middle;">
-										
-									</td>
-									<td align="center" style="vertical-align:middle;">
-										
-									</td>
 									<td align="center" style="vertical-align:middle;">
 										
 									</td>
@@ -667,11 +725,12 @@ function get_transaction(id) {
 						<table class="table table-bordered table-striped table-condensed flip-content">
 							<thead class="flip-content">
 								<tr>
-									<th style="text-align: center;  width: 20%;">Produk / Item</th>
-									<th style="text-align: center;  widows: 30%;">Keterangan</th>
-									<th style="text-align: center; ">Kuantitas</th>
-									<th style="text-align: center; ">Satuan</th>
-									<th style="text-align: center; ">Reff No</th>
+									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center; ">Keterangan</th>
+									<th style="text-align: center; ">Harga</th>
+									<th style="text-align: center; ">Disc</th>
+									<th style="text-align: center; ">Total</th>
+									<th style="text-align: center; ">No OPEK</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
@@ -707,7 +766,66 @@ function get_transaction(id) {
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
 								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
+								<input type="hidden" id="subtotal_text" name="subtotal_text" class="form-control">
 							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> Potongan PO :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<input type="text" id="pot_po" onkeyup="po(this.value);" name="pot_po" class="form-control">
+							<input type="hidden" id="po_text" name="po_text" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-3">
+							<div style="margin-bottom: 15px;" class="span4">
+								<h4 id="total_po" class="control-label"> Rp. 0.00 </h4> 
+							</div>
+						</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> PPN :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<input type="text" id="ppn" onkeyup="ppn_ici(this.value);" name="ppn" class="form-control">
+							<input type="hidden" id="ppn_text" name="ppn_text" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<h4 id="total_ppn" class="control-label"> Rp. 0.00 </h4> 
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> PPH :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<input type="text" id="pph" onkeyup="pph_ici(this.value);" name="pph" class="form-control">
+							<input type="hidden" id="pph_text" name="pph_text" class="form-control">
+							<input type="hidden" id="total_semua" name="total_semua" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<h4 id="total_pph" class="control-label"> Rp. 0.00 </h4> 
 						</div>
 					</div>
 				</div>
@@ -716,7 +834,7 @@ function get_transaction(id) {
 					<div class="col-md-12">
 						<div class="col-md-offset-2 col-md-10">
 							<button type="submit" class="btn blue">Simpan</button>
-							<button type="button" id="batal" class="btn red" onclick="window.location = '<?php echo base_url(); ?>pengembalian_barang_c'">Batal Dan Kembali</button>
+							<button type="button" id="batal" class="btn red" onclick="window.location = '<?php echo base_url(); ?>pembelian_jasa_c'">Batal Dan Kembali</button>
 						</div>
 					</div>
 				</div>
@@ -728,13 +846,13 @@ function get_transaction(id) {
 </form>
 
 
-<button id="tambah_pengembalian_barang" class="btn green">
+<button id="tambah_pembelian_jasa" class="btn green">
 Tambah Data pengembalian <i class="fa fa-plus"></i>
 </button>
 </br>
 </br>
 
-<div class="row" id="table_pengembalian_barang" style="display:block;">
+<div class="row" id="table_pembelian_jasa" style="display:block;">
 	<div class="col-md-12">
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box green">

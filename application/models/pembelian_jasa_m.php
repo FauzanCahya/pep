@@ -7,7 +7,7 @@ class Pembelian_jasa_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_spb,$tanggal,$uraian,$nama,$departemen)
+	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua)
 	{
 		$sql = "
 			INSERT INTO tb_pembelian_jasa (
@@ -16,41 +16,52 @@ class Pembelian_jasa_m extends CI_Model
 				uraian,
 				user,
 				status,
-				divisi
+				divisi,
+				sub_total,
+				disc_po,
+				disc_ppn,
+				disc_pph,
+				total
 			) VALUES (
-				'$no_spb',
+				'$no_bukti_real',
 				'$tanggal',
 				'$uraian',
 				'$nama',
 				'0',
-				'$departemen'
+				'$departemen',
+				'$subtotal_text',
+				'$po_text',
+				'$ppn_text',
+				'$pph_text',
+				'$total_semua'
 			)";
 		$this->db->query($sql);
 	}
 
-	function simpan_data_barang_detail($id_pengembalian_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan,$reff_no)
+	function simpan_data_barang_detail($id_pengembalian_baru,$nama,$keterangan,$harga,$disc,$total,$no_opek)
 	{
-		$kuantitas 	= str_replace(',', '', $kuantitas);
-		$harga 		= str_replace(',', '', $harga);
-		$jumlah 	= str_replace(',', '', $jumlah);
+		$harga 	= str_replace(',', '', $harga);
+		$total 	= str_replace(',', '', $total);
 
 		$sql = "
 			INSERT INTO tb_pembelian_jasa_detail (
 				id_induk,
-				id_produk,
-				nama_produk,
+				nama,
 				keterangan,
-				kuantitas,
-				satuan,
-				reff_no
+				harga,
+				disc,
+				total,
+				no_opek,
+				status
 			) VALUES (
 				'$id_pengembalian_baru',
-				'$id_produk',
-				'$nama_produk',
+				'$nama',
 				'$keterangan',
-				'$kuantitas',
-				'$satuan',
-				'$reff_no'
+				'$harga',
+				'$disc',
+				'$total',
+				'$no_opek',
+				'0'
 			)";
 		$this->db->query($sql);
 	}
@@ -164,7 +175,7 @@ class Pembelian_jasa_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.kode_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb FROM master_barang mb , tb_peminjaman_barang pb , tb_peminjaman_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_peminjaman = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama , pbd.keterangan, pb.no_opek FROM tb_order_pekerjaan pb , tb_order_pekerjaan_detail pbd WHERE pb.id_opek = pbd.id_induk AND pbd.status = 0 AND pb.divisi = '$id_barang'
         ";
 
         return $this->db->query($sql)->result();

@@ -78,36 +78,41 @@ class Pembelian_jasa_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'pembelian_jasa_DUA'";
+			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PEMBELIAN_JASA'";
 
 	        $row_buk = $this->db->query($sql_buk)->row();
 
 			$no_buk = $row_buk->NEXT_NOMOR + 1;
 
-			$no_bukti_real = $no_buk."/SP2/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real = $no_buk."/SPK/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
+			$subtotal_text 	  = $this->input->post('subtotal_text');
+			$po_text 	  = $this->input->post('po_text');
+			$ppn_text 	  = $this->input->post('ppn_text');
+			$pph_text 	  = $this->input->post('pph_text');
+			$total_semua 	  = $this->input->post('total_semua');
 
-			$this->pengembalian->save_next_nomor('pembelian_jasa_DUA');
-			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen);
+			$this->pengembalian->save_next_nomor('PEMBELIAN_JASA');
+			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua);
 			
 
 			$id_pengembalian_baru = $this->db->insert_id();
-			$nama_produk 	    = $this->input->post('nama_produk');
-			$produk    			= $this->input->post('produk');
-			$keterangan     	= $this->input->post('keterangan');
-			$kuantitas      	= $this->input->post('kuantitas');
-			$satuan 	    	= $this->input->post('satuan');
-			$reff_no 		    = $this->input->post('reff_no');
-			$id_peminjaman_detail 		    = $this->input->post('id_peminjaman_detail');
+			$nama    					= $this->input->post('nama');
+			$keterangan    				= $this->input->post('keterangan');
+			$harga     					= $this->input->post('harga');
+			$disc      					= $this->input->post('disc');
+			$total 	    				= $this->input->post('total');
+			$no_opek 		   			= $this->input->post('no_opek');
+			$id_peminjaman_detail 		= $this->input->post('id_peminjaman_detail');
 
-			foreach ($nama_produk as $key => $val) {
-					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key]);
+			foreach ($nama as $key => $val) {
+					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$val,$keterangan[$key],$harga[$key],$disc[$key],$total[$key],$no_opek[$key]);
 			}
 
-			foreach ($id_peminjaman_detail as $keyi => $vali) {
-				$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
-			}
+			// foreach ($id_peminjaman_detail as $keyi => $vali) {
+			// 	$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
+			// }
 			$this->session->set_flashdata('sukses','1');
 			redirect('pembelian_jasa_c');
 		
