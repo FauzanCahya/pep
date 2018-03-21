@@ -172,7 +172,7 @@ function get_popup_bukti(){
                 '<div class="window_koang">'+
                 '    <a href="javascript:void(0);"><img src="'+base_url+'ico/cancel.gif" id="pojok_koang"></a>'+
                 '    <div class="panel-body">'+
-                '    <input style="width: 95%;" type="text" name="search_koang_pro" id="search_koang_pro" class="form-control" value="" placeholder="Cari Produk...">'+
+                '    <input style="width: 95%;" type="text" name="search_koang_pro" id="search_koang_pro" class="form-control" value="" placeholder="Cari No. Bukti...">'+
                 '    <div class="table-responsive">'+
                 '            <table class="table table-hover2" id="tes5">'+
                 '                <thead>'+
