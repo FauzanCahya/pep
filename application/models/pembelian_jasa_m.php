@@ -7,7 +7,7 @@ class Pembelian_jasa_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier)
+	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier,$pot_po,$ppn,$pph)
 	{
 		$sql = "
 			INSERT INTO tb_pembelian_jasa (
@@ -23,7 +23,10 @@ class Pembelian_jasa_m extends CI_Model
 				disc_pph,
 				total,
 				kode_supplier,
-				prosentase
+				prosentase,
+				po,
+				ppn,
+				pph
 			) VALUES (
 				'$no_bukti_real',
 				'$tanggal',
@@ -37,7 +40,10 @@ class Pembelian_jasa_m extends CI_Model
 				'$pph_text',
 				'$total_semua',
 				'$id_supplier',
-				'0'
+				'0',
+				'$pot_po',
+				'$ppn',
+				'$pph'
 			)";
 		$this->db->query($sql);
 	}
@@ -203,5 +209,21 @@ class Pembelian_jasa_m extends CI_Model
         ";
 
         return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx($id){
+    	$sql = "
+        SELECT pb.* , md.nama_divisi , ms.nama_supplier FROM tb_pembelian_jasa pb , master_divisi md , master_supplier ms WHERE pb.divisi = md.id_divisi AND pb.kode_supplier = ms.id_supplier AND pb.id_pengembalian = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT * FROM tb_pembelian_jasa_detail WHERE id_induk = '$id'
+        ";
+
+        return $this->db->query($sql)->result();
     }
 }

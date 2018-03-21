@@ -143,4 +143,20 @@ class Order_pekerjaan_m extends CI_Model
 
         return $this->db->query($sql)->row();
     }
+
+    function get_data_trx($id){
+    	$sql = "
+        SELECT pb.* , md.nama_divisi FROM tb_order_pekerjaan pb , master_divisi md WHERE pb.divisi = md.id_divisi AND pb.id_opek = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT * FROM tb_order_pekerjaan_detail WHERE id_induk = '$id'
+        ";
+
+        return $this->db->query($sql)->result();
+    }
 }

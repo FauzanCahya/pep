@@ -12,6 +12,9 @@ class Pembelian_jasa_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -94,9 +97,12 @@ class Pembelian_jasa_c extends CI_Controller {
 			$pph_text 	  		= $this->input->post('pph_text');
 			$total_semua 	  	= $this->input->post('total_semua');
 			$id_supplier 	  	= $this->input->post('id_supplier');
+			$pot_po 	  		= $this->input->post('pot_po');
+			$ppn 	  			= $this->input->post('ppn');
+			$pph 	  			= $this->input->post('pph');
 
 			$this->pengembalian->save_next_nomor('PEMBELIAN_JASA');
-			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier);
+			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier,$pot_po,$ppn,$pph);
 			
 
 			$id_pengembalian_baru = $this->db->insert_id();
@@ -260,6 +266,21 @@ class Pembelian_jasa_c extends CI_Controller {
 	   }
 
 	   return $var;
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->pengembalian->get_data_trx($id);
+		$dt_det = $this->pengembalian->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "pembelian_jasa_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_surat_perintah_kerja_pdf', $data);
 	}
 }
 

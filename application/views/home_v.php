@@ -348,23 +348,7 @@ function MonthToString($month){
 							</ul>
 
 						</li>
-						<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Dokumen Link</a>
-						</li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Closing SPB</a>
-						</li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Closing OPB</a>
-						</li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Closing PO</a>
-						</li>
+						
 					</ul>
 				</li>
 
@@ -386,7 +370,7 @@ function MonthToString($month){
 									<i class="fa fa-bank"></i> Kartu Stok </a>
 								</li>
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>laporan_penerimaan_barang_c">
+									<a href="<?php echo base_url(); ?>akunting_penerimaan_barang_c">
 									<i class="fa fa-bank"></i> Laporan Penerimaan Barang </a>
 								</li>
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
@@ -587,10 +571,7 @@ function MonthToString($month){
 
 						</li>
 						
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Laporan Dokumen</a>
-						</li>
+						
 						
 					</ul>
 				</li>
