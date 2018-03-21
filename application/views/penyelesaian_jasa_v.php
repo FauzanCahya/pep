@@ -60,13 +60,13 @@ $(document).ready(function(){
 	});
 });
 
-function hapus_pengembalian(id)
+function hapus_penyelesaian(id)
 {
 	$('#popup_hapus').css('display','block');
 	$('#popup_hapus').show();
 
 		$.ajax({
-		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_pengembalian_id',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_penyelesaian_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
@@ -92,7 +92,7 @@ function hapus_row_pertama()
 	hitung_total_semua();
 }
 
-function ubah_data_pengembalian(id)
+function ubah_data_penyelesaian(id)
 {
 	$("#tambah_pembelian_jasa").fadeOut('slow');
 	$("#table_pembelian_jasa").fadeOut('slow');
@@ -100,13 +100,13 @@ function ubah_data_pengembalian(id)
 	$("#tabel_total").fadeIn('slow');
 
 	$.ajax({
-		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_pengembalian_id',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_penyelesaian_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
 		async : false,
 		success : function(row){
-			$('#id_pengembalian').val(id);
+			$('#id_penyelesaian').val(id);
 			$('#no_spb').val(row['no_spb']);
 			$('#tanggal').val(row['tanggal']);
 			$('#uraian').val(row['uraian']);
@@ -119,7 +119,7 @@ function ubah_data_pengembalian(id)
 
 function ubah_detail(id){
 	$.ajax({
-		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_pengembalian_detail_id',
+		url : '<?php echo base_url(); ?>pembelian_jasa_c/data_penyelesaian_detail_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
@@ -344,7 +344,7 @@ function tambah_data(){
 }
 
 
-function add_row(id_peminjaman_detail,nama,keterangan,no_opek){
+function add_row(id_peminjaman_detail,nama,keterangan,no_opek,total,prosentase_akhir){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -363,7 +363,12 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="" name="harga[]" id="harga_awal_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="'+total+'" name="total[]" id="harga_awal_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="'+prosentase_akhir+'" name="prosentase_akhir[]" id="harga_awal_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -591,7 +596,7 @@ function get_transaction(id) {
 
         
         $.ajax({
-            url : '<?php echo base_url(); ?>pembelian_jasa_c/get_transaction_info',
+            url : '<?php echo base_url(); ?>penyelesaian_jasa_c/get_transaction_info',
             data : {id:id},
             type : "POST",
             dataType : "json",
@@ -601,11 +606,13 @@ function get_transaction(id) {
                     $.each(result,function(i,res){
 
                         isine += '<tr>'+
+                                    '<td style="text-align:center;">'+res.no_spb+'</td>'+
                                     '<td style="text-align:center;">'+res.nama+'</td>'+
                                     '<td style="text-align:center;">'+res.keterangan+'</td>'+
-                                    '<td style="text-align:center;">'+res.no_opek+'</td>'+
+                                    '<td style="text-align:center;">'+res.nama_supplier+'</td>'+
+                                    '<td style="text-align:center;">'+res.prosentase_akhir+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opek+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_spb+'&quot;,&quot;'+res.total+'&quot;,&quot;'+res.prosentase_akhir+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -644,7 +651,7 @@ function get_transaction(id) {
 
 <form role="form" action="<?php echo $url_simpan; ?>" method="post">
 <input type="hidden" id="jml_tr" value="1">
-<input type="hidden" id="id_pengembalian" name="id_pengembalian">
+<input type="hidden" id="id_penyelesaian" name="id_penyelesaian">
 
 <div class="row" id="form_pembelian_jasa" style="display:none; ">
 	<div class="col-md-12 col-sm-6">
@@ -653,7 +660,7 @@ function get_transaction(id) {
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold uppercase">Form Pengembalian Barang</span>
+					<span class="caption-subject font-green-sharp bold uppercase">Form penyelesaian Barang</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group btn-group-devided" data-toggle="buttons">
@@ -697,54 +704,29 @@ function get_transaction(id) {
 					</div>
 				</div>
 
-				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
-					<div class="col-md-12">
-						<div class="col-md-4">
-							<label class="control-label"><b style="font-size:14px;">Supplier</b></label>
-							<div class="input-group" style="width: 100%; ">
-								<select name="dept" class="form-control" onchange="get_supplier(this.value);">
-									<option>Pilih Supplier ......</option>
-									<?php 
-										foreach ($dt_supp as $key => $dt_value) {
-											?>
-											<option value="<?=$dt_value->id_supplier;?>"><?=$dt_value->nama_supplier;?></option>
-											<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<label class="control-label"><b style="font-size:14px;">Nama</b></label>
-							<div class="input-group" style="width: 100%;">
-								<input type="text" class="form-control" name="nama_supplier" id="nama_supplier" value="">
-								<input type="hidden" class="form-control" name="id_supplier" id="id_supplier" value="">
-								
-							</div>
-						</div>
-						<div class="col-md-4">
-							<label class="control-label"><b style="font-size:14px;">Alamat</b></label>
-							<div class="input-group" style="width: 100%;">
-								<input type="text" class="form-control" name="alamat_supplier" id="alamat_supplier">
-								
-							</div>
-						</div>
-					</div>
-				</div>
+				
 
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
 					<div class="portlet-body flip-scroll">
 						<table class="table table-bordered table-striped table-condensed flip-content">
 							<thead class="flip-content">
 								<tr>
-									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center;  width: 30%;">No SPK</th>
+									<th style="text-align: center; ">Pekerjaan</th>
 									<th style="text-align: center; ">Keterangan</th>
-									<th style="text-align: center; ">No OPEK</th>
+									<th style="text-align: center; ">Supplier</th>
+									<th style="text-align: center; ">Selesai</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
 							<tbody id="data_transaction">
 								<tr>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
 									<td align="center" style="vertical-align:middle;">
 										
 									</td>
@@ -779,9 +761,10 @@ function get_transaction(id) {
 									<th style="text-align: center;  width: 30%;">Nama</th>
 									<th style="text-align: center; ">Keterangan</th>
 									<th style="text-align: center; ">Harga</th>
-									<th style="text-align: center; ">Disc</th>
+									<th style="text-align: center; ">Persen</th>
+									<th style="text-align: center; ">Prosen Penyelesaian</th>
 									<th style="text-align: center; ">Total</th>
-									<th style="text-align: center; ">No OPEK</th>
+									<th style="text-align: center; ">No SPK</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
@@ -898,7 +881,7 @@ function get_transaction(id) {
 
 
 <button id="tambah_pembelian_jasa" class="btn green">
-Tambah Data pengembalian <i class="fa fa-plus"></i>
+Tambah Data penyelesaian <i class="fa fa-plus"></i>
 </button>
 </br>
 </br>
@@ -909,7 +892,7 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Table pengembalian Barang
+					<i class="fa fa-edit"></i>Table penyelesaian Barang
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">
@@ -945,8 +928,8 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_div; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_penyelesaian(<?php echo $value->id_penyelesaian?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_penyelesaian(<?php echo $value->id_penyelesaian?>);"><i class="fa fa-trash-o"></i> Hapus </a>
 					</td>
 				</tr>
 					<?php 

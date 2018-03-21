@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pembelian_jasa_c extends CI_Controller {
+class Penyelesaian_jasa_c extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('pembelian_jasa_m','pengembalian');
+		$this->load->model('penyelesaian_jasa_m','pengembalian');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -17,18 +17,18 @@ class Pembelian_jasa_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	      => 'Pembelian Jasa',
-				'page'  	      => 'pembelian_jasa_v',
-				'sub_menu' 	      => 'Pembelian',
-				'sub_menu1'	      => 'Pembelian Jasa',
-				'menu' 	   	      => 'Pembelian',
-				'menu2'		      => 'pengembalian',
+				'title' 	      => 'Penyelesaian Jasa',
+				'page'  	      => 'penyelesaian_jasa_v',
+				'sub_menu' 	      => 'Penyelesaian',
+				'sub_menu1'	      => 'Penyelesaian Jasa',
+				'menu' 	   	      => 'Penyelesaian',
+				'menu2'		      => 'Pengembalian',
 				'lihat_data'      => $this->pengembalian->lihat_data_pengembalian(),
 				'lihat_barang'    => $this->pengembalian->lihat_data_barang(),
 				'dt_dept'   	  => $this->pengembalian->lihat_data_divisi(),
 				'dt_supp'   	  => $this->pengembalian->lihat_data_supplier(),
-				'url_simpan' 	  => base_url().'pembelian_jasa_c/simpan',
-				'url_hapus'  	  => base_url().'pembelian_jasa_c/hapus',
+				'url_simpan' 	  => base_url().'penyelesaian_jasa_c/simpan',
+				'url_hapus'  	  => base_url().'penyelesaian_jasa_c/hapus',
 			);
 		
 		$this->load->view('home_v',$data);
@@ -79,44 +79,33 @@ class Pembelian_jasa_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PEMBELIAN_JASA'";
+			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PENYELESAIAN_JASA'";
 
 	        $row_buk = $this->db->query($sql_buk)->row();
 
 			$no_buk = $row_buk->NEXT_NOMOR + 1;
 
-			$no_bukti_real 		= $no_buk."/SPK/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real 		= $no_buk."/LPJ/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  		= $this->input->post('tanggal');
 			$uraian 	 	 	= $this->input->post('uraian');
-			$subtotal_text 	  	= $this->input->post('subtotal_text');
-			$po_text 	  		= $this->input->post('po_text');
-			$ppn_text 	  		= $this->input->post('ppn_text');
-			$pph_text 	  		= $this->input->post('pph_text');
-			$total_semua 	  	= $this->input->post('total_semua');
-			$id_supplier 	  	= $this->input->post('id_supplier');
 
-			$this->pengembalian->save_next_nomor('PEMBELIAN_JASA');
-			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier);
+			$this->pengembalian->save_next_nomor('PENYELESAIAN_JASA');
+			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen);
 			
 
 			$id_pengembalian_baru = $this->db->insert_id();
-			$nama    					= $this->input->post('nama');
-			$keterangan    				= $this->input->post('keterangan');
-			$harga     					= $this->input->post('harga');
-			$disc      					= $this->input->post('disc');
-			$total 	    				= $this->input->post('total');
 			$no_opek 		   			= $this->input->post('no_opek');
 			$id_peminjaman_detail 		= $this->input->post('id_peminjaman_detail');
 
-			foreach ($nama as $key => $val) {
-					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$val,$keterangan[$key],$harga[$key],$disc[$key],$total[$key],$no_opek[$key]);
+			foreach ($no_opek as $key => $val) {
+					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$val,$id_peminjaman_detail[$key]);
 			}
 
 			// foreach ($id_peminjaman_detail as $keyi => $vali) {
 			// 	$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
 			// }
 			$this->session->set_flashdata('sukses','1');
-			redirect('pembelian_jasa_c');
+			redirect('penyelesaian_jasa_c');
 		
 		}else{
 
@@ -129,7 +118,7 @@ class Pembelian_jasa_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PEMBELIAN_JASA'";
+			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'penyelesaian_JASA'";
 
 	        $row_buk = $this->db->query($sql_buk)->row();
 
@@ -144,7 +133,7 @@ class Pembelian_jasa_c extends CI_Controller {
 			$pph_text 	  = $this->input->post('pph_text');
 			$total_semua 	  = $this->input->post('total_semua');
 
-			$this->pengembalian->save_next_nomor('PEMBELIAN_JASA');
+			$this->pengembalian->save_next_nomor('penyelesaian_JASA');
 			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua);
 			
 
@@ -165,7 +154,7 @@ class Pembelian_jasa_c extends CI_Controller {
 			// 	$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
 			// }
 			$this->session->set_flashdata('sukses','1');
-			redirect('pembelian_jasa_c');
+			redirect('penyelesaian_jasa_c');
 		}
 	}
 
@@ -174,7 +163,7 @@ class Pembelian_jasa_c extends CI_Controller {
 		$id = $this->input->post('id_hapus');
 		$this->pengembalian->hapus_pengembalian($id);
 		$this->session->set_flashdata('hapus','1');
-		redirect('pembelian_jasa_c');
+		redirect('penyelesaian_jasa_c');
 	}
 
 	function data_pengembalian_id()

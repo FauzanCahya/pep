@@ -130,6 +130,20 @@ class Permintaan_barang_c extends CI_Controller {
 
 		echo json_encode($dt);
 	}
+
+	function cetak($id=""){
+
+		$dt = $this->model->get_data_trx($id);
+		$dt_det = $this->model->get_data_trx_detail($id);
+
+		$data =  array(
+			'page' => "transaksi_penjualan_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_delivery_order_solar_pdf', $data);
+	}
 }
 
 /* End of file welcome.php */

@@ -1,73 +1,49 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pembelian_jasa_m extends CI_Model
+class Penyelesaian_jasa_m extends CI_Model
 {
 	function __construct() {
 		  parent::__construct();
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier)
+	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen)
 	{
 		$sql = "
-			INSERT INTO tb_pembelian_jasa (
+			INSERT INTO tb_penyelesaian_jasa (
 				no_spb,
 				tanggal,
 				uraian,
 				user,
 				status,
-				divisi,
-				sub_total,
-				disc_po,
-				disc_ppn,
-				disc_pph,
-				total,
-				kode_supplier,
-				prosentase
+				divisi
 			) VALUES (
 				'$no_bukti_real',
 				'$tanggal',
 				'$uraian',
-				'$nama',
+				'',
 				'0',
-				'$departemen',
-				'$subtotal_text',
-				'$po_text',
-				'$ppn_text',
-				'$pph_text',
-				'$total_semua',
-				'$id_supplier',
-				'0'
+				'$departemen'
 			)";
 		$this->db->query($sql);
 	}
 
-	function simpan_data_barang_detail($id_pengembalian_baru,$nama,$keterangan,$harga,$disc,$total,$no_opek)
+	function simpan_data_barang_detail($id_pengembalian_baru,$id_spk,$no_spk)
 	{
 		$harga 	= str_replace(',', '', $harga);
 		$total 	= str_replace(',', '', $total);
 
 		$sql = "
-			INSERT INTO tb_pembelian_jasa_detail (
+			INSERT INTO tb_penyelesaian_jasa_detail (
 				id_induk,
-				nama,
-				keterangan,
-				harga,
-				disc,
-				total,
-				no_opek,
+				id_spk,
+				no_spk,
 				status,
-				prosentase,
-				pembayaran
+				divisi
 			) VALUES (
 				'$id_pengembalian_baru',
-				'$nama',
-				'$keterangan',
-				'$harga',
-				'$disc',
-				'$total',
-				'$no_opek',
-				'0',
+				'$id_spk',
+				'$no_spk',
 				'0',
 				'0'
 			)";
@@ -77,7 +53,7 @@ class Pembelian_jasa_m extends CI_Model
 	function lihat_data_pengembalian()
 	{
 		$sql = "
-			SELECT pb.* , md.nama_divisi as nama_div FROM tb_pembelian_jasa pb , master_divisi md WHERE pb.divisi = md.id_divisi ";
+			SELECT pb.* , md.nama_divisi as nama_div FROM tb_penyelesaian_jasa pb , master_divisi md WHERE pb.divisi = md.id_divisi ";
 
 		return $this->db->query($sql)->result();
 	}
@@ -109,23 +85,23 @@ class Pembelian_jasa_m extends CI_Model
 
 	function hapus_pengembalian($id)
 	{
-		$sql = "DELETE FROM  tb_pembelian_jasa WHERE id_pengembalian = '$id' " ;
+		$sql = "DELETE FROM  tb_penyelesaian_jasa WHERE id_pengembalian = '$id' " ;
 		$this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_pembelian_jasa_detail WHERE id_induk = '$id' " ;
+		$sql2 = "DELETE FROM  tb_penyelesaian_jasa_detail WHERE id_induk = '$id' " ;
 		$this->db->query($sql2);
 	}
 
 	function data_pengembalian_id($id)
 	{
-		$sql = "SELECT * FROM tb_pembelian_jasa WHERE id_pengembalian = '$id' ";
+		$sql = "SELECT * FROM tb_penyelesaian_jasa WHERE id_pengembalian = '$id' ";
 		$query = $this->db->query($sql);
 		return $query->row();
 	}
 
 	function data_pengembalian_detail_id($id)
 	{
-		$sql = "SELECT * FROM tb_pembelian_jasa_detail WHERE id_induk = '$id' ";
+		$sql = "SELECT * FROM tb_penyelesaian_jasa_detail WHERE id_induk = '$id' ";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
@@ -133,7 +109,7 @@ class Pembelian_jasa_m extends CI_Model
 	function ubah_data_pengembalian($id,$no_spb,$tanggal,$uraian)
 	{
 		$sql = "
-			UPDATE tb_pembelian_jasa SET 
+			UPDATE tb_penyelesaian_jasa SET 
 				no_spb  	= '$no_spb',
 				tanggal 	= '$tanggal',
 				uraian  	= '$uraian'
@@ -169,7 +145,7 @@ class Pembelian_jasa_m extends CI_Model
 		$jumlah 	= str_replace(',', '', $jumlah);
 		
 		$sql = "
-			UPDATE tb_pembelian_jasa_detail SET 
+			UPDATE tb_penyelesaian_jasa_detail SET 
 				nama_produk = '$nama_produk',
 				keterangan  = '$keterangan',
 				kuantitas  	= '$kuantitas',
@@ -191,7 +167,7 @@ class Pembelian_jasa_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama , pbd.keterangan, pb.no_opek FROM tb_order_pekerjaan pb , tb_order_pekerjaan_detail pbd WHERE pb.id_opek = pbd.id_induk AND pbd.status = 0 AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama , pbd.keterangan, pbd.total, pbd.prosentase_akhir , ms.nama_supplier , pb.no_spb FROM tb_pembelian_jasa pb , tb_pembelian_jasa_detail pbd , master_supplier ms WHERE pb.id_pengembalian = pbd.id_induk AND ms.id_supplier = pb.kode_supplier AND pb.divisi = '$id_barang'
         ";
 
         return $this->db->query($sql)->result();
