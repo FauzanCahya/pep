@@ -261,14 +261,14 @@ function MonthToString($month){
 							<i class="fa fa-envelope-o"></i> Flow Sistem Jasa </a>
 							<ul class="dropdown-menu" style="min-width: 400px;">
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>permintaan_jasa_c">
+									<a href="<?php echo base_url(); ?>order_pekerjaan_c">
 									<i class="fa fa-bank"></i> Permintaan Jasa (SPJ) </a>
 								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
 								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>proses_pembelian_jasa_c">
+									<a href="<?php echo base_url(); ?>pembelian_jasa_c">
 									<i class="fa fa-archive"></i> Proses Pembelian Jasa (SPK) </a>
 								</li>
 
