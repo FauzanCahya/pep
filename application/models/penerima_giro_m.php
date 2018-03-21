@@ -48,7 +48,7 @@ class Penerima_giro_m extends CI_Model
 	function lihat_data_kode_akun()
 	{
 		$sql = "
-			SELECT * FROM ak_kode_akuntansi ";
+			SELECT * FROM tb_penerimaan_giro_masuk ";
 
 		return $this->db->query($sql)->result();
 	}

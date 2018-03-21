@@ -803,6 +803,7 @@ function MonthToString($month){
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/table-editable.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/components-pickers.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/components-dropdowns.js"></script>
+<script src="<?php echo base_url(); ?>assets/js-form.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-toastr/toastr.min.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style-devan.css"/>
 <!-- END PAGE LEVEL SCRIPTS -->

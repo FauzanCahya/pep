@@ -17,7 +17,7 @@ class Penerima_giro_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	 		=> 'Penerima Giro',
+				'title' 	 		=> 'Penerimaan Giro Masuk (PGM)',
 				'page'  	 		=> 'penerima_giro_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
 				'sub_menu1'	 		=> 'Penerima Giro',
@@ -25,9 +25,27 @@ class Penerima_giro_c extends CI_Controller {
 				'menu2'		 		=> 'penerima_giro',
 				'lihat_data' 		=> $this->model->lihat_data_kode_akun(),
 				'lihat_data_grup' 	=> $this->model->lihat_data_grup(),
-				'url_simpan' 		=> base_url().'kode_akuntansi_c/simpan',
-				'url_hapus'  		=> base_url().'kode_akuntansi_c/hapus',
-				'url_ubah'	 		=> base_url().'kode_akuntansi_c/ubah_kode_akun',
+				'url_simpan' 		=> base_url().'penerima_giro_c',
+				'url_hapus'  		=> base_url().'penerima_giro_c',
+				'url_ubah'	 		=> base_url().'penerima_giro_c',
+			);
+		
+		$this->load->view('home_v',$data);
+	}
+
+	function add_new(){
+		$data = array(
+				'title' 	 		=> 'Tambah Data Penerimaan Giro Masuk (PGM)',
+				'page'  	 		=> 'add_penerima_giro_v',
+				'sub_menu' 	 		=> 'Flow Sistem',
+				'sub_menu1'	 		=> 'Penerima Giro',
+				'menu' 	   	 		=> 'flow_sistem',
+				'menu2'		 		=> 'penerima_giro',
+				'lihat_data' 		=> $this->model->lihat_data_kode_akun(),
+				'lihat_data_grup' 	=> $this->model->lihat_data_grup(),
+				'url_simpan' 		=> base_url().'penerima_giro_c',
+				'url_hapus'  		=> base_url().'penerima_giro_c',
+				'url_ubah'	 		=> base_url().'penerima_giro_c',
 			);
 		
 		$this->load->view('home_v',$data);
