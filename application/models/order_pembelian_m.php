@@ -41,7 +41,8 @@ class Order_pembelian_m extends CI_Model
 				keterangan,
 				kuantitas,
 				satuan,
-				no_spb
+				no_spb,
+				realisasi
 			) VALUES (
 				'$id_order_baru',
 				'$id_produk',
@@ -49,7 +50,8 @@ class Order_pembelian_m extends CI_Model
 				'$keterangan',
 				'$kuantitas',
 				'$satuan',
-				'$no_spb'
+				'$no_spb',
+				'0'
 			)";
 		$this->db->query($sql);
 	}

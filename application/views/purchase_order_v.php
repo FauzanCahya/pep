@@ -381,6 +381,76 @@ function ajax_supplier(id_form){
     });
 }
 
+function po(disc){
+
+	var harga_awal = $('#subtotal_txt').html();
+	harga_awal = harga_awal.split(',').join('');
+	harga_awal = harga_awal.split('Rp. ').join('');
+
+
+
+	if(harga_awal == ""){
+		harga_awal = 0;
+	}
+
+
+	var total = (parseFloat(disc)/100) * parseFloat(harga_awal)  ;
+	var accu = parseFloat(harga_awal) - total;
+
+	$('#total_po').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#po_text').val(total);
+
+	
+}
+
+function ppn_ici(disc){
+
+	var total_po = $('#total_po').html();
+	total_po = total_po.split(',').join('');
+	total_po = total_po.split('Rp. ').join('');
+
+
+	if(total_po == ""){
+		total_po = 0;
+	}
+
+	
+	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
+	var accu = parseFloat(total_po) + total;
+
+	
+	$('#total_ppn').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#ppn_text').val(total);
+	$('#totla').val(accu);
+	
+}
+
+function pph_ici(disc){
+
+	var total_po = $('#total_po').html();
+	total_po = total_po.split(',').join('');
+	total_po = total_po.split('Rp. ').join('');
+
+	var total_ppn = $('#total_ppn').html();
+	total_ppn = total_ppn.split(',').join('');
+	total_ppn = total_ppn.split('Rp. ').join('');
+
+
+	if(total_po == ""){
+		total_po = 0;
+	}
+
+	
+	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
+	var accu = parseFloat(total_ppn) - total;
+
+	
+	$('#total_pph').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#pph_text').val(total);
+	$('#total_semua').val(accu);
+	
+}
+
 function get_supplier_detail(id, no_form)
 {
 	var id_supplier = id ; 
@@ -694,6 +764,7 @@ function hitung_total_semua(){
     });
 
     $('#subtotal_txt').html('Rp. '+acc_format(sum, ""));
+    $('#subtotal_jml').val(sum);
 }
 
 function acc_format(n, currency) {
@@ -732,12 +803,7 @@ function acc_format(n, currency) {
 			<div class="portlet-body">	
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
 					<div class="col-md-12">
-						<div class="col-md-3">
-							<label class="control-label"><b style="font-size:14px;">No PO</b></label>
-							<div class="input-group" style="width: 100%;">
-								<input type="text" class="form-control" id="no_po" name="no_po" required>
-							</div>
-						</div>
+						
 
 						<div class="col-md-3">
 							<label class="control-label"><b style="font-size:14px;">Tanggal</b></label>
@@ -853,10 +919,52 @@ function acc_format(n, currency) {
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
 								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
+								<input type="hidden" id="subtotal_jml" name="subtotal_jml" class="form-control">
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> Potongan PO :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<input type="text" id="pot_po" onkeyup="po(this.value);" name="pot_po" class="form-control">
+							<input type="hidden" id="po_text" name="po_text" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-3">
+							<div style="margin-bottom: 15px;" class="span4">
+								<h4 id="total_po" class="control-label"> Rp. 0.00 </h4> 
+							</div>
+						</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> PPN :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<input type="text" id="ppn" onkeyup="ppn_ici(this.value);" name="ppn" class="form-control">
+							<input type="hidden" id="ppn_text" name="ppn_text" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<h4 id="total_ppn" class="control-label"> Rp. 0.00 </h4> 
+							<input type="hidden" id="totla" name="totla" class="form-control">
+						</div>
+					</div>
+				</div>
+
+				
 
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
 					<div class="col-md-12">
@@ -922,6 +1030,7 @@ Tambah Purchase Order <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_purchase(<?php echo $value->id_purchase?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_purchase(<?php echo $value->id_purchase?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>purchase_order_c/cetak/<?=$value->id_purchase;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>
 					<?php 

@@ -12,6 +12,9 @@ class Purchase_order_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -34,14 +37,67 @@ class Purchase_order_c extends CI_Controller {
 
 	function simpan()
 	{
+
+		$bulan_kas = date("m",strtotime($this->input->post('tanggal')));
+
+		if($bulan_kas == "01"){
+	    $var = "I";
+	   } else if($bulan_kas == "02"){
+	    $var = "II";
+	   } else if($bulan_kas == "03"){
+	    $var = "III";
+	   } else if($bulan_kas == "04"){
+	    $var = "IV";
+	   } else if($bulan_kas == "05"){
+	    $var = "V";
+	   } else if($bulan_kas == "06"){
+	    $var = "VI";
+	   } else if($bulan_kas == "07"){
+	    $var = "VII";
+	   } else if($bulan_kas == "08"){
+	    $var = "VIII";
+	   } else if($bulan_kas == "09"){
+	    $var = "IX";
+	   } else if($bulan_kas == "10"){
+	    $var = "X";
+	   } else if($bulan_kas == "11"){
+	    $var = "XI";
+	   } else if($bulan_kas == "12"){
+	    $var = "XII";
+	   }
+
 		$id_purchase 	= $this->input->post('id_purchase');
 		if ($id_purchase == '') {
-			
-			$no_po 			= $this->input->post('no_po');
-			$tanggal 		= $this->input->post('tanggal');
-			$supplier 		= $this->input->post('supplier');
 
-			$this->purchase->simpan_data_purchase($no_po,$tanggal,$supplier);
+			$sess_user = $this->session->userdata('sign_in');
+			$nama = $sess_user['nama_user'];
+			$departemen = $sess_user['departemen'];
+
+			$dept_row = $this->db->query("SELECT * FROM master_divisi WHERE id_divisi = '$departemen'")->row();
+			
+			
+			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
+			
+			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PURCHASE_ORDER'";
+
+	        $row_buk = $this->db->query($sql_buk)->row();
+
+			$no_buk = $row_buk->NEXT_NOMOR + 1;
+
+			$no_bukti_real = $no_buk."/PO/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			
+			$no_po 					= $this->input->post('no_po');
+			$tanggal 				= $this->input->post('tanggal');
+			$supplier 				= $this->input->post('supplier');
+			$subtotal_jml 			= $this->input->post('subtotal_jml');
+			$pot_po 				= $this->input->post('pot_po');
+			$po_text 				= $this->input->post('po_text');
+			$ppn 					= $this->input->post('ppn');
+			$ppn_text 				= $this->input->post('ppn_text');
+			$totla 					= $this->input->post('totla');
+
+			$this->purchase->save_next_nomor('PURCHASE_ORDER');
+			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen);
 
 			$id_purchase_baru   = $this->db->insert_id();
 			$id_produk    		= $this->input->post('produk');
@@ -51,6 +107,7 @@ class Purchase_order_c extends CI_Controller {
 			$harga 				= $this->input->post('harga');
 			$total 				= $this->input->post('total');
 			$no_opb 			= $this->input->post('no_opb');
+			
 
 			foreach ($nama_produk as $key => $val) {
 				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
@@ -179,6 +236,21 @@ class Purchase_order_c extends CI_Controller {
 
 		$dt = $this->db->query($sql)->result();
         echo json_encode($dt);
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->purchase->get_data_trx($id);
+		$dt_det = $this->purchase->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "purchase_order_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_purchase_order_pdf', $data);
 	}
 }
 

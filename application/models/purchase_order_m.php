@@ -7,17 +7,32 @@ class Purchase_order_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_purchase($no_po,$tanggal,$supplier)
+	function simpan_data_purchase($no_po,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen)
 	{
 		$sql = "
 			INSERT INTO tb_purchase_order (
 				no_po,
 				tanggal,
-				supplier
+				supplier,
+				sub_total,
+				dc_po,
+				po_text,
+				dc_ppn,
+				ppn_text,
+				total,
+				divisi
 			) VALUES (
 				'$no_po',
 				'$tanggal',
-				'$supplier'
+				'$supplier',
+				'$subtotal_jml',
+				'$pot_po',
+				'$po_text',
+				'$ppn',
+				'$ppn_text',
+				'$totla',
+				'$departemen'
+
 			)";
 		$this->db->query($sql);
 	}
@@ -134,4 +149,30 @@ class Purchase_order_m extends CI_Model
 
 		return $this->db->query($sql)->row();
 	}
+
+	function save_next_nomor($tipe)
+	{
+		$sql = "
+			UPDATE ak_nomor SET 
+				NEXT_NOMOR  	= NEXT_NOMOR + 1
+			WHERE TIPE  = '$tipe'
+		";
+		$this->db->query($sql);
+	}
+
+	function get_data_trx($id){
+    	$sql = "
+        SELECT pb.* , md.nama_divisi FROM tb_purchase_order pb , master_divisi md WHERE pb.divisi = md.id_divisi AND pb.id_purchase = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT * FROM tb_purchase_order_detail WHERE id_induk = '$id'
+        ";
+
+        return $this->db->query($sql)->result();
+    }
 }

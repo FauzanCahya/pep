@@ -47,13 +47,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td style="width: 50%;text-align: left;">Sumangko Wringin Anom Gresik</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">Tgl</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">9-11-2018</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->tanggal;?></td>
 	</tr>
 	<tr>
 		<td style="width: 50%;text-align: left;">Jawa Timur - Indonesia</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">No</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">0000001</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->id_purchase;?></td>
 	</tr>
 </table>
 
@@ -65,7 +65,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             <h4 style="text-decoration: underline;">
                 PURCHASE ORDER (PO)
             </h4>
-            <label>00001/PO/SIE_PEMBELIAN/I/2018</label>
+            <label><?=$dt->no_po;?></label>
         </td>
     </tr>
 </table>
@@ -75,7 +75,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 50%;text-align:left;font-size: 15px;">Kepada :</td>
-			<td style="width: 50%;text-align:left;font-size: 15px;">[SUMTA870]MUTIARA TEKNIK ABADI.CV.JL PATUK SIDOTEMU KRIAN</td>
+			<td style="width: 50%;text-align:left;font-size: 15px;"><?=$dt->supplier;?></td>
 		</tr>
 	</table>
 </div>
@@ -87,39 +87,31 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No</th>
 			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Nama Barang</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Jumlah</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Satuan</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Harga</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Disc</th>
+			<!-- <th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Disc</th> -->
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Total</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No OPB</th>
 			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
 			
 		</tr>
-	
+		<?php
+		$i = 0;
+		foreach ($dt_det as $key => $value) {
+		$i++;
+		 ?>
 		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0.00</td>
-			<td>Aktif</td>
+			<td><?php echo $i; ?></td>
+			<td><?=$value->nama_produk;?></td>
+			<td><?=$value->kuantitas;?></td>
+			<td><?=$value->harga;?></td>
+			<!-- <td>0</td> -->
+			<td><?=$value->total;?></td>
+			<td><?=$value->no_opb;?></td>
+			<td><?=$value->keterangan;?></td>
 			
 		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0.00</td>
-			<td>Aktif</td>
-			
-		</tr>
+		<?php } ?>
+		
 		
 	
 </table>
@@ -130,25 +122,25 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td>Harap segera memberitahukan kepada kami</td>
 		<td>DPP</td>
 		<td></td>
-		<td style="float: right;">736.000</td>
+		<td style="float: right;"><?=$dt->sub_total;?>,00</td>
 	</tr>
 	<tr>
 		<td>bila syarat tersebut tidak terpenuhi</td>
 		<td>Discount</td>
-		<td>0.00%</td>
-		<td style="float: right;">0.00</td>
+		<td><?=$dt->dc_po;?>%</td>
+		<td style="float: right;">Rp.<?=$dt->po_text;?>,00</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>PPN</td>
-		<td>0.00%</td>
-		<td style="float: right;">0.00</td>
+		<td><?=$dt->dc_ppn;?>%</td>
+		<td style="float: right;">Rp.<?=$dt->ppn_text;?>,00</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>Total</td>
-		<td>0.00%</td>
-		<td style="float: right;">736.000</td>
+		<td></td>
+		<td style="float: right;">Rp.<?=$dt->total;?>,00</td>
 	</tr>
 </table>
 <br>
