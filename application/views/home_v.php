@@ -289,10 +289,10 @@ function MonthToString($month){
 									<a href="<?php echo base_url(); ?>pengakuan_hutang_c">
 									<i class="fa fa-bank"></i> Pengakuan Hutang (TTT) </a>
 								</li>
-								<li <?php if ($menu2 == 'perintah_membayar') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'perintah_membayar') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>perintah_membayar_c">
 									<i class="fa fa-bank"></i> Perintah Membayar </a>
-								</li>
+								</li> -->
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
@@ -300,10 +300,10 @@ function MonthToString($month){
 									<a href="<?php echo base_url(); ?>penerima_giro_c">
 									<i class="fa fa-archive"></i> Penerima Giro </a>
 								</li>
-								<li <?php if ($menu2 == 'pengeluaran_giro') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'pengeluaran_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengeluaran_giro_c">
 									<i class="fa fa-cube"></i> Pengeluaran Giro </a>
-								</li>
+								</li> -->
 								<li <?php if ($menu2 == 'set_tanggal_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>set_tanggal_giro_c">
 									<i class="fa fa-cube"></i> Set Tanggal Giro Cair </a>
@@ -734,14 +734,14 @@ function MonthToString($month){
 </div>
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
-<div class="page-footer">
+<!-- <div class="page-footer">
 	<div class="page-footer-inner">
 		 2014 &copy; Metronic by keenthemes. <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
 	</div>
 	<div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>
 	</div>
-</div>
+</div> -->
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
