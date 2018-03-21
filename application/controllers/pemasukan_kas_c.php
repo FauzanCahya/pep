@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pengakuan_hutang_c extends CI_Controller {
+class Pemasukan_kas_c extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('pengakuan_hutang_m','model');
+		$this->load->model('pemasukan_kas_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -16,59 +16,65 @@ class Pengakuan_hutang_c extends CI_Controller {
 
 	public function index()
 	{
-		$get_nomor					= $this->master_model_m->get_nomor_dokumen('TTT');
+		$get_nomor					= $this->master_model_m->get_nomor_dokumen('BKM');
 		$userinfo					= $this->master_model_m->get_user_info();
 
 		if($this->input->post('save')){
 			$data = array(
 		        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
-		        'TGL'      => addslashes($this->input->post('tgl')),
-		        'ID_SUPPLIER'      => addslashes($this->input->post('id_supplier')),
-		        'TGL_NOTA'      => addslashes($this->input->post('tgl_nota')),
-		        'NO_NOTA'      => addslashes($this->input->post('no_nota')),
-		        'UNTUK'      => addslashes($this->input->post('untuk')),
-		        'KURS'      => addslashes($this->input->post('kurs')),
-		        'NILAI'      => str_replace(',', '', $this->input->post('nilai')),
-		        'BIAYA_MATERAI'      => str_replace(',', '', $this->input->post('nilai_materai')),
-		        'TOTAL'      => str_replace(',', '', $this->input->post('total')),
-		        'TGL_HUBUNGI'      => addslashes($this->input->post('tgl_hubungi')),
-		        'TGL_PENGAKUAN'      => addslashes($this->input->post('tgl_pengakuan')),
+				'TGL'         => addslashes($this->input->post('tgl')),
+				'ID_PELANGGAN'         => addslashes($this->input->post('id_pelanggan')),
+				'TERBILANG'         => addslashes($this->input->post('terbilang')),
+				'NILAI'         => str_replace(',', '', $this->input->post('nilai')),
+				'UNTUK'         => str_replace(',', '', $this->input->post('ket')),
 				'USER_INPUT'      => $userinfo->id,
 				'DEPARTEMEN'      => $userinfo->departemen
 		    );
 
-		    $this->db->insert('tb_pengakuan_hutang',$data);
+		    $this->db->insert('tb_bukti_kas_masuk',$data);
 
-		    $this->master_model_m->update_nomor("TTT");
+		    $no_bukti   = $this->input->post('no_bukti');
+		    $kode_akun  = $this->input->post('kode_akun');
+		    $debet      = $this->input->post('debet');
+		    $kredit     = $this->input->post('kredit');
+		    $keterangan = $this->input->post('keterangan');
+
+		    foreach ($kode_akun as $key => $val) {
+		    	$this->model->save_akuntansi($no_bukti, date('d-m-Y'), $val, $debet[$key], $kredit[$key], $keterangan[$key]);
+		    }
+
+		    $this->master_model_m->update_nomor("BKM");
 		    $this->session->set_flashdata('sukses','1');
 
 		} else if($this->input->post('edit')){
 			$id_edit = $this->input->post('id_edit');
-			$data = array(
-		        'NO_BUKTI' => addslashes($this->input->post('no_bukti')),
-				'KEPADA'   => addslashes($this->input->post('kepada')),
-				'UNTUK'    => addslashes($this->input->post('untuk')),
-				'NILAI'    => str_replace(',', '', $this->input->post('nilai')),
-				'TGL'      => date('d-m-Y')
+
+		    $data = array(
+		        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
+				'TGL'         => addslashes($this->input->post('tgl')),
+				'ID_PELANGGAN'         => addslashes($this->input->post('id_pelanggan')),
+				'TERBILANG'         => addslashes($this->input->post('terbilang')),
+				'NILAI'         => str_replace(',', '', $this->input->post('nilai')),
+				'UNTUK'         => str_replace(',', '', $this->input->post('ket')),
 		    );
 
 		    $this->db->where('ID', $id_edit);
-    		$this->db->update('tb_pengakuan_hutang', $data);
+    		$this->db->update('tb_bukti_kas_masuk', $data);
 
 		    $this->session->set_flashdata('sukses','1');
 		}
 
 		$data = array(
-				'title' 	 		=> 'Pengakuan Hutang (TTT)',
-				'page'  	 		=> 'pengakuan_hutang_v',
+				'title' 	 		=> 'Bukti Kas Masuk (BKM)',
+				'page'  	 		=> 'pemasukan_kas_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
-				'sub_menu1'	 		=> 'Pengakuan Hutang',
+				'sub_menu1'	 		=> 'Bukti Kas Masuk',
 				'menu' 	   	 		=> 'flow_sistem',
-				'menu2'		 		=> 'pengakuan_hutang',
+				'menu2'		 		=> 'bukti_kas_masuk',
 				'lihat_data' 		=> $this->model->lihat_data(),
-				'url_simpan' 		=> base_url().'pengakuan_hutang_c',
-				'url_hapus'  		=> base_url().'pengakuan_hutang_c',
-				'url_ubah'	 		=> base_url().'pengakuan_hutang_c',
+				'url_simpan' 		=> base_url().'pemasukan_kas_c',
+				'url_hapus'  		=> base_url().'pemasukan_kas_c/hapus',
+				'url_ubah'	 		=> base_url().'pemasukan_kas_c',
 				'get_nomor'	 		=> $get_nomor,
 			);
 		
@@ -77,19 +83,20 @@ class Pengakuan_hutang_c extends CI_Controller {
 
 	function add_new(){
 		$userinfo					= $this->master_model_m->get_user_info();
-		$get_nomor					= $this->master_model_m->get_nomor_dokumen('TTT')."/TTT/".$userinfo->nama_divisi."/".$this->tgl_to_romawi(date('m'))."/".date('Y');
+		$get_nomor					= $this->master_model_m->get_nomor_dokumen('BKM')."/BKM/".$userinfo->nama_divisi."/".$this->tgl_to_romawi(date('m'))."/".date('Y');
 		$data = array(
-				'title' 	 		=> 'Tambah Pengakuan Hutang (TTT)',
-				'page'  	 		=> 'add_pengakuan_hutang_v',
+				'title' 	 		=> 'Tambah Bukti Kas Masuk (BKM)',
+				'page'  	 		=> 'add_pemasukan_kas_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
-				'sub_menu1'	 		=> 'Pengakuan Hutang',
+				'sub_menu1'	 		=> 'Bukti Kas Masuk',
 				'menu' 	   	 		=> 'flow_sistem',
-				'menu2'		 		=> 'pengakuan_hutang',
+				'menu2'		 		=> 'bukti_kas_masuk',
 				'lihat_data' 		=> $this->model->lihat_data(),
-				'lihat_data_supp' 	=> $this->db->get('master_supplier')->result(),
-				'url_simpan' 		=> base_url().'pengakuan_hutang_c',
-				'url_hapus'  		=> base_url().'pengakuan_hutang_c',
-				'url_ubah'	 		=> base_url().'pengakuan_hutang_c',
+				'lihat_data_pelanggan' 	=> $this->db->get('master_pelanggan')->result(),
+				'lihat_data_akun' 	=> $this->db->get('ak_kode_akuntansi')->result(),
+				'url_simpan' 		=> base_url().'pemasukan_kas_c',
+				'url_hapus'  		=> base_url().'pemasukan_kas_c/hapus',
+				'url_ubah'	 		=> base_url().'pemasukan_kas_c',
 				'get_nomor'	 		=> $get_nomor,
 			);
 		
@@ -101,17 +108,18 @@ class Pengakuan_hutang_c extends CI_Controller {
 
 
 		$data = array(
-				'title' 	 		=> 'Ubah Pengakuan Hutang (TTT)',
-				'page'  	 		=> 'edit_pengakuan_hutang_v',
+				'title' 	 		=> 'Ubah Bukti Kas Masuk (BKM)',
+				'page'  	 		=> 'edit_pemasukan_kas_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
-				'sub_menu1'	 		=> 'Pengakuan Hutang',
+				'sub_menu1'	 		=> 'Bukti Kas Masuk',
 				'menu' 	   	 		=> 'flow_sistem',
-				'menu2'		 		=> 'pengakuan_hutang',
+				'menu2'		 		=> 'bukti_kas_masuk',
 				'dt' 				=> $this->model->lihat_data_id($id),
+				'lihat_data_pelanggan' 	=> $this->db->get('master_pelanggan')->result(),
 				'lihat_data_akun' 	=> $this->db->get('ak_kode_akuntansi')->result(),
-				'url_simpan' 		=> base_url().'pengakuan_hutang_c',
-				'url_hapus'  		=> base_url().'pengakuan_hutang_c',
-				'url_ubah'	 		=> base_url().'pengakuan_hutang_c',
+				'url_simpan' 		=> base_url().'pemasukan_kas_c',
+				'url_hapus'  		=> base_url().'pemasukan_kas_c/hapus',
+				'url_ubah'	 		=> base_url().'pemasukan_kas_c',
 			);
 		
 		$this->load->view('home_v',$data);
@@ -171,10 +179,10 @@ class Pengakuan_hutang_c extends CI_Controller {
 	{
 		$id = $this->input->post('id_hapus');
 		$this->db->where('ID', $id);
-   		$this->db->delete('tb_pengakuan_hutang'); 
+   		$this->db->delete('tb_bukti_kas_masuk'); 
 
 		$this->session->set_flashdata('hapus','1');
-		redirect('pengakuan_hutang_c');
+		redirect('pemasukan_kas_c');
 	}
 
 	function data_kode_akun_id()

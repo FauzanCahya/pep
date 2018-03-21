@@ -128,7 +128,7 @@ function berhasil(){
 </script>
 
 
-<a href="<?=base_url();?>pengakuan_hutang_c/add_new" class="btn green">
+<a href="<?=base_url();?>pemasukan_kas_c/add_new" class="btn green">
 Tambah Data <i class="fa fa-plus"></i>
 </a>
 </br>
@@ -140,7 +140,7 @@ Tambah Data <i class="fa fa-plus"></i>
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Data Pengakuan Hutang
+					<i class="fa fa-edit"></i>Data Bukti Kas Masuk
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">
@@ -160,9 +160,9 @@ Tambah Data <i class="fa fa-plus"></i>
 					<th style="text-align:center;"> No</th>
 					<th style="text-align:center;"> No. Dokumen</th>
 					<th style="text-align:center;"> Tgl. Dokumen</th>
-					<th style="text-align:center;"> Supplier</th>
-					<th style="text-align:center;"> Keterangan</th>
+					<th style="text-align:center;"> Kepada</th>
 					<th style="text-align:center;"> Nilai</th>
+					<th style="text-align:center;"> Untuk</th>
 					<th style="text-align:center;"> User Input</th>
 					<th style="text-align:center;"> Departemen</th>
 					<th style="text-align:center;"> Aksi </th>
@@ -178,13 +178,13 @@ Tambah Data <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->NO_BUKTI; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->TGL; ?></td>
-					<td style="text-align:left; vertical-align:"><?php echo $value->nama_supplier; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->nama_pelanggan; ?></td>
+					<td style="text-align:right; vertical-align:"><?php echo number_format($value->NILAI); ?></td>
 					<td style="text-align:left; vertical-align:"><?php echo $value->UNTUK; ?></td>
-					<td style="text-align:right; vertical-align:"><?php echo number_format($value->TOTAL); ?></td>
 					<td style="text-align:left; vertical-align:"><?php echo $value->USER_INPUT; ?></td>
 					<td style="text-align:left; vertical-align:"><?php echo $value->nama_divisi; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<!-- <a class="btn default btn-xs purple" id="ubah" href="<?=base_url();?>pengeluaran_kas_nota_c/edit/<?=$value->ID;?>"><i class="fa fa-edit"></i> Ubah </a> -->
+						<a class="btn default btn-xs purple" id="ubah" href="<?=base_url();?>pemasukan_kas_c/edit/<?=$value->ID;?>"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_divisi(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
 					</td>
 				</tr>

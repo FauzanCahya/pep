@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pengeluaran_kas_nota_m extends CI_Model
+class Pemasukan_kas_m extends CI_Model
 {
 	function __construct() {
 		  parent::__construct();
@@ -45,25 +45,11 @@ class Pengeluaran_kas_nota_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function save_akuntansi($no_bukti, $tgl, $kode_akun, $debet, $kredit, $keterangan){
-		$debet = str_replace(',', '', $debet);
-		$kredit = str_replace(',', '', $kredit);
-		$keterangan = addslashes($keterangan);
-
-		$sql = "
-		INSERT INTO ak_input_voucher_lainnya
-		(NO_BUKTI, KODE_AKUN, DEBET, KREDIT, TGL, KETERANGAN)
-		VALUES 
-		('$no_bukti', '$kode_akun', '$debet', '$kredit', '$tgl', '$keterangan')
-		";
-
-		 $this->db->query($sql);
-	}
-
 	function lihat_data()
 	{
 		$sql = "
-			SELECT a.*, c.nama_divisi FROM tb_pengeluaran_nota a 
+			SELECT a.*, b.nama_pelanggan, c.nama_divisi FROM tb_bukti_kas_masuk a 
+			LEFT JOIN master_pelanggan b ON a.ID_PELANGGAN = b.id_pelanggan
 			LEFT JOIN master_divisi c ON a.DEPARTEMEN = c.id_divisi
 		";
 
@@ -72,7 +58,7 @@ class Pengeluaran_kas_nota_m extends CI_Model
 
 	function lihat_data_id($id){
 		$sql = "
-			SELECT a.* FROM tb_pengeluaran_nota a
+			SELECT a.* FROM tb_bukti_kas_masuk a
 			WHERE a.ID = '$id'
 		";
 
@@ -95,6 +81,21 @@ class Pengeluaran_kas_nota_m extends CI_Model
 		";
 
 		return $this->db->query($sql)->row();
+	}
+
+	function save_akuntansi($no_bukti, $tgl, $kode_akun, $debet, $kredit, $keterangan){
+		$debet = str_replace(',', '', $debet);
+		$kredit = str_replace(',', '', $kredit);
+		$keterangan = addslashes($keterangan);
+
+		$sql = "
+		INSERT INTO ak_input_voucher_lainnya
+		(NO_BUKTI, KODE_AKUN, DEBET, KREDIT, TGL, KETERANGAN)
+		VALUES 
+		('$no_bukti', '$kode_akun', '$debet', '$kredit', '$tgl', '$keterangan')
+		";
+
+		 $this->db->query($sql);
 	}
 
 }

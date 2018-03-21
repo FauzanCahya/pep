@@ -5,7 +5,7 @@
 			<div class="portlet-title">
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
-					<span class="caption-subject bold uppercase"> Form Tambah Data Perintah Membayar Nota (PM) </span>
+					<span class="caption-subject bold uppercase"> Form Ubah Data Bukti Kas Keluar </span>
 				</div>
 				<div class="actions">
 					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
@@ -18,37 +18,55 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">No. Dokumen</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="no_bukti" name="no_bukti" readonly value="<?=$get_nomor;?>">
+								<input type="text" class="form-control" id="no_bukti" name="no_bukti" readonly value="<?=$dt->NO_BUKTI;?>">
+								<input type="hidden" class="form-control" id="id_edit" name="id_edit" readonly value="<?=$dt->ID;?>">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Tanggal</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="tgl" name="tgl" readonly value="<?=date('d-m-Y');?>">
+							    <input class="form-control form-control-inline input-medium" type="text" value="<?=$dt->TGL;?>" name="tgl" readonly >
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Kepada</label>
+							<label class="col-md-2 control-label" for="form_control_1">Dibayar Kepada</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="kepada" name="kepada" required>
+								<select  class="form-control input-large select2me input-sm" id="id_supplier" name="id_supplier" data-placeholder="Select..." required>
+									<option value=""></option>
+									<?php 
+										foreach ($lihat_data_supp as $value){
+									?>
+										<option <?PHP if($value->id_supplier == $dt->ID_SUPPLIER){ echo "selected"; } ?> value="<?php echo $value->id_supplier; ?>"><?php echo $value->kode_supplier; ?> - <?php echo $value->nama_supplier; ?></option>
+									<?php	
+										}
+									?>
+								</select>	
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1" >Guna Pembayaran</label>
-							<div class="col-md-5">
-								<textarea class="form-control" name="untuk" style="height: 100px;" required></textarea>
+							<label class="col-md-2 control-label" for="form_control_1">Nilai</label>
+							<div class="col-md-3">
+								<input type="text" class="form-control text-right" id="nilai" name="nilai" required onkeyup="FormatCurrency(this); getTerbilang(this.value);" value="<?=number_format($dt->NILAI);?>">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Total Pembayaran</label>
+							<label class="col-md-2 control-label" for="form_control_1">Terbilang</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control text-right" id="nilai" name="nilai" required onkeyup="FormatCurrency(this); getTerbilang(this.value);">
+								<textarea class="form-control" name="terbilang" id="terbilang" style="background: #b9dca4; resize: none; height: 100px;" readonly><?=$dt->TERBILANG;?></textarea>
 							</div>
 						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1" >Pembayaran Untuk</label>
+							<div class="col-md-5">
+								<textarea class="form-control" name="ket" style="height: 100px;"><?=$dt->UNTUK;?></textarea>
+							</div>
+						</div>
+
 					</div>
 
 					<hr>
@@ -145,11 +163,11 @@
 
                     <hr>
 
-                    <div class="form-actions">
+					<div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-2 col-md-10">
-								<a href="<?=base_url();?>perintah_membayar_nota_c" id="batal" class="btn red">Batal Dan Kembali</a>
-								<input type="submit" class="btn blue" value="Simpan" name="save">
+								<a href="<?=base_url();?>pemasukan_kas_c" id="batal" class="btn red">Batal Dan Kembali</a>
+								<input type="submit" class="btn blue" value="Simpan" name="edit">
 							</div>
 						</div>
 					</div>
@@ -160,8 +178,87 @@
 	</div>
 </div>
 
-<input type="hidden" name="total_row" id="total_row" value="2">
 <script charset="utf-8" type="text/javascript">
+function getTerbilang(e){
+
+	e = e.split(',').join('');
+
+    var bilangan = e; 
+    var kalimat="";
+    var angka   = new Array('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+    var kata    = new Array('','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan');
+    var tingkat = new Array('','Ribu','Juta','Milyar','Triliun');
+    var panjang_bilangan = bilangan.length;
+     
+    /* pengujian panjang bilangan */
+    if(panjang_bilangan > 15){
+        kalimat = "Diluar Batas";
+    }else{
+        /* mengambil angka-angka yang ada dalam bilangan, dimasukkan ke dalam array */
+        for(i = 1; i <= panjang_bilangan; i++) {
+            angka[i] = bilangan.substr(-(i),1);
+        }
+         
+        var i = 1;
+        var j = 0;
+         
+        /* mulai proses iterasi terhadap array angka */
+        while(i <= panjang_bilangan){
+            subkalimat = "";
+            kata1 = "";
+            kata2 = "";
+            kata3 = "";
+             
+            /* untuk Ratusan */
+            if(angka[i+2] != "0"){
+                if(angka[i+2] == "1"){
+                    kata1 = "Seratus";
+                }else{
+                    kata1 = kata[angka[i+2]] + " Ratus";
+                }
+            }
+             
+            /* untuk Puluhan atau Belasan */
+            if(angka[i+1] != "0"){
+                if(angka[i+1] == "1"){
+                    if(angka[i] == "0"){
+                        kata2 = "Sepuluh";
+                    }else if(angka[i] == "1"){
+                        kata2 = "Sebelas";
+                    }else{
+                        kata2 = kata[angka[i]] + " Belas";
+                    }
+                }else{
+                    kata2 = kata[angka[i+1]] + " Puluh";
+                }
+            }
+             
+            /* untuk Satuan */
+            if (angka[i] != "0"){
+                if (angka[i+1] != "1"){
+                    kata3 = kata[angka[i]];
+                }
+            }
+             
+            /* pengujian angka apakah tidak nol semua, lalu ditambahkan tingkat */
+            if ((angka[i] != "0") || (angka[i+1] != "0") || (angka[i+2] != "0")){
+                subkalimat = kata1+" "+kata2+" "+kata3+" "+tingkat[j]+" ";
+            }
+             
+            /* gabungkan variabe sub kalimat (untuk Satu blok 3 angka) ke variabel kalimat */
+            kalimat = subkalimat + kalimat;
+            i = i + 3;
+            j = j + 1;
+        }
+         
+        /* mengganti Satu Ribu jadi Seribu jika diperlukan */
+        if ((angka[5] == "0") && (angka[6] == "0")){
+            kalimat = kalimat.replace("Satu Ribu","Seribu");
+        }
+    }
+    document.getElementById("terbilang").innerHTML=kalimat;
+}
+
 function add_row(){
 	var jml = $('#total_row').val();
 	var i = parseFloat(jml) + 1;

@@ -22,25 +22,16 @@ class Pengeluaran_kas_nota_c extends CI_Controller {
 		if($this->input->post('save')){
 			$data = array(
 		        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
-				'KEPADA' => addslashes($this->input->post('kepada')),
-				'UNTUK' => addslashes($this->input->post('untuk')),
-				'NILAI'      => str_replace(',', '', $this->input->post('nilai')),
+				'NO_NOTA'         => addslashes($this->input->post('no_pm')),
+				'KEPADA'         => addslashes($this->input->post('kepada')),
+				'KETERANGAN'         => addslashes($this->input->post('untuk')),
+				'NILAI'         => str_replace(',', '', $this->input->post('nilai')),
 				'TGL'            => date('d-m-Y'),
 				'USER_INPUT'      => $userinfo->id,
 				'DEPARTEMEN'      => $userinfo->departemen
 		    );
 
-		    $this->db->insert('tb_perintah_bayar_nota',$data);
-
-		    $no_bukti   = $this->input->post('no_bukti');
-		    $kode_akun  = $this->input->post('kode_akun');
-		    $debet      = $this->input->post('debet');
-		    $kredit     = $this->input->post('kredit');
-		    $keterangan = $this->input->post('keterangan');
-
-		    foreach ($kode_akun as $key => $val) {
-		    	$this->model->save_akuntansi($no_bukti, date('d-m-Y'), $val, $debet[$key], $kredit[$key], $keterangan[$key]);
-		    }
+		    $this->db->insert('tb_pengeluaran_nota',$data);
 
 		    $this->master_model_m->update_nomor("BKK");
 		    $this->session->set_flashdata('sukses','1');
@@ -56,7 +47,7 @@ class Pengeluaran_kas_nota_c extends CI_Controller {
 		    );
 
 		    $this->db->where('ID', $id_edit);
-    		$this->db->update('tb_perintah_bayar_nota', $data);
+    		$this->db->update('tb_pengeluaran_nota', $data);
 
 		    $this->session->set_flashdata('sukses','1');
 		}
@@ -174,7 +165,7 @@ class Pengeluaran_kas_nota_c extends CI_Controller {
 	{
 		$id = $this->input->post('id_hapus');
 		$this->db->where('ID', $id);
-   		$this->db->delete('tb_perintah_bayar_nota'); 
+   		$this->db->delete('tb_pengeluaran_nota'); 
 
 		$this->session->set_flashdata('hapus','1');
 		redirect('pengeluaran_kas_nota_c');
@@ -211,6 +202,20 @@ class Pengeluaran_kas_nota_c extends CI_Controller {
 		$kode =$this->input->post('kode');
 		$sql  ="select * from master_departemen where id_depart = $kode ";
 		$data = $this->db->query($sql)->row();
+
+		echo json_encode($data); 
+	}
+
+	function get_data_bukti(){
+		$keyword = $this->input->post('keyword');
+		$data = $this->model->get_data_bukti($keyword);
+
+		echo json_encode($data); 
+	}
+
+	function get_bukti_detail(){
+		$id = $this->input->post('id');
+		$data = $this->model->get_data_bukti_detail($id);
 
 		echo json_encode($data); 
 	}

@@ -45,54 +45,57 @@ class Pengakuan_hutang_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function lihat_data_kode_akun()
+	function save_akuntansi($no_bukti, $tgl, $kode_akun, $debet, $kredit, $keterangan){
+		$debet = str_replace(',', '', $debet);
+		$kredit = str_replace(',', '', $kredit);
+		$keterangan = addslashes($keterangan);
+
+		$sql = "
+		INSERT INTO ak_input_voucher_lainnya
+		(NO_BUKTI, KODE_AKUN, DEBET, KREDIT, TGL, KETERANGAN)
+		VALUES 
+		('$no_bukti', '$kode_akun', '$debet', '$kredit', '$tgl', '$keterangan')
+		";
+
+		 $this->db->query($sql);
+	}
+
+	function lihat_data()
 	{
 		$sql = "
-			SELECT * FROM ak_kode_akuntansi ";
+			SELECT a.*, c.nama_divisi, b.nama_supplier FROM tb_pengakuan_hutang a 
+			LEFT JOIN master_supplier b ON a.ID_SUPPLIER = b.id_supplier
+			LEFT JOIN master_divisi c ON a.DEPARTEMEN = c.id_divisi
+		";
 
 		return $this->db->query($sql)->result();
 	}
 
-	function hapus_kode_akun($id)
-	{
-		$sql = "DELETE FROM  ak_kode_akuntansi WHERE ID = '$id' " ;
-		$this->db->query($sql);
-	}
-
-	function data_kode_akun_id($id)
-	{
-		$sql = "SELECT * FROM ak_kode_akuntansi WHERE ID = '$id' ";
-		$query = $this->db->query($sql);
-		return $query->row();
-	}
-
-	function ubah_kode_akun($id,$kode_akun_modal,$nama_akun_modal,$tipe_modal,$kategori_modal,$deskripsi_modal,$level_modal,$anak_dari_modal,
-							$id_klien_modal,$approve_modal,$user_input_modal,$tgl_input_modal,$kode_grup_modal,$kode_sub_modal,$unit_modal)
-	{
+	function lihat_data_id($id){
 		$sql = "
-			UPDATE ak_kode_akuntansi SET
-				KODE_AKUN   = '$kode_akun_modal',
-				NAMA_AKUN   = '$nama_akun_modal',
-				TIPE  		= '$tipe_modal',
-				KATEGORI  	= '$kategori_modal',
-				DESKRIPSI  	= '$deskripsi_modal',
-				LEVEL  		= '$level_modal',
-				ANAK_DARI  	= '$anak_dari_modal',
-				ID_KLIEN  	= '$id_klien_modal',
-				APPROVE  	= '$approve_modal',
-				USER_INPUT  = '$user_input_modal',
-				TGL_INPUT  	= '$tgl_input_modal',
-				KODE_GRUP  	= '$kode_grup_modal',
-				KODE_SUB  	= '$kode_sub_modal',
-				UNIT  		= '$unit_modal'
-			WHERE ID = '$id'
+			SELECT a.* FROM tb_pengakuan_hutang a
+			WHERE a.ID = '$id'
 		";
-		$this->db->query($sql);
+
+		return $this->db->query($sql)->row();
 	}
 
-	function lihat_data_grup(){
-		$sql = "SELECT * FROM ak_grup_kode_akun";
-		$query = $this->db->query($sql);
-		return $query->result();
+	function get_data_bukti($keyword){
+		$sql = "
+			SELECT a.* FROM tb_perintah_bayar_nota a
+			WHERE NO_BUKTI LIKE '%$keyword%'
+		";
+
+		return $this->db->query($sql)->result();
 	}
+
+	function get_data_bukti_detail($id){
+		$sql = "
+			SELECT a.* FROM tb_perintah_bayar_nota a
+			WHERE a.ID = '$id'
+		";
+
+		return $this->db->query($sql)->row();
+	}
+
 }

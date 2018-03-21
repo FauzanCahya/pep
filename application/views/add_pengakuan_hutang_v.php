@@ -5,7 +5,7 @@
 			<div class="portlet-title">
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
-					<span class="caption-subject bold uppercase"> Form Tambah Data Pengeluaran Nota </span>
+					<span class="caption-subject bold uppercase"> Form Tambah Data Pengakuan Hutang </span>
 				</div>
 				<div class="actions">
 					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
@@ -30,6 +30,34 @@
 						</div>
 
 						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Supplier / Penagih</label>
+							<div class="col-md-5">
+								<select  class="form-control input-large select2me input-sm" id="id_supplier" name="id_supplier" data-placeholder="Select..." required>
+									<option value=""></option>
+									<?php 
+										foreach ($lihat_data_supp as $value){
+									?>
+										<option value="<?php echo $value->id_supplier; ?>"><?php echo $value->kode_supplier; ?> - <?php echo $value->nama_supplier; ?></option>
+									<?php	
+										}
+									?>
+								</select>	
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Tanggal Nota</label>
+							<div class="col-md-2">
+								<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_nota" readonly style="background: #FFF; cursor: pointer;"/>
+							</div>
+							<div class="col-md-3">
+								<input type="text" class="form-control" id="no_nota" name="no_nota" value="" placeholder="No. Nota">
+							</div>
+						</div>
+
+						<!-- <div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Cari No. PM</label>
 							<div class="col-md-5">
 								<div class="input-append" style="width: 100%;">
@@ -38,36 +66,71 @@
 									<input type="hidden" id="id_produk_1" name="produk[]" readonly="" style="background:#FFF;">
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Kepada</label>
+							<label class="col-md-2 control-label" for="form_control_1">Untuk Pembayaran</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="kepada" name="kepada" readonly>
+								<input type="text" class="form-control" id="untuk" name="untuk">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1" >Keterangan</label>
-							<div class="col-md-5">
-								<textarea class="form-control" name="untuk" id="untuk" style="height: 100px;" readonly></textarea>
+							<label class="col-md-2 control-label" for="form_control_1">Mata Uang</label>
+							<div class="col-md-3">
+								<select class="form-control" name="kurs" id="kurs">
+									<option value="Rp">Rupiah</option>
+									<option value="USD">USD</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Nilai Tagihan</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control text-right" id="nilai" name="nilai" onkeyup="FormatCurrency(this); hitung_bayar();">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Biaya Materai</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control text-right" id="nilai_materai" name="nilai_materai" onkeyup="FormatCurrency(this); hitung_bayar();">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Total Pembayaran</label>
-							<div class="col-md-5">
-								<input type="text" class="form-control text-right" id="nilai" name="nilai" readonly>
+							<div class="col-md-2">
+								<input type="text" class="form-control text-right text-right" id="total" name="total" readonly>
 							</div>
 						</div>
+
+						<hr>
 					</div>
 
 					<hr>
 
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="form_control_1">Harap Menghubungi pada Tanggal</label>
+						<div class="col-md-2">
+							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_hubungi" readonly style="background: #FFF; cursor: pointer;"/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="form_control_1">Tanggal Pengakuan TTT</label>
+						<div class="col-md-2">
+							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_pengakuan" readonly style="background: #FFF; cursor: pointer;"/>
+						</div>
+					</div>
+
+					<hr> 
+					
                     <div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-2 col-md-10">
-								<a href="<?=base_url();?>pengeluaran_kas_nota_c" id="batal" class="btn red">Batal Dan Kembali</a>
+								<a href="<?=base_url();?>pengakuan_hutang_c" id="batal" class="btn red">Batal Dan Kembali</a>
 								<input type="submit" class="btn blue" value="Simpan" name="save">
 							</div>
 						</div>
@@ -81,51 +144,25 @@
 
 <input type="hidden" name="total_row" id="total_row" value="2">
 <script charset="utf-8" type="text/javascript">
-function add_row(){
-	var jml = $('#total_row').val();
-	var i = parseFloat(jml) + 1;
-
-	var isi =   '<tr id="tr_'+i+'">'+
-                    '<td>'+
-                    	'<select  class="form-control input-large select2me input-sm" name="kode_akun[]" id="kode_akun_'+i+'" data-placeholder="Pilih Kode Perkiraan..." required>'+
-							'<option value=""></option>'+
-							<?php 
-								foreach ($lihat_data_akun as $value){
-							?>
-								'<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>'+
-							<?php	
-								}
-							?>
-						'</select>'+
-                    '</td>'+
-                    '<td>'+
-                    	'<div class="controls">'+
-							'<input style="text-align:right;" type="text" class="form-control" value="" name="debet[]" id="debet_'+i+'" onkeyup="FormatCurrency(this); hitung_debkre();">'+
-						'</div>'+
-                    '</td>'+
-                    '<td>'+
-                    	'<div class="controls">'+
-							'<input style="text-align:right;" type="text" class="form-control" value="" name="kredit[]" id="kredit_'+i+'" onkeyup="FormatCurrency(this); hitung_debkre();">'+
-						'</div>'+
-                    '</td>'+
-                    '<td>'+
-                    	'<div class="controls">'+
-							'<input style="text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
-						'</div>'+
-                    '</td>'+
-                    '<td style="text-align:center;">'+
-                    	'<button class="btn btn-danger" type="button" onclick="hapus('+i+');">Hapus</button>'+
-                    '</td>'+
-                '</tr>';
-
-
-	$('#dataAkun').append(isi);
-	$('#kode_akun_'+i).select2();
-	$('#total_row').val(i);
-}
 
 function hapus(id){
 	$('#tr_'+id).remove();
+}
+
+function hitung_bayar(){
+	var a = $('#nilai').val().split(',').join('');
+	var b = $('#nilai_materai').val().split(',').join('');
+
+	if(a == ""){
+		a = 0;
+	}
+
+	if(b == ""){
+		b = 0;
+	}
+
+	var nilai = parseFloat(a) - parseFloat(b);
+	$('#total').val(NumberToMoney(nilai).split('.00').join(''));
 }
 
 function hitung_debkre(){
