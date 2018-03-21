@@ -12,6 +12,9 @@ class Bon_gudang_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -242,6 +245,21 @@ class Bon_gudang_c extends CI_Controller {
 	   }
 
 	   return $var;
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->bon_gudang->get_data_trx($id);
+		$dt_det = $this->bon_gudang->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "bon_gudang_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_bon_gudang_sementara_pdf', $data);
 	}
 }
 

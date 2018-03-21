@@ -12,6 +12,9 @@ class Bon_gudang_final_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -84,7 +87,7 @@ class Bon_gudang_final_c extends CI_Controller {
 
 			$no_buk = $row_buk->NEXT_NOMOR + 1;
 
-			$no_bukti_real = $no_buk."/BGS/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real = $no_buk."/BPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
@@ -249,6 +252,21 @@ class Bon_gudang_final_c extends CI_Controller {
 	   }
 
 	   return $var;
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->bon_gudang_final->get_data_trx($id);
+		$dt_det = $this->bon_gudang_final->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "bon_gudang_final_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_bon_pemakaian_barang_pdf', $data);
 	}
 }
 

@@ -12,6 +12,9 @@ class Order_pembelian_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -86,8 +89,8 @@ class Order_pembelian_c extends CI_Controller {
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
-			$this->pengembalian->save_next_nomor('ORDER_PEMBELIAN_BARANG');
-			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen);
+			$this->order->save_next_nomor('ORDER_PEMBELIAN_BARANG');
+			$this->order->simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen);
 			
 
 			$id_pengembalian_baru = $this->db->insert_id();
@@ -100,11 +103,11 @@ class Order_pembelian_c extends CI_Controller {
 			$id_peminjaman_detail 		    = $this->input->post('id_peminjaman_detail');
 
 			foreach ($nama_produk as $key => $val) {
-					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key]);
+					 $this->order->simpan_data_order_detail($id_pengembalian_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key]);
 			}
 
 			foreach ($id_peminjaman_detail as $keyi => $vali) {
-				$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
+				$this->order->update_selisih_detail($vali,$kuantitas[$keyi]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('pengembalian_barang_c');
@@ -251,6 +254,21 @@ class Order_pembelian_c extends CI_Controller {
 		$dt = $this->order->get_order_detail($id_induk);
 
 		echo json_encode($dt);
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->order->get_data_trx($id);
+		$dt_det = $this->order->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "order_pembelian_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_order_pembelian_barang_pdf', $data);
 	}
 
 }

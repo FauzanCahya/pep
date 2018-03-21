@@ -12,6 +12,9 @@ class Peminjaman_barang_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -207,6 +210,21 @@ class Peminjaman_barang_c extends CI_Controller {
 	   }
 
 	   return $var;
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->peminjaman->get_data_trx($id);
+		$dt_det = $this->peminjaman->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "peminjaman_barang_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_peminjaman_tools_pdf', $data);
 	}
 }
 

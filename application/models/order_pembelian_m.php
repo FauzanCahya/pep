@@ -7,22 +7,26 @@ class Order_pembelian_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_order($no_opb,$tanggal,$uraian)
+	function simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen)
 	{
 		$sql = "
 			INSERT INTO tb_order_pembelian (
 				no_opb,
 				tanggal,
-				uraian
+				uraian,
+				status,
+				divisi
 			) VALUES (
-				'$no_opb',
+				'$no_bukti_real',
 				'$tanggal',
-				'$uraian'
+				'$uraian',
+				'0',
+				'$departemen'
 			)";
 		$this->db->query($sql);
 	}
 
-	function simpan_data_order_detail($id_order_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$satuan,$harga,$total,$no_spb)
+	function simpan_data_order_detail($id_order_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$satuan,$no_spb)
 	{
 
 		$kuantitas 	= str_replace(',', '', $kuantitas);
@@ -37,8 +41,6 @@ class Order_pembelian_m extends CI_Model
 				keterangan,
 				kuantitas,
 				satuan,
-				harga,
-				total,
 				no_spb
 			) VALUES (
 				'$id_order_baru',
@@ -47,8 +49,6 @@ class Order_pembelian_m extends CI_Model
 				'$keterangan',
 				'$kuantitas',
 				'$satuan',
-				'$harga',
-				'$total',
 				'$no_spb'
 			)";
 		$this->db->query($sql);
@@ -136,6 +136,16 @@ class Order_pembelian_m extends CI_Model
         return $this->db->query($sql)->row();
     }
 
+    function save_next_nomor($tipe)
+	{
+		$sql = "
+			UPDATE ak_nomor SET 
+				NEXT_NOMOR  	= NEXT_NOMOR + 1
+			WHERE TIPE  = '$tipe'
+		";
+		$this->db->query($sql);
+	}
+
     function get_spb_detail($id)
     {
         $sql = "SELECT * FROM tb_permintaan_barang_detail WHERE id_induk = $id";
@@ -165,6 +175,22 @@ class Order_pembelian_m extends CI_Model
     function get_transaction_info($id_barang){
         $sql = "
         SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_data_trx($id){
+    	$sql = "
+        SELECT pb.* , md.nama_divisi FROM tb_order_pembelian pb , master_divisi md WHERE pb.divisi = md.id_divisi AND pb.id_order = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT * FROM tb_order_pembelian_detail WHERE id_induk = '$id'
         ";
 
         return $this->db->query($sql)->result();
