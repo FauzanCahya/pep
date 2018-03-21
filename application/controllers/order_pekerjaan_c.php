@@ -12,6 +12,9 @@ class Order_pekerjaan_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -189,6 +192,21 @@ class Order_pekerjaan_c extends CI_Controller {
 		$dt = $this->permintaan->get_produk_detail($id_barang);
 
 		echo json_encode($dt);
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->permintaan->get_data_trx($id);
+		$dt_det = $this->permintaan->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "order_pekerjaan_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_order_pekerjaan_pdf', $data);
 	}
 }
 

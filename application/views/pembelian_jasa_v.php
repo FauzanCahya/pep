@@ -947,6 +947,7 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>pembelian_jasa_c/cetak/<?=$value->id_pengembalian;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>
 					<?php 
