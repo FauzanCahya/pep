@@ -2206,7 +2206,7 @@ iframe[src="about:blank"] {
 Select2 Plugin
 ***/
 .form-control .select2-choice {
-  border: 1px solid #e5e5e5;
+  border: 1px solid #999;
   background-color: #fff;
   background-image: none;
   filter: none;

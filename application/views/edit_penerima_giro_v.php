@@ -5,7 +5,7 @@
 			<div class="portlet-title">
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
-					<span class="caption-subject bold uppercase"> Form Tambah Data Penerimaan Giro </span>
+					<span class="caption-subject bold uppercase"> Form Edit Data Penerimaan Giro </span>
 				</div>
 				<div class="actions">
 					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
@@ -18,14 +18,15 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">No. Dokumen</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="no_bukti" name="no_bukti" readonly value="<?=$get_nomor;?>">
+								<input type="text" class="form-control" id="no_bukti" name="no_bukti" readonly value="<?=$dt->NO_BUKTI;?>">
+								<input type="hidden" class="form-control" id="id_edit" name="id_edit" readonly value="<?=$dt->ID;?>">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">No. Giro</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="no_giro" name="no_giro" required>
+								<input type="text" class="form-control" id="no_giro" name="no_giro" required value="<?=$dt->NO_GIRO;?>">
 							</div>
 						</div>
 
@@ -37,7 +38,7 @@
 									<?php 
 										foreach ($lihat_data_pelanggan as $value){
 									?>
-										<option value="<?php echo $value->id_pelanggan; ?>"><?php echo $value->kode_pelanggan; ?> - <?php echo $value->nama_pelanggan; ?></option>
+										<option <?PHP if($value->id_pelanggan == $dt->ID_PELANGGAN){ echo "selected"; } ?> value="<?php echo $value->id_pelanggan; ?>"><?php echo $value->kode_pelanggan; ?> - <?php echo $value->nama_pelanggan; ?></option>
 									<?php	
 										}
 									?>
@@ -49,33 +50,33 @@
 							<label class="col-md-2 control-label" for="form_control_1">Nilai Giro</label>
 							<div class="col-md-1">
 								<select class="form-control" name="kurs" id="kurs">
-									<option value="Rp">Rupiah</option>
-									<option value="USD">USD</option>
+									<option <?PHP if("Rp"  == $dt->KURS){ echo "selected"; } ?> value="Rp">Rupiah</option>
+									<option <?PHP if("USD" == $dt->KURS){ echo "selected"; } ?> value="USD">USD</option>
 								</select>
 							</div>
 							<div class="col-md-4">
-								<input type="text" class="form-control text-right" id="nilai" name="nilai" required onkeyup="FormatCurrency(this); getTerbilang(this.value);">
+								<input type="text"  class="form-control text-right" id="nilai" name="nilai" value="<?=number_format($dt->NILAI);?>" required onkeyup="FormatCurrency(this); getTerbilang(this.value);">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Terbilang</label>
 							<div class="col-md-5">
-								<textarea class="form-control" name="terbilang" id="terbilang" style="background: #b9dca4; resize: none; height: 100px;" readonly></textarea>
+								<textarea class="form-control" name="terbilang" id="terbilang" style="background: #b9dca4; resize: none; height: 100px;" readonly><?=$dt->TERBILANG;?></textarea>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Tanggal Cair</label>
 							<div class="col-md-5">
-							    <input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_cair" readonly style="background: #FFF; cursor: pointer;"/>
+							    <input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=$dt->TGL_CAIR;?>" name="tgl_cair" readonly style="background: #FFF; cursor: pointer;"/>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1" >Keterangan</label>
 							<div class="col-md-5">
-								<textarea class="form-control" name="ket" style="height: 100px;"></textarea>
+								<textarea class="form-control" name="ket" style="height: 100px;"><?=$dt->KETERANGAN;?></textarea>
 							</div>
 						</div>
 
@@ -84,7 +85,7 @@
 						<div class="row">
 							<div class="col-md-offset-2 col-md-10">
 								<a href="<?=base_url();?>penerima_giro_c" id="batal" class="btn red">Batal Dan Kembali</a>
-								<input type="submit" class="btn blue" value="Simpan" name="save">
+								<input type="submit" class="btn blue" value="Ubah" name="edit">
 							</div>
 						</div>
 					</div>

@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Penerima_giro_c extends CI_Controller {
+class Pengeluaran_kas_nota_c extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('penerima_giro_m','model');
+		$this->load->model('pengeluaran_kas_nota_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -16,58 +16,62 @@ class Penerima_giro_c extends CI_Controller {
 
 	public function index()
 	{
-		$get_nomor					= $this->master_model_m->get_nomor_dokumen('PGM');
+		$get_nomor					= $this->master_model_m->get_nomor_dokumen('BKK');
 		$userinfo					= $this->master_model_m->get_user_info();
 
 		if($this->input->post('save')){
 			$data = array(
 		        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
-				'NO_GIRO' => addslashes($this->input->post('no_giro')),
-				'ID_PELANGGAN' => addslashes($this->input->post('id_pelanggan')),
+				'KEPADA' => addslashes($this->input->post('kepada')),
+				'UNTUK' => addslashes($this->input->post('untuk')),
 				'NILAI'      => str_replace(',', '', $this->input->post('nilai')),
-				'KURS'      => addslashes($this->input->post('kurs')),
-				'TGL_CAIR'      => addslashes($this->input->post('tgl_cair')),
 				'TGL'            => date('d-m-Y'),
 				'USER_INPUT'      => $userinfo->id,
-				'TERBILANG'      => addslashes($this->input->post('terbilang')),
-				'DEPARTEMEN'      => $userinfo->departemen,
-				'KETERANGAN'      => addslashes($this->input->post('ket'))
+				'DEPARTEMEN'      => $userinfo->departemen
 		    );
 
-		    $this->db->insert('tb_penerimaan_giro_masuk',$data);
-		    $this->master_model_m->update_nomor("PGM");
+		    $this->db->insert('tb_perintah_bayar_nota',$data);
+
+		    $no_bukti   = $this->input->post('no_bukti');
+		    $kode_akun  = $this->input->post('kode_akun');
+		    $debet      = $this->input->post('debet');
+		    $kredit     = $this->input->post('kredit');
+		    $keterangan = $this->input->post('keterangan');
+
+		    foreach ($kode_akun as $key => $val) {
+		    	$this->model->save_akuntansi($no_bukti, date('d-m-Y'), $val, $debet[$key], $kredit[$key], $keterangan[$key]);
+		    }
+
+		    $this->master_model_m->update_nomor("BKK");
 		    $this->session->set_flashdata('sukses','1');
 
 		} else if($this->input->post('edit')){
 			$id_edit = $this->input->post('id_edit');
 			$data = array(
-		        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
-				'NO_GIRO' => addslashes($this->input->post('no_giro')),
-				'ID_PELANGGAN' => addslashes($this->input->post('id_pelanggan')),
-				'NILAI'      => str_replace(',', '', $this->input->post('nilai')),
-				'KURS'      => addslashes($this->input->post('kurs')),
-				'TGL_CAIR'      => addslashes($this->input->post('tgl_cair')),
-				'TERBILANG'      => addslashes($this->input->post('terbilang')),
-				'KETERANGAN'      => addslashes($this->input->post('ket'))
+		        'NO_BUKTI' => addslashes($this->input->post('no_bukti')),
+				'KEPADA'   => addslashes($this->input->post('kepada')),
+				'UNTUK'    => addslashes($this->input->post('untuk')),
+				'NILAI'    => str_replace(',', '', $this->input->post('nilai')),
+				'TGL'      => date('d-m-Y')
 		    );
 
 		    $this->db->where('ID', $id_edit);
-    		$this->db->update('tb_penerimaan_giro_masuk', $data);
+    		$this->db->update('tb_perintah_bayar_nota', $data);
 
 		    $this->session->set_flashdata('sukses','1');
 		}
 
 		$data = array(
-				'title' 	 		=> 'Penerimaan Giro Masuk (PGM)',
-				'page'  	 		=> 'penerima_giro_v',
+				'title' 	 		=> 'Bukti Kas Keluar (Nota)',
+				'page'  	 		=> 'pengeluaran_kas_nota_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
-				'sub_menu1'	 		=> 'Penerima Giro',
+				'sub_menu1'	 		=> 'Pengeluaran Nota',
 				'menu' 	   	 		=> 'flow_sistem',
-				'menu2'		 		=> 'penerima_giro',
+				'menu2'		 		=> 'pengeluaran_kas_nota',
 				'lihat_data' 		=> $this->model->lihat_data(),
-				'url_simpan' 		=> base_url().'penerima_giro_c',
-				'url_hapus'  		=> base_url().'penerima_giro_c',
-				'url_ubah'	 		=> base_url().'penerima_giro_c',
+				'url_simpan' 		=> base_url().'pengeluaran_kas_nota_c',
+				'url_hapus'  		=> base_url().'pengeluaran_kas_nota_c',
+				'url_ubah'	 		=> base_url().'pengeluaran_kas_nota_c',
 				'get_nomor'	 		=> $get_nomor,
 			);
 		
@@ -76,19 +80,19 @@ class Penerima_giro_c extends CI_Controller {
 
 	function add_new(){
 		$userinfo					= $this->master_model_m->get_user_info();
-		$get_nomor					= $this->master_model_m->get_nomor_dokumen('PGM')."/PGM/".$userinfo->nama_divisi."/".$this->tgl_to_romawi(date('m'))."/".date('Y');
+		$get_nomor					= $this->master_model_m->get_nomor_dokumen('BKK')."/BKK/".$userinfo->nama_divisi."/".$this->tgl_to_romawi(date('m'))."/".date('Y');
 		$data = array(
-				'title' 	 		=> 'Tambah Data Penerimaan Giro Masuk (PGM)',
-				'page'  	 		=> 'add_penerima_giro_v',
+				'title' 	 		=> 'Tambah Bukti Kas Keluar (Nota)',
+				'page'  	 		=> 'add_pengeluaran_kas_nota_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
-				'sub_menu1'	 		=> 'Penerima Giro',
+				'sub_menu1'	 		=> 'Pengeluaran Nota',
 				'menu' 	   	 		=> 'flow_sistem',
-				'menu2'		 		=> 'penerima_giro',
+				'menu2'		 		=> 'pengeluaran_kas_nota',
 				'lihat_data' 		=> $this->model->lihat_data(),
-				'lihat_data_pelanggan' 	=> $this->db->get('master_pelanggan')->result(),
-				'url_simpan' 		=> base_url().'penerima_giro_c',
-				'url_hapus'  		=> base_url().'penerima_giro_c',
-				'url_ubah'	 		=> base_url().'penerima_giro_c',
+				'lihat_data_akun' 	=> $this->db->get('ak_kode_akuntansi')->result(),
+				'url_simpan' 		=> base_url().'pengeluaran_kas_nota_c',
+				'url_hapus'  		=> base_url().'pengeluaran_kas_nota_c',
+				'url_ubah'	 		=> base_url().'pengeluaran_kas_nota_c',
 				'get_nomor'	 		=> $get_nomor,
 			);
 		
@@ -100,17 +104,17 @@ class Penerima_giro_c extends CI_Controller {
 
 
 		$data = array(
-				'title' 	 		=> 'Edit Data Penerimaan Giro Masuk (PGM)',
-				'page'  	 		=> 'edit_penerima_giro_v',
+				'title' 	 		=> 'Ubah Bukti Kas Keluar (Nota)',
+				'page'  	 		=> 'edit_pengeluaran_kas_nota_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
-				'sub_menu1'	 		=> 'Penerima Giro',
+				'sub_menu1'	 		=> 'Pengeluaran Nota',
 				'menu' 	   	 		=> 'flow_sistem',
-				'menu2'		 		=> 'penerima_giro',
+				'menu2'		 		=> 'pengeluaran_kas_nota',
 				'dt' 				=> $this->model->lihat_data_id($id),
-				'lihat_data_pelanggan' 	=> $this->db->get('master_pelanggan')->result(),
-				'url_simpan' 		=> base_url().'penerima_giro_c',
-				'url_hapus'  		=> base_url().'penerima_giro_c',
-				'url_ubah'	 		=> base_url().'penerima_giro_c',
+				'lihat_data_akun' 	=> $this->db->get('ak_kode_akuntansi')->result(),
+				'url_simpan' 		=> base_url().'pengeluaran_kas_nota_c',
+				'url_hapus'  		=> base_url().'pengeluaran_kas_nota_c',
+				'url_ubah'	 		=> base_url().'pengeluaran_kas_nota_c',
 			);
 		
 		$this->load->view('home_v',$data);
@@ -170,10 +174,10 @@ class Penerima_giro_c extends CI_Controller {
 	{
 		$id = $this->input->post('id_hapus');
 		$this->db->where('ID', $id);
-   		$this->db->delete('ak_kode_akuntansi'); 
+   		$this->db->delete('tb_perintah_bayar_nota'); 
 
 		$this->session->set_flashdata('hapus','1');
-		redirect('penerima_giro_c');
+		redirect('pengeluaran_kas_nota_c');
 	}
 
 	function data_kode_akun_id()

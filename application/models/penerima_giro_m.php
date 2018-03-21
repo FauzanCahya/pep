@@ -45,12 +45,24 @@ class Penerima_giro_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function lihat_data_kode_akun()
+	function lihat_data()
 	{
 		$sql = "
-			SELECT * FROM tb_penerimaan_giro_masuk ";
+			SELECT a.*, b.nama_pelanggan, c.nama_divisi FROM tb_penerimaan_giro_masuk a 
+			LEFT JOIN master_pelanggan b ON a.ID_PELANGGAN = b.id_pelanggan 
+			LEFT JOIN master_divisi c ON a.DEPARTEMEN = c.id_divisi
+		";
 
 		return $this->db->query($sql)->result();
+	}
+
+	function lihat_data_id($id){
+		$sql = "
+			SELECT a.*, b.nama_pelanggan FROM tb_penerimaan_giro_masuk a LEFT JOIN master_pelanggan b ON a.ID_PELANGGAN = b.id_pelanggan 
+			WHERE a.ID = '$id'
+		";
+
+		return $this->db->query($sql)->row();
 	}
 
 	function hapus_kode_akun($id)
