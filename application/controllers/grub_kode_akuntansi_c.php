@@ -17,10 +17,10 @@ class Grub_kode_akuntansi_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	 		=> 'Master Grub Kode Akuntansi',
+				'title' 	 		=> 'Master Grup Kode Akuntansi',
 				'page'  	 		=> 'grub_kode_akuntansi_v',
 				'sub_menu' 	 		=> 'master data',
-				'sub_menu1'	 		=> 'master grub kode akuntansi',
+				'sub_menu1'	 		=> 'master grup kode akuntansi',
 				'menu' 	   	 		=> 'master_data',
 				'menu2'		 		=> 'grub_kode_akun',
 				'lihat_data' 		=> $this->grub_kode->lihat_data_akun(),

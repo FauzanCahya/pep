@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Kode_akuntansi_c extends CI_Controller {
+class Penerima_giro_c extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('kode_akuntansi_m','model');
+		$this->load->model('penerima_giro_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -17,17 +17,35 @@ class Kode_akuntansi_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	 		=> 'Master Kode Akuntansi',
-				'page'  	 		=> 'kode_akuntansi_v',
-				'sub_menu' 	 		=> 'master data',
-				'sub_menu1'	 		=> 'master kode akuntansi',
-				'menu' 	   	 		=> 'master_data',
-				'menu2'		 		=> 'kode_akuntansi',
+				'title' 	 		=> 'Penerimaan Giro Masuk (PGM)',
+				'page'  	 		=> 'penerima_giro_v',
+				'sub_menu' 	 		=> 'Flow Sistem',
+				'sub_menu1'	 		=> 'Penerima Giro',
+				'menu' 	   	 		=> 'flow_sistem',
+				'menu2'		 		=> 'penerima_giro',
 				'lihat_data' 		=> $this->model->lihat_data_kode_akun(),
 				'lihat_data_grup' 	=> $this->model->lihat_data_grup(),
-				'url_simpan' 		=> base_url().'kode_akuntansi_c/simpan',
-				'url_hapus'  		=> base_url().'kode_akuntansi_c/hapus',
-				'url_ubah'	 		=> base_url().'kode_akuntansi_c/ubah_kode_akun',
+				'url_simpan' 		=> base_url().'penerima_giro_c',
+				'url_hapus'  		=> base_url().'penerima_giro_c',
+				'url_ubah'	 		=> base_url().'penerima_giro_c',
+			);
+		
+		$this->load->view('home_v',$data);
+	}
+
+	function add_new(){
+		$data = array(
+				'title' 	 		=> 'Tambah Data Penerimaan Giro Masuk (PGM)',
+				'page'  	 		=> 'add_penerima_giro_v',
+				'sub_menu' 	 		=> 'Flow Sistem',
+				'sub_menu1'	 		=> 'Penerima Giro',
+				'menu' 	   	 		=> 'flow_sistem',
+				'menu2'		 		=> 'penerima_giro',
+				'lihat_data' 		=> $this->model->lihat_data_kode_akun(),
+				'lihat_data_grup' 	=> $this->model->lihat_data_grup(),
+				'url_simpan' 		=> base_url().'penerima_giro_c',
+				'url_hapus'  		=> base_url().'penerima_giro_c',
+				'url_ubah'	 		=> base_url().'penerima_giro_c',
 			);
 		
 		$this->load->view('home_v',$data);

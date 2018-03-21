@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Kode_akuntansi_m extends CI_Model
+class Penerima_giro_m extends CI_Model
 {
 	function __construct() {
 		  parent::__construct();
@@ -48,7 +48,7 @@ class Kode_akuntansi_m extends CI_Model
 	function lihat_data_kode_akun()
 	{
 		$sql = "
-			SELECT * FROM ak_kode_akuntansi ";
+			SELECT * FROM tb_penerimaan_giro_masuk ";
 
 		return $this->db->query($sql)->result();
 	}

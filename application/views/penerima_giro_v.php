@@ -213,9 +213,9 @@ function berhasil(){
 	</div>
 </div>
 
-<button id="tambah_kode_akun" class="btn green">
-Tambah Data Kode Akun <i class="fa fa-plus"></i>
-</button>
+<a href="<?=base_url();?>penerima_giro_c/add_new" class="btn green">
+Tambah Data <i class="fa fa-plus"></i>
+</a>
 </br>
 </br>
 
@@ -225,7 +225,7 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Table Kode Akuntansi
+					<i class="fa fa-edit"></i>Data Penerimaan Giro Masuk
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">
@@ -243,10 +243,13 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 				<thead>
 				<tr>
 					<th style="text-align:center;"> No</th>
-					<th style="text-align:center;"> Grup Akun</th>
-					<th style="text-align:center;"> Kode Akun</th>
-					<th style="text-align:center;"> Nama Akun</th>
-					<th style="text-align:center;"> Tipe</th>
+					<th style="text-align:center;"> No. Dokumen</th>
+					<th style="text-align:center;"> Tgl. Dokumen</th>
+					<th style="text-align:center;"> Terima Dari</th>
+					<th style="text-align:center;"> Nilai</th>
+					<th style="text-align:center;"> Tgl. Pencairan</th>
+					<th style="text-align:center;"> User Input</th>
+					<th style="text-align:center;"> Departemen</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
 				</thead>
@@ -258,10 +261,13 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 					?>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->KODE_GRUP; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->KODE_AKUN; ?></td>
-					<td style="text-align:left; vertical-align:"><?php echo $value->NAMA_AKUN; ?></td>
-					<td style="text-align:left; vertical-align:"><?php if($value->TIPE == "D"){ echo "Debet"; } else { echo "Kredit"; } ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->NO_BUKTI; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->TGL; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->NAMA_PELANGGAN; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo number_format($value->NILAI); ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->TGL_CAIR; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->USER_INPUT; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->DEPARTEMEN; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_kode_akun(<?php echo $value->ID?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_divisi(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
@@ -275,85 +281,6 @@ Tambah Data Kode Akun <i class="fa fa-plus"></i>
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
-	</div>
-</div>
-
-<div id="popup_ubah">
-	<div class="window_ubah">
-		<div class="tab-content">
-			<div id="tab_0" class="tab-pane active">
-				<div class="portlet box green">
-					<div class="portlet-title">
-						<div class="caption">
-							<i class="fa fa-pencil"></i>Ubah Kode Akuntansi
-						</div>
-					</div>
-
-					<div class="portlet-body form">
-						<!-- BEGIN FORM-->
-						<div class="portlet-body form">
-					<form role="form" class="form-horizontal" method="post" action="<?php echo $url_ubah;?>">
-						<div class="form-body">
-							<input type="hidden" name="id_akun_modal" id="id_akun_modal">
-							<div class="form-group">
-								<label class="col-md-3 control-label" for="form_control_1">Grup Kode Akun</label>
-								<div class="col-md-4">
-									<select class="form-control input-large select2me input-sm" data-placeholder="Select..." id="grup_modal" name="grup_modal" required>
-										<option value=""></option>
-										<?php 
-											foreach ($lihat_data_grup as $value){
-										?>
-											<option value="<?php echo $value->KODE_GRUP; ?>"><?php echo $value->KODE_GRUP; ?></option>
-										<?php	
-											}
-										?>
-									</select>	
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-3 control-label" for="form_control_1">Kode Akun</label>
-								<div class="col-md-4">
-									<input required type="text" class="form-control" name="kode_akun_modal" id="kode_akun_modal" >
-									<div class="form-control-focus">
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label" for="form_control_1">Nama Akun</label>
-								<div class="col-md-4">
-									<input required type="text" class="form-control" name="nama_akun_modal" id="nama_akun_modal" >
-									<div class="form-control-focus">
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label" for="form_control_1">Tipe</label>
-								<div class="col-md-3">
-									<select class="form-control" name="tipe_modal" id="tipe_modal">
-										<option value="D">Debet</option>
-										<option value="K">Kredit</option>
-									</select>
-								</div>
-							</div>
-
-						<div class="form-actions">
-							<div class="row">
-								<div class="col-md-offset-3 col-md-10">
-									<button type="submit" class="btn blue">Simpan</button>
-									<button type="button" id="batal_ubah" class="btn default">Batal</button>
-								</div>
-							</div>
-						</div>
-				</div>
-			</form>
-		</div>
-										<!-- END FORM-->
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 

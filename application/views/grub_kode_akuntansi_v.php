@@ -24,15 +24,15 @@ $(document).ready(function(){
 	});
 
 	$("#tambah_grub_kode_akun").click(function(){
-		$("#tambah_grub_kode_akun").fadeOut('slow');
-		$("#table_grub_kode_akun").fadeOut('slow');
-		$("#form_grub_kode_akun").fadeIn('slow');
+		$("#tambah_grub_kode_akun").hide();
+		$("#table_grub_kode_akun").hide();
+		$("#form_grub_kode_akun").show();
 	});
 
 	$("#batal").click(function(){
-		$("#form_grub_kode_akun").fadeOut('slow');
-		$("#tambah_grub_kode_akun").fadeIn('slow');
-		$("#table_grub_kode_akun").fadeIn('slow');
+		$("#form_grub_kode_akun").hide();
+		$("#tambah_grub_kode_akun").show();
+		$("#table_grub_kode_akun").show();
 	});
 });
 
@@ -126,7 +126,7 @@ function berhasil(){
 			<div class="portlet-title">
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
-					<span class="caption-subject bold uppercase"> Form Grub Kode Akun </span>
+					<span class="caption-subject bold uppercase"> Form Grup Kode Akun </span>
 				</div>
 				<div class="actions">
 					<a class="btn btn-circle btn-icon-only blue" href="javascript:;">
@@ -145,42 +145,49 @@ function berhasil(){
 			<div class="portlet-body form">
 				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
 					<div class="form-body">
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Grub</label>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Tipe Akun</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="grub" name="grub" >
-								<div class="form-control-focus">
-								</div>
+								<select class="form-control" name="grub" id="grub">
+									<option value="Aktiva Lancar">Aktiva Lancar</option>
+									<option value="Aktiva Tidak Lancar">Aktiva Tidak Lancar</option>
+									<option value="Beban Usaha">Beban Usaha</option>
+									<option value="Ekuitas">Ekuitas</option>
+									<option value="Kewajiban Jangka Panjang">Kewajiban Jangka Panjang</option>
+									<option value="Pendapatan / Beban Lain-lain">Pendapatan / Beban Lain-lain</option>
+									<option value="Pendapatan Usaha">Pendapatan Usaha</option>
+									<option value="Laba / Rugi Sebelum Pajak">Laba / Rugi Sebelum Pajak</option>
+								</select>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Kode Grub</label>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Kode Grup</label>
 							<div class="col-md-3">
 								<input type="text" class="form-control" id="kode_grub" name="kode_grub" >
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Nama Grub</label>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Nama Grup</label>
 							<div class="col-md-3">
 								<input type="text" class="form-control" id="nama_grub" name="nama_grub" >
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
+						<div class="form-group form-md-line-input" style="display: none;">
 							<label class="col-md-2 control-label" for="form_control_1">Unit</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="unit" name="unit" >
+								<input type="text" class="form-control" id="unit" name="unit" value="1" >
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
+						<div class="form-group form-md-line-input" style="display: none;">
 							<label class="col-md-2 control-label" for="form_control_1">Aprove</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="approve" name="approve" >
+								<input type="text" class="form-control" id="approve" name="approve" value="3" >
 								<div class="form-control-focus">
 								</div>
 							</div>
@@ -202,7 +209,7 @@ function berhasil(){
 </div>
 
 <button id="tambah_grub_kode_akun" class="btn green">
-Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
+Tambah Data Grup Kode Akun <i class="fa fa-plus"></i>
 </button>
 </br>
 </br>
@@ -213,7 +220,7 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Table Grub Kode Akun
+					<i class="fa fa-edit"></i>Table Grup Kode Akun
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">
@@ -231,8 +238,9 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 				<thead>
 				<tr>
 					<th style="text-align:center;"> No</th>
-					<th style="text-align:center;"> Kode Grub</th>
-					<th style="text-align:center;"> Nama Grub</th>
+					<th style="text-align:center;"> Tipe Akun</th>
+					<th style="text-align:center;"> Kode Grup</th>
+					<th style="text-align:center;"> Nama Grup</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
 				</thead>
@@ -244,8 +252,9 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 					?>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->GRUP; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->KODE_GRUP; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->NAMA_GRUP; ?></td>
+					<td style="text-align:left; vertical-align:"><?php echo $value->NAMA_GRUP; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_grub_kode_akun(<?php echo $value->ID?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_grub_kode_akun(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
@@ -269,7 +278,7 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 				<div class="portlet box green">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="fa fa-pencil"></i>Ubah Grub Kode Akun
+							<i class="fa fa-pencil"></i>Ubah Grup Kode Akun
 						</div>
 					</div>
 
@@ -280,17 +289,26 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 						<div class="form-body">
 							<input type="hidden" name="id_kode_grub_modal" id="id_kode_grub_modal">
 
-							<div class="form-group form-md-line-input">
-								<label class="col-md-3 control-label" for="form_control_1">Grub</label>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="form_control_1">Grup</label>
 								<div class="col-md-4">
-									<input required type="text" class="form-control" name="grub_modal" id="grub_modal" >
-									<div class="form-control-focus">
-									</div>
+									<select class="form-control" name="grub_modal" id="grub_modal">
+										<option value="Aktiva Lancar">Aktiva Lancar</option>
+										<option value="Aktiva Tidak Lancar">Aktiva Tidak Lancar</option>
+										<option value="Beban Usaha">Beban Usaha</option>
+										<option value="Ekuitas">Ekuitas</option>
+										<option value="Kewajiban Jangka Panjang">Kewajiban Jangka Panjang</option>
+										<option value="Pendapatan / Beban Lain-lain">Pendapatan / Beban Lain-lain</option>
+										<option value="Pendapatan Usaha">Pendapatan Usaha</option>
+										<option value="Laba / Rugi Sebelum Pajak">Laba / Rugi Sebelum Pajak</option>
+									</select>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
-								<label class="col-md-3 control-label" for="form_control_1">Kode Grub</label>
+
+
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="form_control_1">Kode Grup</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="kode_grub_modal" id="kode_grub_modal" >
 									<div class="form-control-focus">
@@ -298,8 +316,8 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
-								<label class="col-md-3 control-label" for="form_control_1">Nama Grub</label>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="form_control_1">Nama Grup</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="nama_grub_modal" id="nama_grub_modal" >
 									<div class="form-control-focus">
@@ -307,7 +325,7 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
+							<div class="form-group form-md-line-input" style="display: none;">
 								<label class="col-md-3 control-label" for="form_control_1">Unit</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="unit_modal" id="unit_modal" >
@@ -316,7 +334,7 @@ Tambah Data Grub Kode Akun <i class="fa fa-plus"></i>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
+							<div class="form-group form-md-line-input" style="display: none;">
 								<label class="col-md-3 control-label" for="form_control_1">Approve</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="approve_modal" id="approve_modal" >

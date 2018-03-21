@@ -285,63 +285,63 @@ function MonthToString($month){
 							<a href="javascript:;">
 							<i class="fa fa-envelope-o"></i> Flow Sistem Hutang/Piutang </a>
 							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pengakuan_hutang') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengakuan_hutang_c">
 									<i class="fa fa-bank"></i> Pengakuan Hutang (TTT) </a>
 								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'perintah_membayar') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>perintah_membayar_c">
 									<i class="fa fa-bank"></i> Perintah Membayar </a>
 								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'penerima_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>penerima_giro_c">
 									<i class="fa fa-archive"></i> Penerima Giro </a>
 								</li>
-								<li <?php if ($menu2 == 'pengembalian_tools') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pengeluaran_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengeluaran_giro_c">
 									<i class="fa fa-cube"></i> Pengeluaran Giro </a>
 								</li>
-								<li <?php if ($menu2 == 'pengembalian_tools') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'set_tanggal_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>set_tanggal_giro_c">
 									<i class="fa fa-cube"></i> Set Tanggal Giro Cair </a>
 								</li>
-								<li <?php if ($menu2 == 'pengembalian_tools') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pengambilan_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengambilan_giro_c">
 									<i class="fa fa-cube"></i> Pengambilan Giro </a>
 								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pemasukan_kas') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pemasukan_kas_c">
 									<i class="fa fa-archive"></i> Pemasukan Kas (BKM) </a>
 								</li>
-								<li <?php if ($menu2 == 'pengembalian_tools') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pengeluaran_kas') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengeluaran_kas_c">
 									<i class="fa fa-cube"></i> Pengeluaran Kas (BKK) </a>
 								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
-								<li <?php if ($menu2 == 'order_pembelian') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pemasukan_bank') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pemasukan_bank_c">
 									<i class="fa fa-building"></i> Pemasukan Bank (BBM) </a>
 								</li>
-								<li <?php if ($menu2 == 'order_pembelian') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pengeluaran_bank') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengeluaran_bank_c">
 									<i class="fa fa-building"></i> Pengeluaran Bank (BBK) </a>
 								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
-								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'perintah_membayar_nota') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>perintah_membayar_nota_c">
 									<i class="fa fa-th-list"></i> Perintah Membayar Nota </a>
 								</li>
-								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'pengeluaran_kas_nota') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengeluaran_kas_nota_c">
 									<i class="fa fa-th-list"></i> Pengeluaran Kas Nota </a>
 								</li>
@@ -803,6 +803,7 @@ function MonthToString($month){
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/table-editable.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/components-pickers.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/components-dropdowns.js"></script>
+<script src="<?php echo base_url(); ?>assets/js-form.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-toastr/toastr.min.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style-devan.css"/>
 <!-- END PAGE LEVEL SCRIPTS -->
