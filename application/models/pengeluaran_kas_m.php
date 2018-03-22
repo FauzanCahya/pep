@@ -98,4 +98,21 @@ class Pengeluaran_kas_m extends CI_Model
 		 $this->db->query($sql);
 	}
 
+
+	function get_data_trx($id){
+    	$sql = "
+        SELECT pb.* , md.nama_divisi , ms.nama_supplier , md.nama_divisi FROM tb_bukti_kas_keluar pb , master_divisi md , master_supplier ms WHERE pb.divisi = md.id_divisi AND pb.kode_supplier = ms.id_supplier AND pb.ID = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT il.KODE_AKUN , aka.NAMA_AKUN , il.KETERANGAN  FROM ak_input_voucher_lainnya il, ak_kode_akuntansi aka WHERE il.KODE_AKUN = aka.KODE_AKUN AND il.NO_BUKTI = '$id'
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
 }

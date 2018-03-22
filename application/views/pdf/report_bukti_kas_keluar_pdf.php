@@ -47,13 +47,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td style="width: 50%;text-align: left;">Sumangko Wringin Anom Gresik</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: left;border: 1px solid black;">Tgl</td>
-		<td style="width: 15%;text-align: left;border: 1px solid black;">9-11-2018</td>
+		<td style="width: 15%;text-align: left;border: 1px solid black;"><?=$dt->TGL;?></td>
 	</tr>
 	<tr>
 		<td style="width: 50%;text-align: left;">Jawa Timur - Indonesia</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: left;border: 1px solid black;">No</td>
-		<td style="width: 15%;text-align: left;border: 1px solid black;">0000001</td>
+		<td style="width: 15%;text-align: left;border: 1px solid black;"><?=$dt->ID;?></td>
 	</tr>
 </table>
 
@@ -66,7 +66,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
                 BUKTI KAS KELUAR (BKK)
             </h4>
             <label>
-                ....................................................
+                <?=$dt->NO_BUKTI;?>
             </label>
         </td>
     </tr>
@@ -81,25 +81,25 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<tr>
 			<td>Telah Terima Dari</td>
 			<td>:</td>
-			<td></td>
+			<td><?=$dt->nama_supplier;?></td>
 		</tr>
 
 		<tr>
 			<td>Sebesar</td>
 			<td>:</td>
-			<td>0.00</td>
+			<td>Rp.<?=$dt->NILAI;?>,00</td>
 		</tr>
 
 		<tr>
 			<td>Terbilang</td>
 			<td>:</td>
-			<td></td>
+			<td><?=$dt->TERBILANG;?></td>
 		</tr>
 
 		<tr>
 			<td>Penerimaan Untuk</td>
 			<td>:</td>
-			<td></td>
+			<td><?=$dt->UNTUK;?></td>
 		</tr>
 	
 	
@@ -118,13 +118,21 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<th style="width: 20%;padding: 5px 5px 5px 5px;text-align: center;">Keterangan</th>
 	</tr>
 
+	<?php
+	$i = 0;
+	foreach ($dt_det as $key => $value) {
+		
+		$i++;
+
+	 ?>
 	<tr>
-		<td style="height: 100px;border: 1px solid black;"> </td>
-		<td style="height: 100px;border: 1px solid black;"> </td>
-		<td style="height: 100px;border: 1px solid black;"> </td>
-		<td style="height: 100px;border: 1px solid black;"> </td>
-		<td style="height: 100px;border: 1px solid black;"> </td>
+		<td style="height: 100px;border: 1px solid black;">-</td>
+		<td style="height: 100px;border: 1px solid black;"><?=$value->KODE_AKUN;?> </td>
+		<td style="height: 100px;border: 1px solid black;"><?=$value->NAMA_AKUN;?> </td>
+		<td style="height: 100px;border: 1px solid black;">-</td>
+		<td style="height: 100px;border: 1px solid black;"><?=$value->KETERANGAN;?> </td>
 	</tr>
+	<?php } ?>
 </table>
 </div>
 
@@ -138,7 +146,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     $width_in_mm = $width_in_inches * 21.4;
     $height_in_mm = $height_in_inches * 19.8;
     $html2pdf = new HTML2PDF('P','A4','en');
-    $html2pdf->pdf->SetTitle('Laporan Arus Kas');
+    $html2pdf->pdf->SetTitle('Bukti Kas Keluar');
     $html2pdf->WriteHTML($content, isset($_GET['vuehtml']));
     $html2pdf->Output('Laporan_arus_kas.pdf');
 ?>

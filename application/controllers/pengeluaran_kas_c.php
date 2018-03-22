@@ -12,6 +12,9 @@ class Pengeluaran_kas_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -232,6 +235,21 @@ class Pengeluaran_kas_c extends CI_Controller {
 		$data = $this->model->get_data_bukti_detail($id);
 
 		echo json_encode($data); 
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->pengembalian->get_data_trx($id);
+		$dt_det = $this->pengembalian->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "pembelian_jasa_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_surat_perintah_kerja_pdf', $data);
 	}
 }
 
