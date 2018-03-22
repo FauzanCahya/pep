@@ -352,48 +352,51 @@ function MonthToString($month){
 					</ul>
 				</li>
 
+				<li class ="mega-menu-dropdown">
+					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+					Gudang  <i class="fa fa-angle-down"></i><span class="selected"></span>
+					</a>
+					<ul class="dropdown-menu" style="min-width: 400px;">
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>kartu_stok_c">
+							<i class="fa fa-bank"></i> Kartu Stok </a>
+						</li>
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>akunting_penerimaan_barang_c">
+							<i class="fa fa-bank"></i> Laporan Penerimaan Barang </a>
+						</li>
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>lap_peminjaman_barang_c">
+							<i class="fa fa-bank"></i> Laporan Peminjaman Barang </a>
+						</li>
+
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>laporan_pemakaian_barang_c">
+							<i class="fa fa-bank"></i> Laporan Pemakaian Barang </a>
+						</li>
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>laporan_bgf_c">
+							<i class="fa fa-bank"></i> Laporan BGF </a>
+						</li>
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>laporan_list_barang_c">
+							<i class="fa fa-bank"></i> Laporan List Barang </a>
+						</li>
+
+						<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
+
+						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>penyusaian_stok_c">
+							<i class="fa fa-archive"></i> Penyesuaian Stok </a>
+						</li>
+					</ul>
+				</li>
+
 				<li class ="classic-menu-dropdown">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
 					Akunting Sistem<i class="fa fa-angle-down"></i><span class="selected"></span>
 					</a>
 					<ul class="dropdown-menu pull-left" style="min-width: 400px;">
-						<!-- <li>
-							<a href="<?php echo base_url(); ?>kasie_c">
-							<i class="fa fa-envelope-o"></i> Kasie / Wakasie</a>
-						</li> -->
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Gudang </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>kartu_stok_c">
-									<i class="fa fa-bank"></i> Kartu Stok </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>akunting_penerimaan_barang_c">
-									<i class="fa fa-bank"></i> Laporan Penerimaan Barang </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>laporan_pemakaian_barang_c">
-									<i class="fa fa-bank"></i> Laporan Pemakaian Barang </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>laporan_bgf_c">
-									<i class="fa fa-bank"></i> Laporan BGF </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>laporan_list_barang_c">
-									<i class="fa fa-bank"></i> Laporan List Barang </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>penyusaian_stok_c">
-									<i class="fa fa-archive"></i> Penyesuaian Stok </a>
-								</li>
-							</ul>
-						</li>
 						<li class="dropdown-submenu">
 							<a href="javascript:;">
 							<i class="fa fa-envelope-o"></i> Umum </a>
@@ -505,15 +508,11 @@ function MonthToString($month){
 							<a href="javascript:;">
 							<i class="fa fa-envelope-o"></i> Akunting </a>
 							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_kartu_stok_c">
 									<i class="fa fa-bank"></i> Laporan Kartu Stok </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_peminjaman_barang_c">
-									<i class="fa fa-bank"></i> Laporan Peminjaman Barang </a>
-								</li>
-
+								</li> -->
+								
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
@@ -538,10 +537,10 @@ function MonthToString($month){
 									<i class="fa fa-bank"></i> Laporan Akuntansi </a>
 								</li>
 
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>penyesuaian_stok_c">
 									<i class="fa fa-bank"></i> Penyesuaian Stok </a>
-								</li>
+								</li> -->
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_gudang_master_c">
@@ -550,17 +549,16 @@ function MonthToString($month){
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_pemakaian_barang_c">
 									<i class="fa fa-bank"></i> Laporan Pemakaian Barang</a>
-								</li>
+								</li> -->
 
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_penerimaan_barang_c">
 									<i class="fa fa-bank"></i> Laporan Penerimaan Barang</a>
-								</li>
+								</li> -->
 
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_list_akun_c">
