@@ -25,6 +25,7 @@ class Kartu_stok_c extends CI_Controller {
 				'sub_menu1'	 		=> 'Kartu Stok',
 				'menu' 	   	 		=> 'gudang',
 				'menu2'		 		=> 'kartu_stok',
+				'dt' 			    => $this->db->get('master_barang')->result(),
 				'url_simpan' 		=> base_url().'kartu_stok_c/simpan',
 				'url_hapus'  		=> base_url().'kartu_stok_c/hapus',
 				'url_ubah'	 		=> base_url().'kartu_stok_c/ubah_divisi',
@@ -37,7 +38,8 @@ class Kartu_stok_c extends CI_Controller {
 
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
-		$view = "pdf/report_akunting_penerimaan_barang_pdf";
+		$barang = $this->input->post('barang');
+		$view = "pdf/lap_kartu_stok_pdf";
 		
 
         $dt = $this->db->query("SELECT tb.no_spb , tb.tanggal , tbd.keterangan ,  tbd.nama_produk , tbd.kuantitas , tbd.satuan FROM tb_permintaan_barang tb , tb_permintaan_barang_detail tbd WHERE tb.id_permintaan = tbd.id_induk AND tanggal LIKE '%-$bulan-$tahun%' ")->result();
@@ -45,7 +47,7 @@ class Kartu_stok_c extends CI_Controller {
 
 		
 		$data = array(
-			'title' 		=> 'LAPORAN PERMINTAAN BARANG ',
+			'title' 		=> 'LAPORAN KARTU STOK ',
 			'title2'		=> 'SEMUA BAGIAN',
 			'dt'			=> $dt,
 		);

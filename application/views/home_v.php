@@ -514,7 +514,7 @@ function MonthToString($month){
 									<i class="fa fa-bank"></i> Laporan Kartu Stok </a>
 								</li> -->
 								
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
+								<!-- <li><img src="<?=base_url()?>assets/Untitled-1.png"></li> -->
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>jurnal_umum_c">
