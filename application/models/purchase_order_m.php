@@ -37,7 +37,7 @@ class Purchase_order_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function simpan_data_purchase_detail($id_purchase_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$harga,$total,$no_opb)
+	function simpan_data_purchase_detail($id_purchase_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$harga,$disc,$total,$no_opb)
 	{
 
 		$kuantitas 	= str_replace(',', '', $kuantitas);
@@ -52,8 +52,10 @@ class Purchase_order_m extends CI_Model
 				keterangan,
 				kuantitas,
 				harga,
+				disc,
 				total,
-				no_opb
+				no_opb,
+				penerimaan
 			) VALUES (
 				'$id_purchase_baru',
 				'$id_produk',
@@ -61,8 +63,10 @@ class Purchase_order_m extends CI_Model
 				'$keterangan',
 				'$kuantitas',
 				'$harga',
+				'$disc',
 				'$total',
-				'$no_opb'
+				'$no_opb',
+				'0'
 			)";
 		$this->db->query($sql);
 	}
@@ -71,6 +75,22 @@ class Purchase_order_m extends CI_Model
 	{
 		$sql = "
 			SELECT * FROM tb_purchase_order ";
+
+		return $this->db->query($sql)->result();
+	}
+
+	function lihat_data_divisi()
+	{
+		$sql = "
+			SELECT * FROM master_divisi ";
+
+		return $this->db->query($sql)->result();
+	}
+
+	function lihat_data_supplier()
+	{
+		$sql = "
+			SELECT * FROM master_supplier ";
 
 		return $this->db->query($sql)->result();
 	}
@@ -128,6 +148,22 @@ class Purchase_order_m extends CI_Model
 		";
 		$this->db->query($sql);
 	}
+
+	function get_transaction_info($id_barang){
+        $sql = "
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pbd.keterangan, pb.no_opb , pbd.kuantitas , pbd.realisasi FROM tb_order_pembelian pb , tb_order_pembelian_detail pbd WHERE pb.id_order = pbd.id_induk AND pb.divisi = '$id_barang'
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_transaction_supplier($id_barang){
+        $sql = "
+        SELECT * FROM master_supplier WHERE id_supplier = '$id_barang'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
 
 	function get_supplier_detail($id_supplier)
 	{

@@ -24,6 +24,7 @@ class Laporan_penerimaan_c extends CI_Controller {
 				'menu' 	   	      => 'penjualan',
 				'menu2'		      => 'laporan_penerimaan',
 				'lihat_data'      => $this->laporan->lihat_data_laporan(),
+				'dt_dept'   	  => $this->laporan->lihat_data_divisi(),
 				'url_simpan' 	  => base_url().'laporan_penerimaan_c/simpan',
 				'url_hapus'  	  => base_url().'laporan_penerimaan_c/hapus',
 			);
@@ -127,6 +128,13 @@ class Laporan_penerimaan_c extends CI_Controller {
 		$sql = "SELECT * FROM tb_purchase_order WHERE $where ORDER BY id_purchase ASC LIMIT 10 ";
 
 		$dt = $this->db->query($sql)->result();
+		echo json_encode($dt);
+	}
+
+	function get_transaction_info(){
+		$id = $this->input->post('id');
+		$dt = $this->laporan->get_transaction_info($id);
+
 		echo json_encode($dt);
 	}
 

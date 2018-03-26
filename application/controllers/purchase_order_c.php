@@ -27,6 +27,8 @@ class Purchase_order_c extends CI_Controller {
 				'menu' 	   	      => 'penjualan',
 				'menu2'		      => 'purchase_order',
 				'lihat_data'      => $this->purchase->lihat_data_purchase(),
+				'dt_dept'   	  => $this->purchase->lihat_data_divisi(),
+				'dt_supp'   	  => $this->purchase->lihat_data_supplier(),
 				'url_simpan' 	  => base_url().'purchase_order_c/simpan',
 				'url_hapus'  	  => base_url().'purchase_order_c/hapus',
 				'url_ubah'	 	  => base_url().'purchase_order_c/ubah_purchase',
@@ -78,39 +80,37 @@ class Purchase_order_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PURCHASE_ORDER'";
 
-	        $row_buk = $this->db->query($sql_buk)->row();
-
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real = $no_buk."/PO/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('PURCHASE_ORDER');
 			
+			$no_bukti_real = $get_nomor."/PO/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+
 			$no_po 					= $this->input->post('no_po');
 			$tanggal 				= $this->input->post('tanggal');
-			$supplier 				= $this->input->post('supplier');
-			$subtotal_jml 			= $this->input->post('subtotal_jml');
+			$supplier 				= $this->input->post('nama_supplier');
+			$subtotal_jml 			= $this->input->post('subtotal_text');
 			$pot_po 				= $this->input->post('pot_po');
 			$po_text 				= $this->input->post('po_text');
 			$ppn 					= $this->input->post('ppn');
 			$ppn_text 				= $this->input->post('ppn_text');
-			$totla 					= $this->input->post('totla');
+			$totla 					= $this->input->post('total_semua');
 
-			$this->purchase->save_next_nomor('PURCHASE_ORDER');
+			$this->master_model_m->update_nomor('PURCHASE_ORDER');
 			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen);
 
 			$id_purchase_baru   = $this->db->insert_id();
-			$id_produk    		= $this->input->post('produk');
+			$id_produk    		= $this->input->post('id_peminjaman_detail');
 			$nama_produk 		= $this->input->post('nama_produk');
 			$keterangan 		= $this->input->post('keterangan');
 			$kuantitas  		= $this->input->post('kuantitas');
 			$harga 				= $this->input->post('harga');
+			$disc 				= $this->input->post('disc');
 			$total 				= $this->input->post('total');
-			$no_opb 			= $this->input->post('no_opb');
+			$no_opb 			= $this->input->post('no_opek');
 			
 
 			foreach ($nama_produk as $key => $val) {
-				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
+				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$disc[$key],$total[$key],$no_opb[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('purchase_order_c');
@@ -180,6 +180,20 @@ class Purchase_order_c extends CI_Controller {
 	{
 		$id_supplier = $this->input->get('id_supplier');
 		$dt = $this->purchase->get_supplier_detail($id_supplier);
+
+		echo json_encode($dt);
+	}
+
+	function get_transaction_info(){
+		$id = $this->input->post('id');
+		$dt = $this->purchase->get_transaction_info($id);
+
+		echo json_encode($dt);
+	}
+
+	function get_transaction_supplier(){
+		$id = $this->input->post('id');
+		$dt = $this->purchase->get_transaction_supplier($id);
 
 		echo json_encode($dt);
 	}

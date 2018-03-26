@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Akunting_penerimaan_barang_c extends CI_Controller {
+class Lap_opb_c extends CI_Controller {
 
 	public function __construct()
 	{
@@ -20,8 +20,8 @@ class Akunting_penerimaan_barang_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	 		=> 'Master Divisi',
-				'page'  	 		=> 'akunting_penerimaan_barang_v',
+				'title' 	 		=> 'Order Pembelian Barang',
+				'page'  	 		=> 'lap_opb_v',
 				'sub_menu' 	 		=> 'Laporan',
 				'sub_menu1'	 		=> 'Penerimaan Barang',
 				'menu' 	   	 		=> 'master_data',
@@ -40,12 +40,12 @@ class Akunting_penerimaan_barang_c extends CI_Controller {
 
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
-		$view = "pdf/report_akunting_penerimaan_barang_pdf";
+		$view = "pdf/lap_opb_pdf";
 		
 
         // $dt = $this->db->query("SELECT tb.no_lpb , tb.tanggal , tbd.keterangan ,  tbd.nama_produk , tbd.kuantitas , tbd.satuan , tbd.no_po , tb.diterima FROM tb_laporan_penerimaan tb , tb_laporan_penerimaan_detail tbd WHERE tb.id_laporan = tbd.id_induk AND tb.tanggal LIKE '%-$bulan-$tahun%' ")->result();
 
-        $dt = $this->db->query("SELECT * FROM tb_laporan_penerimaan WHERE tanggal LIKE '%-$bulan-$tahun%' ")->result();
+        $dt = $this->db->query("SELECT tb.no_opb , tbd.nama_produk, tbd.kuantitas , tbd.realisasi , tbd.satuan , tb.tanggal, ms.nama_divisi FROM tb_order_pembelian tb , tb_order_pembelian_detail tbd , master_divisi ms WHERE ms.id_divisi = tb.divisi AND tb.id_order = tbd.id_induk AND tb.tanggal LIKE '%-$bulan-$tahun%' ")->result();
 
 
 		

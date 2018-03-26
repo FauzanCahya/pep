@@ -367,29 +367,29 @@ function MonthToString($month){
 							<i class="fa fa-bank"></i> Laporan Penerimaan Barang </a>
 						</li>
 						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>lap_peminjaman_barang_c">
+							<a href="<?php echo base_url(); ?>gudang_peminjaman_barang_c">
 							<i class="fa fa-bank"></i> Laporan Peminjaman Barang </a>
 						</li>
 
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+						<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>laporan_pemakaian_barang_c">
 							<i class="fa fa-bank"></i> Laporan Pemakaian Barang </a>
 						</li>
 						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>laporan_bgf_c">
 							<i class="fa fa-bank"></i> Laporan BGF </a>
-						</li>
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+						</li> -->
+						<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>laporan_list_barang_c">
 							<i class="fa fa-bank"></i> Laporan List Barang </a>
-						</li>
+						</li> -->
 
-						<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
+						<!-- <li><img src="<?=base_url()?>assets/Untitled-1.png"></li> -->
 
-						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+						<!-- <li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>penyusaian_stok_c">
 							<i class="fa fa-archive"></i> Penyesuaian Stok </a>
-						</li>
+						</li> -->
 					</ul>
 				</li>
 
@@ -403,14 +403,14 @@ function MonthToString($month){
 							<i class="fa fa-envelope-o"></i> Umum </a>
 							<ul class="dropdown-menu" style="min-width: 400px;">
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_penyesuaian_jasa_c">
+									<a href="<?php echo base_url(); ?>umum_penyelesaian_jasa_c">
 									<i class="fa fa-bank"></i> Laporan Penyelesaian Jasa </a>
 								</li>
 
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>laporan_produksi_c">
 									<i class="fa fa-archive"></i> Laporan Produksi </a>
-								</li>
+								</li> -->
 
 							</ul>
 						</li>

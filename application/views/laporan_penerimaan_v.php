@@ -441,7 +441,7 @@ function hitung_total(id){
 		kuantitas = 0;
 	}
 
-	var harga = $('#harga_'+id).val();
+	var harga = $('#harga_awal_'+id).val();
 	harga = harga.split(',').join('');
 
 	if(harga == "" || harga== null){
@@ -449,10 +449,6 @@ function hitung_total(id){
 	}
 
 	var total = parseFloat(kuantitas) * parseFloat(harga);
-
-	var pajak = 0;
-
-	total = total + pajak;
 
 	$('#total_'+id).val(acc_format(total, "").split('.00').join('') );
 
@@ -475,6 +471,92 @@ function hitung_total_semua(){
 function acc_format(n, currency) {
 	return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 }
+
+function add_row(id_peminjaman_detail,nama,sisa,no_po,harga){
+	var jml_tr = $('#jml_tr').val();
+	var i = parseFloat(jml_tr) + 1;
+
+	var isi = 	'<tr id="tr_'+i+'">'+
+					
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+no_po+'" name="no_op[]" id="no_op_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+nama+'" name="nama_produk[]" id="keterangan_'+i+'">'+
+							'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
+						'</div>'+
+					'</td>'+
+					
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+sisa+'" name="sisa[]" id="sisa_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+harga+'" name="harga_awal[]" id="harga_awal_'+i+'">'+
+						'</div>'+
+					'</td>'+
+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="hitung_total('+i+'),FormatCurrency(this);"  type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+
+
+
+	$('#data_item').html(isi);
+	$('#jml_tr').val(i);
+
+}
+
+function get_transaction(id) {
+	
+        $.ajax({
+            url : '<?php echo base_url(); ?>laporan_penerimaan_c/get_transaction_info',
+            data : {id:id},
+            type : "POST",
+            dataType : "json",
+            success : function(result){   
+                var isine = "";
+                if(result.length > 0){
+                    $.each(result,function(i,res){
+                    	var sisa = res.kuantitas - res.penerimaan;
+                        isine += '<tr>'+
+                                    '<td style="text-align:center;">'+res.no_po+'</td>'+
+                                    '<td style="text-align:center;">'+res.nama_produk+'</td>'+
+                                    '<td style="text-align:center;">'+res.kuantitas+'</td>'+
+                                    '<td style="text-align:center;">'+res.penerimaan+'</td>'+
+                                    
+                                    '<td>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+sisa+'&quot;,&quot;'+res.no_po+'&quot;,&quot;'+res.harga+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    '</td>'+
+                                '</tr>';
+                    });
+                } else {
+                    isine = "<tr><td colspan='6' style='text-align:center;'> There are no transaction for this data </td></tr>";
+                }
+
+                $('#data_transaction').html(isine);
+            }
+        });
+    }
 
 </script>
 
@@ -508,14 +590,7 @@ function acc_format(n, currency) {
 			<div class="portlet-body">	
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
 					<div class="col-md-12">
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">No LPB</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="no_lpb" name="no_lpb" required>
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
+						
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Tanggal</label>
 							<div class="col-md-4">
@@ -530,16 +605,18 @@ function acc_format(n, currency) {
 							</div>
 						</div>
 						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">No PO</label>
+							<label class="col-md-2 control-label" for="form_control_1">Departemen</label>
 							<div class="col-md-4">
-								<div class="input-group">
-									<input type="text" class="form-control" id="no_po" name="no_po" required>
-									<span class="input-group-btn">
-									<button class="btn green" type="button" onclick="show_pop_po();"> Cari </button>
-									</span>
-									<div class="form-control-focus">
-									</div>
-								</div>
+								<select name="dept" class="form-control" onchange="get_transaction(this.value);">
+									<option>Pilih Departemen ......</option>
+									<?php 
+										foreach ($dt_dept as $key => $dt_value) {
+											?>
+											<option value="<?=$dt_value->id_divisi;?>"><?=$dt_value->nama_divisi;?></option>
+											<?php
+										}
+									?>
+								</select>
 							</div>
 						</div>
 						<div class="form-group form-md-line-input">
@@ -552,6 +629,43 @@ function acc_format(n, currency) {
 						</div>
 					</div>
 				</div>
+
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+					<div class="portlet-body flip-scroll">
+						<table class="table table-bordered table-striped table-condensed flip-content">
+							<thead class="flip-content">
+								<tr>
+									<th style="text-align: center; ">No PO</th>
+									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center; ">Kuantitas</th>
+									<th style="text-align: center; ">Penerimaan</th>
+									<th style="text-align: center; ">Aksi</th>
+								</tr>
+							</thead>
+							<tbody id="data_transaction">
+								<tr>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						
+					</div>
+				</div>
 			</div>
 
 			<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
@@ -559,60 +673,18 @@ function acc_format(n, currency) {
 					<table class="table table-bordered table-striped table-condensed flip-content">
 						<thead class="flip-content">
 							<tr>
-								<th style="text-align: center; width: 20%;">Produk / Item</th>
-								<th style="text-align: center; widows: 30%;">Keterangan</th>
-								<th style="text-align: center;">Kuantitas</th>
+								<th style="text-align: center; width: 20%;">NO PO</th>
+								<th style="text-align: center; widows: 30%;">Nama</th>
+								<th style="text-align: center;">Sisa</th>
 								<th style="text-align: center;">Harga</th>
+								<th style="text-align: center;">Kuantitas</th>
 								<th style="text-align: center;">Total</th>
-								<th style="text-align: center;">No. OPB</th>
 								<th style="text-align: center;">Aksi</th>
 							</tr>
 						</thead>
 						<tbody id="data_item">
 							<tr id="tr_1">
-								<td align="center" style="vertical-align:middle;">
-									<div class="span12">
-										<div class="control-group">
-											<div class="controls">
-												<div class="input-append" style="width: 100%;">
-													<input readonly type="text" id="nama_produk_1" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">
-													<button onclick="show_pop_produk(1);" type="button" class="btn" style="width: 30%;">Cari</button>
-													<input type="hidden" id="id_produk_1" name="produk[]" readonly style="background:#FFF;" value="0">
-												</div>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input onkeyup="hitung_total(1);" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="harga[]" id="harga_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="total[]" id="total_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="no_opb[]" id="no_opb_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<button style="width: 100%;" onclick="hapus_row_pertama();" type="button" class="btn btn-danger"> Hapus </button>
-									</div>
-								</td>
+								
 							</tr>
 						</tbody>
 					</table>

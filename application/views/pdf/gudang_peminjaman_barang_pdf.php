@@ -44,7 +44,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     <tr>
         <td align="center">
             <h3 style="text-decoration: underline;">
-                PENERIMAAN BARANG
+                PEMINJAMAN BARANG
             </h3>
             <h5>PT PRIMA ELEKTRIK POWER</h5>
             
@@ -59,52 +59,32 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 	<?php 
 	$i = 0;
     $a = 0;
-	foreach ($dt as $key => $value) {
-		$i++;
-	?>
-
-    <h4><?php echo $i; ?>.[<?=$value->tanggal;?>] <?=$value->no_lpb;?></h4>
-    <hr>
-    <?php 
-        $ch = $value->id_laporan;
-        $cui = $this->db->query("SELECT *,SUM(kuantitas) as kuin FROM tb_laporan_penerimaan_detail WHERE id_induk = '$ch'")->result();
-
     ?>
     <table style="width: 100%;">
         <tr>
-            <th style="width: 5%;text-align: center;">No</th>
-            <th style="width: 30%;">Supplier</th>
+            <th style="width: 30%;text-align: center;">Dokumen</th>
             <th style="width: 20%;">Barang</th>
-            <th style="width: 10%;">Jumlah</th>
-            <th style="width: 30%;">Dokumen Reff</th>
+            <th style="width: 20%;">Departemen</th>
+            <th style="width: 10%;">Diambil</th>
+            <th style="width: 10%;">Sisa</th>
+            <th style="width: 10%;">Satuan</th>
         </tr>
-        <?php 
-            foreach ($cui as $key => $valu) {
-             $a++;
+    <?php
+	foreach ($dt as $key => $value) {
+		$i++;
+	?>
+  
+        <tr>
             
-        ?>
-        <tr>
-            <td><?php echo $a; ?></td>
-            <td><?=$value->diterima; ?></td>
-            <td><?=$valu->nama_produk; ?></td>
-            <td><?=$valu->kuantitas; ?></td>
-            <td><?=$valu->no_po; ?></td>
+            <td><?=$value->no_spb; ?></td>
+            <td><?=$value->nama_produk; ?></td>
+            <td><?=$value->nama_divisi; ?></td>
+            <td><?=$value->kuantitas; ?></td>
+            <td><?=$value->sisa_jumlah; ?></td>
+            <td><?=$value->satuan; ?></td>
         </tr>
-        <?php 
-            }
-        ?>
-        <tr>
-            <td colspan="5"><hr style="border: 1px dotted;" /></td>
-        </tr>
-        <tr>
-            <td colspan="3"> Jumlah Yang diterima : </td>
-            <td colspan="2"> <?=$valu->kuin;?> </td>
-        </tr>
-    </table>
-
-	
-	<?php } ?>
-
+        <?php } ?>
+ </table>
 
 <?PHP
     $width_custom = 14;

@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
 
-	$("#no_po").focus();
+	$("#no_spb").focus();
 
 	$('#hapus').click(function(){
 		$('#popup_hapus').css('display','block');
@@ -35,90 +35,91 @@ $(document).ready(function(){
 		$('#popup_ubah').hide();
 	});
 
-	$("#tambah_purchase").click(function(){
-		$("#tambah_purchase").fadeOut('slow');
-		$("#table_purchase").fadeOut('slow');
-		$("#form_purchase").fadeIn('slow');
+	$("#tambah_purchase_order").click(function(){
+		$("#tambah_purchase_order").fadeOut('slow');
+		$("#table_purchase_order").fadeOut('slow');
+		$("#form_purchase_order").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
 
 	$("#batal").click(function(){
-		$("#tambah_purchase").fadeIn('slow');
-		$("#table_purchase").fadeIn('slow');
-		$("#form_purchase").fadeOut('slow');
+		$("#tambah_purchase_order").fadeIn('slow');
+		$("#table_purchase_order").fadeIn('slow');
+		$("#form_purchase_order").fadeOut('slow');
 		$("#tabel_total").fadeOut('slow');
-	});	
+
+		$("#no_spb").val('');
+		$("#uraian").val('');
+		$("#nama_produk_1").val('');
+		$("#keterangan_1").val('');
+		$("#kuantitas_1").val('');
+		$("#satuan_1").val('');
+		$("#harga_1").val('');
+		$("#jumlah_1").val('');
+		$("#subtotal_txt").val('');
+	});
 });
 
-function loading(){
-	$('#popup_load').css('display','block');
-	$('#popup_load').show();
-}
-
-function hapus_toas(){
-	toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "positionClass": "toast-bottom-right",
-      "onclick": null,
-      "showDuration": "5000",
-      "hideDuration": "5000",
-      "timeOut": "5000",
-      "extendedTimeOut": "5000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success("Data Berhasil Dihapus!", "Terhapus");
-}
-
-function hapus_purchase(id)
+function hapus_pengembalian(id)
 {
 	$('#popup_hapus').css('display','block');
 	$('#popup_hapus').show();
 
 		$.ajax({
-		url : '<?php echo base_url(); ?>purchase_order_c/data_purchase_id',
+		url : '<?php echo base_url(); ?>purchase_order_c/data_pengembalian_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
 		async : false,
 		success : function(row){
 			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['no_po']+'</b> ini ingin dihapus ?');
+			$('#msg').html('Apakah <b>'+row['no_spb']+'</b> ini ingin dihapus ?');
 		}
 	});
 }
 
-function ubah_data_purchase(id)
+
+function hapus_row_pertama()
 {
-		$("#tambah_purchase").fadeOut('slow');
-		$("#table_purchase").fadeOut('slow');
-		$("#form_purchase").fadeIn('slow');
-		$("#tabel_total").fadeIn('slow');
-	
-		$.ajax({
-			url : '<?php echo base_url(); ?>purchase_order_c/data_purchase_id',
-			data : {id:id},
-			type : "POST",
-			dataType : "json",
-			async : false,
-			success : function(row){
-				$('#id_purchase').val(id);
-				$('#no_po').val(row['no_po']);
-				$('#tanggal').val(row['tanggal']);
-				$('#supplier').val(row['supplier']);
-				
-				detail_purchase(id);
-			}
-		});
+	$('#nama_produk_1').val('');
+	$('#id_produk_1').val('');
+	$('#keterangan_1').val('');
+	$('#kuantitas_1').val('');
+	$('#satuan_1').val('');
+	$('#harga_1').val('');
+	$('#jumlah_1').val('');
+
+	hitung_total_semua();
 }
 
-function detail_purchase(id)
+function ubah_data_pengembalian(id)
 {
+	$("#tambah_purchase_order").fadeOut('slow');
+	$("#table_purchase_order").fadeOut('slow');
+	$("#form_purchase_order").fadeIn('slow');
+	$("#tabel_total").fadeIn('slow');
+
 	$.ajax({
-		url : '<?php echo base_url(); ?>purchase_order_c/data_purchase_detail_id',
+		url : '<?php echo base_url(); ?>purchase_order_c/data_pengembalian_id',
+		data : {id:id},
+		type : "POST",
+		dataType : "json",
+		async : false,
+		success : function(row){
+			$('#id_purchase').val(id);
+			$('#no_spb').val(row['no_spb']);
+			$('#tanggal').val(row['tanggal']);
+			$('#uraian').val(row['uraian']);
+
+			ubah_detail(id);
+
+		}
+	});
+}
+
+function ubah_detail(id){
+	$.ajax({
+		url : '<?php echo base_url(); ?>purchase_order_c/data_pengembalian_detail_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
@@ -129,58 +130,53 @@ function detail_purchase(id)
 			$('#jml_tr').val(result.length);
 			$.each(result,function(i,res){
                 no++;
-
-                isi+= '<tr id="tr_'+no+'">'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="span12">'+
-								'<div class="control-group">'+
-									'<div class="controls">'+
-										'<div class="input-append" style="width: 100%;">'+
-											'<input readonly value="'+res.nama_produk+'" type="text" id="nama_produk_'+no+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">'+
-											'<button onclick="show_pop_produk('+no+');" type="button" class="btn" style="width: 30%;">Cari</button>'+
-											'<input type="hidden" id="id_produk_'+no+'" name="produk[]" readonly  style="background:#FFF;" value="'+res.id_produk+'">'+
-										'</div>'+
+                isi += '<tr id="tr_'+no+'">'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="span12">'+
+							'<div class="control-group">'+
+								'<div class="controls">'+
+									'<div class="input-append" style="width: 100%;">'+
+										'<input value="'+res.nama_produk+'" readonly type="text" id="nama_produk_'+no+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">'+
+										'<button onclick="show_pop_produk('+no+');" type="button" class="btn" style="width: 30%;">Cari</button>'+
+										'<input type="hidden" id="id_produk_'+no+'" name="produk[]" readonly style="background:#FFF;" value="'+res.id_produk+'">'+
 									'</div>'+
 								'</div>'+
 							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.keterangan+'" name="keterangan[]" id="keterangan_'+no+'">'+
-							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<input onkeyup="hitung_total('+no+');" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.kuantitas+'" name="kuantitas[]" id="kuantitas_'+no+'">'+
-							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
-							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.total+'" name="total[]" id="total_'+no+'">'+
-							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<button style="width: 100%;" onclick="Spesifikasi();" type="button" class="btn btn-warning"> Spesifikasi </button>'+
-							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.no_opb+'" name="no_opb[]" id="no_opb_'+no+'">'+
-							'</div>'+
-						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<button style="width: 100%;" onclick="hapus_row_pertama('+no+');" type="button" class="btn btn-danger"> Hapus </button>'+
-							'</div>'+
-						'</td>'+
-					'</tr>';
-	            });
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.keterangan+'" name="keterangan[]" id="keterangan_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input onkeyup="hitung_total('+no+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+res.kuantitas+'" name="kuantitas[]" id="kuantitas_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+res.satuan+'" name="satuan[]" id="satuan_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.jumlah+'" name="jumlah[]" id="jumlah_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button style="width: 100%;" onclick="hapus('+no+');" type="button" class="btn btn-danger"> Hapus </button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+            });
+
 			$('#data_item').html(isi);
 		}
 	});
@@ -188,145 +184,27 @@ function detail_purchase(id)
 	hitung_total_semua();
 }
 
-function simpan_add_produk(){
-	var nama_produk = $('#nama_produk').val();
-	var keterangan 	= $('#keterangan').val();
-	var kuantitas   = $('#kuantitas').val();
-	var harga       = $('#harga').val();
-	var total       = $('#total').val();
-	var no_spb      = $('#no_opb').val();
-
-	if(nama_produk == ""){
-		alert("Nama Produk Harus di isi.");
-	} else if(keterangan == ""){
-		alert("Nama Produk Harus di isi.");
-	} else if(kuantitas == ""){
-		alert("Satuan Produk Harus di isi.");
-	} else if(harga == ""){
-		alert("Harga Produk Harus di isi.");
-	} else if(total == ""){
-		alert("total Produk Harus di isi.");
-	}else if(no_opb == ""){
-	} else {
-		$.ajax({
-			url : '<?php echo base_url(); ?>purchase_order_c/simpan',
-			data : {
-				nama_produk:nama_produk,
-				keterangan:keterangan,
-				kuantitas:kuantitas,
-				harga:harga,
-				total:total,
-				no_spb:no_opb,
-			},
-			type : "POST",
-			dataType : "json",
-		});
-	}
-
-}
-
-function berhasil(){
-	toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "positionClass": "toast-bottom-right",
-      "onclick": null,
-      "showDuration": "5000",
-      "hideDuration": "5000",
-      "timeOut": "5000",
-      "extendedTimeOut": "5000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success("Data Berhasil Disimpan!", "Berhasil");
-}
-
-function tambah_data()
-{
-	var jml_tr = $('#jml_tr').val();
-	var i = parseFloat(jml_tr)+1;
-
-	var isi = '<tr id="tr_'+i+'">'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="span12">'+
-						'<div class="control-group">'+
-							'<div class="controls">'+
-								'<div class="input-append" style="width: 100%;">'+
-									'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">'+
-									'<button onclick="show_pop_produk('+i+');" type="button" class="btn" style="width: 30%;">Cari</button>'+
-									'<input type="hidden" id="id_produk_'+i+'" name="produk[]" readonly style="background:#FFF;" value="0">'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="harga[]" id="harga_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="total[]" id="total_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<button style="width: 100%;" onclick="Spesifikasi();" type="button" class="btn btn-warning"> Spesifikasi </button>'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="no_opb[]" id="no_opb_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<button style="width: 100%;" onclick="hapus_row_pertama('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
-					'</div>'+
-				'</td>'+
-			'</tr>';
-
-	$('#data_item').append(isi);
-	$('#jml_tr').val(i);
-}
-
-function hapus_row_pertama(i){
-	$('#tr_'+i).remove();
-}
-
-function show_pop_supplier(no){
+function show_pop_produk(no){
 	$('#popup_koang').remove();
-	get_popup_supplier();
-    ajax_supplier(no);
+	get_popup_produk();
+    ajax_produk(no);
 }
 
-function get_popup_supplier(){
+function get_popup_produk(){
     var base_url = '<?php echo base_url(); ?>';
     var $isi = '<div id="popup_koang">'+
                 '<div class="window_koang">'+
                 '    <a href="javascript:void(0);"><img src="'+base_url+'ico/cancel.gif" id="pojok_koang"></a>'+
                 '    <div class="panel-body">'+
-                '    <input style="width: 95%;" type="text" name="search_koang_pro" id="search_koang_pro" class="form-control" value="" placeholder="Cari Supplier...">'+
+                '    <input style="width: 95%;" type="text" name="search_koang_pro" id="search_koang_pro" class="form-control" value="" placeholder="Cari Produk...">'+
                 '    <div class="table-responsive">'+
                 '            <table class="table table-hover2" id="tes5">'+
                 '                <thead>'+
                 '                    <tr>'+
                 '                        <th>NO</th>'+
-                '                        <th style="white-space:nowrap;"> Nama Supplier </th>'+
-                '                        <th style="white-space:nowrap;"> Alamat </th>'+
+                '                        <th> Kode Barang </th>'+
+                '                        <th style="white-space:nowrap;"> Nama Barang </th>'+
+                '                        <th style="white-space:nowrap;"> Harga Beli </th>'+
                 '                    </tr>'+
                 '                </thead>'+
                 '                <tbody>'+
@@ -348,13 +226,15 @@ function get_popup_supplier(){
     $('#popup_koang').show();
 }
 
-function ajax_supplier(id_form){
+function ajax_produk(id_form){
     var keyword = $('#search_koang_pro').val();
     $.ajax({
-        url : '<?php echo base_url(); ?>purchase_order_c/get_supplier_popup',
+        url : '<?php echo base_url(); ?>purchase_order_c/get_produk_popup',
         type : "POST",
         dataType : "json",
-        data : {keyword : keyword},
+        data : {
+            keyword : keyword,
+        },
         success : function(result){
             var isine = '';
             var no = 0;
@@ -362,23 +242,214 @@ function ajax_supplier(id_form){
             $.each(result,function(i,res){
                 no++;
 
-                isine += '<tr onclick="get_supplier_detail(\'' +res.id_supplier+ '\',\'' +id_form+ '\');" style="cursor:pointer;">'+
+                isine += '<tr onclick="get_produk_detail(\'' +res.id_barang+ '\',\'' +id_form+ '\');" style="cursor:pointer;">'+
                             '<td text-align="center">'+no+'</td>'+
-                            '<td text-align="center">'+res.nama_supplier+'</td>'+
-                            '<td text-align="left">'+res.alamat_supplier+'</td>'+
+                            '<td text-align="center">'+res.kode_barang+'</td>'+
+                            '<td text-align="left">'+res.nama_barang+'</td>'+
+                            '<td text-align="center">Rp '+NumberToMoney(res.harga_beli).split('.00').join('')+'</td>'+
                         '</tr>';
             });
 
             if(result.length == 0){
-            	isine = "<tr><td colspan='3' style='text-align:center'><b style='font-size: 15px;'> Data tidak tersedia </b></td></tr>";
+            	isine = "<tr><td colspan='4' style='text-align:center'><b style='font-size: 15px;'> Data tidak tersedia </b></td></tr>";
             }
 
             $('#tes5 tbody').html(isine); 
             $('#search_koang_pro').off('keyup').keyup(function(){
-                ajax_supplier(id_form);
+                ajax_produk(id_form);
             });
         }
     });
+}
+
+function get_produk_detail(id, no_form){
+	var id_produk = id;
+    $.ajax({
+		url : '<?php echo base_url(); ?>purchase_order_c/get_produk_detail',
+		data : {id_barang:id},
+		type : "GET",
+		dataType : "json",
+		success : function(result){
+			$('#kuantitas_'+no_form).val('');
+			$('#id_produk_'+no_form).val(result.id_barang);
+			$('#nama_produk_'+no_form).val(result.nama_barang);
+			$('#satuan_'+no_form).val(result.nama_satuan);
+			$('#harga_'+no_form).val(NumberToMoney(result.harga_beli).split('.00').join(''));
+			$('#jumlah_'+no_form).val(NumberToMoney(result.harga_beli*1).split('.00').join(''));
+
+			$('#kuantitas_'+no_form).focus();
+
+			// hitung_total(no_form);
+			
+			$('#search_koang_pro').val("");
+		    $('#popup_koang').css('display','none');
+		    $('#popup_koang').hide()
+		}
+	});
+}
+
+function tambah_data(){
+	var jml_tr = $('#jml_tr').val();
+	var i = parseFloat(jml_tr) + 1;
+
+	var isi = 	'<tr id="tr_'+i+'">'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="span12">'+
+							'<div class="control-group">'+
+								'<div class="controls">'+
+									'<div class="input-append" style="width: 100%;">'+
+										'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">'+
+										'<button onclick="show_pop_produk('+i+');" type="button" class="btn" style="width: 30%;">Cari</button>'+
+										'<input type="hidden" id="id_produk_'+i+'" name="produk[]" readonly style="background:#FFF;" value="0">'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="harga[]" id="harga_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+
+	$('#data_item').append(isi);
+	$('#jml_tr').val(i);
+
+}
+
+
+function add_row(id_peminjaman_detail,nama,keterangan,no_opek){
+	var jml_tr = $('#jml_tr').val();
+	var i = parseFloat(jml_tr) + 1;
+
+	var isi = 	'<tr id="tr_'+i+'">'+
+					
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+nama+'" name="nama_produk[]" id="keterangan_'+i+'">'+
+							'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+keterangan+'" name="keterangan[]" id="keterangan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="gen_harga('+i+');FormatCurrency(this);"  type="text" class="form-control" value="" name="harga[]" id="harga_awal_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="harga_disc('+i+');hitung_total_semua();" type="text" class="form-control" value="" name="disc[]" id="disc_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="" type="hidden" class="form-control" value="" name="disc[]" id="tep_harga_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_disc_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+no_opek+'" name="no_opek[]" id="satuan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+
+	$('#data_item').append(isi);
+	$('#jml_tr').val(i);
+
+}
+
+function hapus(i){
+	$('#tr_'+i).remove();
+}
+
+function gen_harga(id){
+
+
+	var harga_awal = $('#harga_awal_'+id).val();
+	harga_awal = harga_awal.split(',').join('');
+
+	if(harga_awal == ""){
+		harga_awal = 0;
+	}
+
+	var kuantitas = $('#kuantitas_'+id).val();
+	kuantitas = kuantitas.split(',').join('');
+
+	if(kuantitas == "" || kuantitas== null){
+		kuantitas = 0;
+	}
+
+	var total = (parseFloat(harga_awal) * parseFloat(kuantitas)) ;
+
+
+	$('#tep_harga_'+id).val(acc_format(total, "").split('.00').join('') );
+
+}
+
+function harga_disc(id){
+
+	var harga_awal = $('#tep_harga_'+id).val();
+	harga_awal = harga_awal.split(',').join('');
+
+	if(harga_awal == ""){
+		harga_awal = 0;
+	}
+
+	var disc = $('#disc_'+id).val();
+	disc = disc.split(',').join('');
+
+	if(disc == "" || disc== null){
+		disc = 0;
+	}
+
+	var total = (parseFloat(harga_awal) - (parseFloat(disc)/100) * parseFloat(harga_awal))  ;
+
+
+	$('#total_disc_'+id).val(acc_format(total, "").split('.00').join('') );
+
+	hitung_total_semua();
 }
 
 function po(disc){
@@ -421,7 +492,6 @@ function ppn_ici(disc){
 	
 	$('#total_ppn').html('Rp. '+acc_format(accu, "").split('.00').join('') );
 	$('#ppn_text').val(total);
-	$('#totla').val(accu);
 	
 }
 
@@ -451,308 +521,6 @@ function pph_ici(disc){
 	
 }
 
-function get_supplier_detail(id, no_form)
-{
-	var id_supplier = id ; 
-
-	$.ajax({
-		url 	 : '<?php echo base_url(); ?>purchase_order_c/get_supplier_detail',
-		data 	 : {id_supplier:id},
-		type 	 : "GET",
-		dataType : "json",
-
-		success  : function(result){
-			$('#id_supplier').val(result.id_supplier);
-			$('#supplier').val(result.nama_supplier);
-
-			$('#search_koang_pro').val("");
-		    $('#popup_koang').css('display','none');
-		    $('#popup_koang').hide()
-		} 
-	});
-}
-
-function show_pop_produk(no){
-	$('#popup_koang').remove();
-	get_popup_produk();
-    ajax_produk(no);
-}
-
-function get_popup_produk(){
-    var base_url = '<?php echo base_url(); ?>';
-    var $isi = '<div id="popup_koang">'+
-                '<div class="window_koang">'+
-                '    <a href="javascript:void(0);"><img src="'+base_url+'ico/cancel.gif" id="pojok_koang"></a>'+
-                '    <div class="panel-body">'+
-                '    <input style="width: 95%;" type="text" name="search_koang_pro" id="search_koang_pro" class="form-control" value="" placeholder="Cari Produk...">'+
-                '    <div class="table-responsive">'+
-                '            <table class="table table-hover2" id="tes5">'+
-                '                <thead>'+
-                '                    <tr>'+
-                '                        <th>NO</th>'+
-                '						 <th style="white-space:nowrap;"> Kode Produk </th>'+
-                '                        <th style="white-space:nowrap;"> Nama Produk </th>'+
-                '                        <th style="white-space:nowrap;"> Harga </th>'+
-                '                    </tr>'+
-                '                </thead>'+
-                '                <tbody>'+
-            
-                '                </tbody>'+
-                '            </table>'+
-                '        </div>'+
-                '    </div>'+
-                '</div>'+
-            '</div>';
-    $('body').append($isi);
-
-    $('#pojok_koang').click(function(){
-        $('#popup_koang').css('display','none');
-        $('#popup_koang').hide();
-    });
-
-    $('#popup_koang').css('display','block');
-    $('#popup_koang').show();
-}
-
-function ajax_produk(id_form){
-    var keyword = $('#search_koang_pro').val();
-    $.ajax({
-        url : '<?php echo base_url(); ?>purchase_order_c/get_produk_popup',
-        type : "POST",
-        dataType : "json",
-        data : {keyword : keyword},
-        success : function(result){
-            var isine = '';
-            var no = 0;
-            var tipe_data = "";
-            $.each(result,function(i,res){
-                no++;
-
-                isine += '<tr onclick="get_produk_detail(\'' +res.id_barang+ '\',\'' +id_form+ '\');" style="cursor:pointer;">'+
-                            '<td text-align="center">'+no+'</td>'+
-                            '<td text-align="center">'+res.kode_barang+'</td>'+
-                            '<td text-align="center">'+res.nama_barang+'</td>'+
-                            '<td text-align="left">Rp '+NumberToMoney(res.harga_beli).split('.00').join('')+'</td>'+
-                        '</tr>';
-            });
-
-            if(result.length == 0){
-            	isine = "<tr><td colspan='4' style='text-align:center'><b style='font-size: 15px;'> Data tidak tersedia </b></td></tr>";
-            }
-
-            $('#tes5 tbody').html(isine); 
-            $('#search_koang_pro').off('keyup').keyup(function(){
-                ajax_produk(id_form);
-            });
-        }
-    });
-}
-
-function get_produk_detail(id, no_form)
-{
-	var id_barang = id ; 
-
-	$.ajax({
-		url 	 : '<?php echo base_url(); ?>purchase_order_c/get_produk_detail',
-		data 	 : {id_barang:id},
-		type 	 : "GET",
-		dataType : "json",
-
-		success  : function(result){
-			$('#kuantitas_'+no_form).val('');
-			$('#id_produk_'+no_form).val(result.id_barang);
-			$('#nama_produk_'+no_form).val(result.nama_barang);
-			$('#kuantitas_'+no_form).focus();
-			$('#harga_'+no_form).val(NumberToMoney(result.harga_beli).split('.00').join(''));
-			$('#jumlah_'+no_form).val(NumberToMoney(result.harga_beli*1).split('.00').join(''));
-
-			$('#search_koang_pro').val("");
-		    $('#popup_koang').css('display','none');
-		    $('#popup_koang').hide()
-		} 
-	});
-}
-
-function show_pop_opb(no){
-	$('#popup_koang').remove();
-	get_popup_opb();
-    ajax_opb(no);
-}
-
-function get_popup_opb(){
-    var base_url = '<?php echo base_url(); ?>';
-    var $isi = '<div id="popup_koang">'+
-                '<div class="window_koang">'+
-                '    <a href="javascript:void(0);"><img src="'+base_url+'ico/cancel.gif" id="pojok_koang"></a>'+
-                '    <div class="panel-body">'+
-                '    <input style="width: 95%;" type="text" name="search_koang_pro" id="search_koang_pro" class="form-control" value="" placeholder="Cari No. SPB...">'+
-                '    <div class="table-responsive">'+
-                '    <input type="hidden" name="id_permintaan" id="id_permintaan">'+
-                '            <table class="table table-hover2" id="tes5">'+
-                '                <thead>'+
-                '                    <tr>'+
-                '                        <th>Tanggal</th>'+
-                '                        <th style="white-space:nowrap;"> No SPB </th>'+
-                '                        <th style="white-space:nowrap;"> Uraian </th>'+
-                '                    </tr>'+
-                '                </thead>'+
-                '                <tbody>'+
-            
-                '                </tbody>'+
-                '            </table>'+
-                '        </div>'+
-                '    </div>'+
-                '</div>'+
-            '</div>';
-    $('body').append($isi);
-
-    $('#pojok_koang').click(function(){
-        $('#popup_koang').css('display','none');
-        $('#popup_koang').hide();
-    });
-
-    $('#popup_koang').css('display','block');
-    $('#popup_koang').show();
-}
-
-function ajax_opb(id_form){
-    var keyword = $('#search_koang_pro').val();
-    $.ajax({
-        url : '<?php echo base_url(); ?>purchase_order_c/get_opb_popup',
-        type : "POST",
-        dataType : "json",
-        data : {keyword : keyword},
-        success : function(result){
-            var isine = '';
-            var no = 0;
-            var tipe_data = "";
-            $.each(result,function(i,res){
-                no++;
-
-                isine += '<tr onclick="get_opb_detail(\'' +res.id_order+ '\',\'' +id_form+ '\');" style="cursor:pointer;">'+
-                            '<td text-align="center">'+res.tanggal+'</td>'+
-                            '<td text-align="center">'+res.no_opb+'</td>'+
-                            '<td text-align="left">'+res.uraian+'</td>'+
-                        '</tr>';
-            });
-
-            if(result.length == 0){
-            	isine = "<tr><td colspan='3' style='text-align:center'><b style='font-size: 15px;'> Data tidak tersedia </b></td></tr>";
-            }
-
-            $('#tes5 tbody').html(isine); 
-            $('#search_koang_pro').off('keyup').keyup(function(){
-                ajax_opb(id_form);
-            });
-        }
-    });
-}
-
-function get_opb_detail(id)
-{
-	$.ajax({
-		url : '<?php echo base_url(); ?>purchase_order_c/get_opb_detail',
-		data : {id:id},
-		type : "POST",
-		dataType : "json",
-		async : false,
-		success : function(result){
-			var isi = '';
-			var i = 0;
-			$.each(result,function(ii,res){
-				i++;
-
-				isi += 
-			'<tr id="tr_'+i+'">'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="span12">'+
-						'<div class="control-group">'+
-							'<div class="controls">'+
-								'<div class="input-append" style="width: 100%;">'+
-									'<input readonly type="text" id="nama_produk_'+i+'" value="'+res.nama_produk+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">'+
-									'<button onclick="show_pop_produk('+i+');" type="button" class="btn" style="width: 30%;">Cari</button>'+
-									'<input type="hidden" id="id_produk_'+i+'" name="produk[]" readonly style="background:#FFF;" value="'+res.id_produk+'">'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.keterangan+'" name="keterangan[]" id="keterangan_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.kuantitas+'" name="kuantitas[]" id="kuantitas_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.total+'" name="total[]" id="total_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<button style="width: 100%;" onclick="Spesifikasi();" type="button" class="btn btn-warning"> Spesifikasi </button>'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.no_opb+'" name="no_opb[]" id="no_opb_'+i+'">'+
-					'</div>'+
-				'</td>'+
-				'<td align="center" style="vertical-align:middle;">'+
-					'<div class="controls">'+
-						'<button style="width: 100%;" onclick="hapus_row_pertama('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
-					'</div>'+
-				'</td>'+
-			'</tr>';
-			});
-			$('#data_item').html(isi);
-			$('#jml_tr').val(i);
-
-			$('#search_koang_pro').val("");
-		    $('#popup_koang').css('display','none');
-		    $('#popup_koang').hide()
-
-		}
-	});
-	hitung_total_semua();
-}
-
-function hitung_total(id){
-
-	var kuantitas = $('#kuantitas_'+id).val();
-	kuantitas = kuantitas.split(',').join('');
-
-	if(kuantitas == ""){
-		kuantitas = 0;
-	}
-
-	var harga = $('#harga_'+id).val();
-	harga = harga.split(',').join('');
-
-	if(harga == "" || harga== null){
-		harga = 0;
-	}
-
-	var total = parseFloat(kuantitas) * parseFloat(harga);
-
-	var pajak = 0;
-
-	total = total + pajak;
-
-	$('#total_'+id).val(acc_format(total, "").split('.00').join('') );
-
-	hitung_total_semua();
-}
-
 function hitung_total_semua(){
 	var sum = 0;
 	var pajak_prosen = 0
@@ -764,48 +532,186 @@ function hitung_total_semua(){
     });
 
     $('#subtotal_txt').html('Rp. '+acc_format(sum, ""));
-    $('#subtotal_jml').val(sum);
+    $('#subtotal_text').val(sum);
 }
 
 function acc_format(n, currency) {
 	return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 }
 
+function simpan_add_produk(){
+	var nama_produk = $('#nama_produk_add').val();
+	var keterangan 	= $('#keterangan_add').val();
+	var kuantitas   = $('#kuantitas').val();
+	var satuan      = $('#satuan_add').val();
+	var harga       = $('#harga_add').val();
+	var jumlah      = $('#jumlah_add').val();
+
+	if(nama_produk == ""){
+		alert("Kode Produk Harus di isi.");
+	} else if(keterangan == ""){
+		alert("Nama Produk Harus di isi.");
+	} else if(kuantitas == ""){
+		alert("Satuan Produk Harus di isi.");
+	} else if(satuan == ""){
+		alert("Harga Produk Harus di isi.");
+	}else if(harga == ""){
+		alert("Harga Produk Harus di isi.");
+	} else {
+		$.ajax({
+			url : '<?php echo base_url(); ?>purchase_order_c/simpan',
+			data : {
+				nama_produk:nama_produk,
+				keterangan:keterangan,
+				kuantitas:kuantitas,
+				satuan:satuan,
+				harga:harga,
+				jumlah:jumlah,
+			},
+			type : "POST",
+			dataType : "json",
+		});
+	}
+
+}
+
+function loading(){
+	$('#popup_load').css('display','block');
+	$('#popup_load').show();
+}
+
+function hapus_toas(){
+	toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "positionClass": "toast-bottom-right",
+      "onclick": null,
+      "showDuration": "5000",
+      "hideDuration": "5000",
+      "timeOut": "5000",
+      "extendedTimeOut": "5000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success("Data Berhasil Dihapus!", "Terhapus");
+}
+
+function berhasil(){
+	toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "positionClass": "toast-bottom-right",
+      "onclick": null,
+      "showDuration": "5000",
+      "hideDuration": "5000",
+      "timeOut": "5000",
+      "extendedTimeOut": "5000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.success("Data Berhasil Disimpan!", "Berhasil");
+}
+
+
+function get_transaction(id) {
+	
+        $.ajax({
+            url : '<?php echo base_url(); ?>purchase_order_c/get_transaction_info',
+            data : {id:id},
+            type : "POST",
+            dataType : "json",
+            success : function(result){   
+                var isine = "";
+                if(result.length > 0){
+                    $.each(result,function(i,res){
+
+                        isine += '<tr>'+
+                                    '<td style="text-align:center;">'+res.nama_produk+'</td>'+
+                                    '<td style="text-align:center;">'+res.keterangan+'</td>'+
+                                    '<td style="text-align:center;">'+res.kuantitas+'</td>'+
+                                    '<td style="text-align:center;">'+res.realisasi+'</td>'+
+                                    '<td style="text-align:center;">'+res.no_opb+'</td>'+
+                                    '<td>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    '</td>'+
+                                '</tr>';
+                    });
+                } else {
+                    isine = "<tr><td colspan='6' style='text-align:center;'> There are no transaction for this data </td></tr>";
+                }
+
+                $('#data_transaction').html(isine);
+            }
+        });
+    }
+
+    function get_supplier(id) {
+
+       
+        $.ajax({
+            url : '<?php echo base_url(); ?>purchase_order_c/get_transaction_supplier',
+            data : {id:id},
+            type : "POST",
+            dataType : "json",
+            success : function(result){
+			$('#nama_supplier').val(result.nama_supplier);
+			$('#alamat_supplier').val(result.alamat_supplier);
+			$('#id_supplier').val(result.id_supplier);
+		}
+        });
+    }
+
 </script>
 
 <style type="text/css">
-
-#data_item tr td input{
-	font-size: 15px !important;
-}
-
+	#data_item tr td input{
+		font-size: 15px !important;
+	}
 </style>
 
 <form role="form" action="<?php echo $url_simpan; ?>" method="post">
 <input type="hidden" id="jml_tr" value="1">
 <input type="hidden" id="id_purchase" name="id_purchase">
 
-<div class="row" id="form_purchase" style="display:none; ">
+<div class="row" id="form_purchase_order" style="display:none; ">
 	<div class="col-md-12 col-sm-6">
 		<!-- BEGIN PORTLET-->
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold uppercase">Form Purchase Order</span>
+					<span class="caption-subject font-green-sharp bold uppercase">Form Pengembalian Barang</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group btn-group-devided" data-toggle="buttons">
 					</div>
 				</div>
 			</div>
-
-			<div class="portlet-body">	
+			<div class="portlet-body">
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
 					<div class="col-md-12">
 						
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Departemen</b></label>
+							<div class="input-group" style="width: 100%; ">
+								<select name="dept" class="form-control" onchange="get_transaction(this.value);">
+									<option>Pilih Departemen ......</option>
+									<?php 
+										foreach ($dt_dept as $key => $dt_value) {
+											?>
+											<option value="<?=$dt_value->id_divisi;?>"><?=$dt_value->nama_divisi;?></option>
+											<?php
+										}
+									?>
+								</select>
+							</div>
+						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Tanggal</b></label>
 							<div class="input-group" style="width: 100%;">
 								<input type="text" class="form-control" name="tanggal" id="tanggal" value="<?=date('d-m-Y');?>" readonly required>
@@ -813,93 +719,125 @@ function acc_format(n, currency) {
 							</div>
 						</div>
 
-						<div class="col-md-3">
-							<label class="control-label"><b style="font-size:14px;">Supplier</b></label>
-							<div class="input-group" style="width: 100%;">
-								<input type="text"  rows="1" id="supplier" name="supplier" class="form-control" required>
-								<span class="input-group-btn"><button onclick="show_pop_supplier();" class="btn green" type="button"><i class="fa fa-search"> Cari </i></button></span>
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
+							<div class="input-group" style="width: 100%; ">
+								<textarea  rows="3" id="uraian" name="uraian" class="form-control" required></textarea>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
-				<div class="portlet-body flip-scroll">
-					<table class="table table-bordered table-striped table-condensed flip-content">
-						<thead class="flip-content">
-							<tr>
-								<th style="text-align: center; width: 20%;">Produk / Item</th>
-								<th style="text-align: center; widows: 30%;">Keterangan</th>
-								<th style="text-align: center;">Kuantitas</th>
-								<th style="text-align: center;">Harga</th>
-								<th style="text-align: center;">Total</th>
-								<th style="text-align: center;">Spesifikasi</th>
-								<th style="text-align: center;">No. OPB</th>
-								<th style="text-align: center;">Aksi</th>
-							</tr>
-						</thead>
-						<tbody id="data_item" style="background: #26a69a;">
-							<tr id="tr_1">
-								<td align="center" style="vertical-align:middle;">
-									<div class="span12">
-										<div class="control-group">
-											<div class="controls">
-												<div class="input-append" style="width: 100%;">
-													<input readonly type="text" id="nama_produk_1" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">
-													<button onclick="show_pop_produk(1);" type="button" class="btn" style="width: 30%;">Cari</button>
-													<input type="hidden" id="id_produk_1" name="produk[]" readonly style="background:#FFF;" value="0">
-												</div>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input onkeyup="hitung_total(1);" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="harga[]" id="harga_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="total[]" id="total_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<button style="width: 100%;" onclick="spesifikasi();" type="button" class="btn btn-warning"> Spesifikasi </button>
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="no_opb[]" id="no_opb_1">
-									</div>
-								</td>
-								<td align="center" style="vertical-align:middle;">
-									<div class="controls">
-										<button style="width: 100%;" onclick="hapus_row_pertama();" type="button" class="btn btn-danger"> Hapus </button>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+					<div class="col-md-12">
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Supplier</b></label>
+							<div class="input-group" style="width: 100%; ">
+								<select name="dept" class="form-control" onchange="get_supplier(this.value);">
+									<option>Pilih Supplier ......</option>
+									<?php 
+										foreach ($dt_supp as $key => $dt_value) {
+											?>
+											<option value="<?=$dt_value->id_supplier;?>"><?=$dt_value->nama_supplier;?></option>
+											<?php
+										}
+									?>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Nama</b></label>
+							<div class="input-group" style="width: 100%;">
+								<input type="text" class="form-control" name="nama_supplier" id="nama_supplier" value="">
+								<input type="hidden" class="form-control" name="id_supplier" id="id_supplier" value="">
+								
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Alamat</b></label>
+							<div class="input-group" style="width: 100%;">
+								<input type="text" class="form-control" name="alamat_supplier" id="alamat_supplier">
+								
+							</div>
+						</div>
+					</div>
+				</div>
 
-					<button style="margin-bottom: 15px; background: #26a69a;" onclick="tambah_data();" type="button" class="btn btn-info"><i class="icon-plus"></i> Tambah Baris Data </button>
-					<button style="margin-bottom: 15px; background: #f47a42;" onclick="show_pop_opb(1);" type="button" class="btn btn-info"><i class="icon-plus"></i> Include OPB </button>
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+					<div class="portlet-body flip-scroll">
+						<table class="table table-bordered table-striped table-condensed flip-content">
+							<thead class="flip-content">
+								<tr>
+									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center; ">Keterangan</th>
+									<th style="text-align: center; ">Permintaan</th>
+									<th style="text-align: center; ">Realisasi</th>
+									<th style="text-align: center; ">No OPEK</th>
+									<th style="text-align: center; ">Aksi</th>
+								</tr>
+							</thead>
+							<tbody id="data_transaction">
+								<tr>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+								</tr>
+							</tbody>
+						</table>
 
+						
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<hr style="border: solid #ddd; border-width: 2px 0 0;">
+					</div>
+				</div>
+
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+					<div class="portlet-body flip-scroll">
+						<table class="table table-bordered table-striped table-condensed flip-content">
+							<thead class="flip-content">
+								<tr>
+									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center; ">Keterangan</th>
+									<th style="text-align: center; ">Kuantitas</th>
+									<th style="text-align: center; ">Harga</th>
+									<th style="text-align: center; ">Disc</th>
+									<th style="text-align: center; ">Total</th>
+									<th style="text-align: center; ">No OPEK</th>
+									<th style="text-align: center; ">Aksi</th>
+								</tr>
+							</thead>
+							<tbody id="data_item">
+								<tr id="tr_1">
+									
+								</tr>
+							</tbody>
+						</table>
+
+						
+					</div>
 				</div>
 			</div>
-
 		</div>
+		<!-- END PORTLET-->
 	</div>
 </div>
 
@@ -919,7 +857,7 @@ function acc_format(n, currency) {
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
 								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
-								<input type="hidden" id="subtotal_jml" name="subtotal_jml" class="form-control">
+								<input type="hidden" id="subtotal_text" name="subtotal_text" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -959,12 +897,29 @@ function acc_format(n, currency) {
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
 							<h4 id="total_ppn" class="control-label"> Rp. 0.00 </h4> 
-							<input type="hidden" id="totla" name="totla" class="form-control">
 						</div>
 					</div>
 				</div>
 
-				
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> PPH :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<input type="text" id="pph" onkeyup="pph_ici(this.value);" name="pph" class="form-control">
+							<input type="hidden" id="pph_text" name="pph_text" class="form-control">
+							<input type="hidden" id="total_semua" name="total_semua" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<h4 id="total_pph" class="control-label"> Rp. 0.00 </h4> 
+						</div>
+					</div>
+				</div>
 
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
 					<div class="col-md-12">
@@ -982,19 +937,19 @@ function acc_format(n, currency) {
 </form>
 
 
-<button id="tambah_purchase" class="btn green">
-Tambah Purchase Order <i class="fa fa-plus"></i>
+<button id="tambah_purchase_order" class="btn green">
+Tambah Data pengembalian <i class="fa fa-plus"></i>
 </button>
 </br>
 </br>
 
-<div class="row" id="table_purchase" style="display:block; ">
+<div class="row" id="table_purchase_order" style="display:block;">
 	<div class="col-md-12">
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Table Purchase Order
+					<i class="fa fa-edit"></i>Table pengembalian Barang
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">
@@ -1013,6 +968,7 @@ Tambah Purchase Order <i class="fa fa-plus"></i>
 				<tr>
 					<th style="text-align:center;"> No</th>
 					<th style="text-align:center;"> No PO</th>
+					<th style="text-align:center;"> Tanggal</th>
 					<th style="text-align:center;"> Supplier</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
@@ -1026,10 +982,11 @@ Tambah Purchase Order <i class="fa fa-plus"></i>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_po; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->supplier; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_purchase(<?php echo $value->id_purchase?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_purchase(<?php echo $value->id_purchase?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-trash-o"></i> Hapus </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>purchase_order_c/cetak/<?=$value->id_purchase;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>
@@ -1041,113 +998,6 @@ Tambah Purchase Order <i class="fa fa-plus"></i>
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
-	</div>
-</div>
-
-<div id="popup_ubah">
-	<div class="window_ubah">
-		<div class="tab-content">
-			<div id="tab_0" class="tab-pane active">
-				<div class="portlet box green">
-					<div class="portlet-title">
-						<div class="caption">
-							<i class="fa fa-pencil"></i>Ubah Purchase Order
-						</div>
-					</div>
-
-					<div class="portlet-body form">
-						<!-- BEGIN FORM-->
-						<div class="portlet-body form">
-					<form role="form" class="form-horizontal" method="post" action="<?php echo $url_ubah;?>" enctype="multipart/form-data">
-						<div class="form-body">
-							<input type="hidden" name="id_purchase_modal" id="id_purchase_modal">
-
-							<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">No PO</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="no_po_modal" name="no_po_modal" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Tanggal</label>
-							<div class="col-md-3">
-								<div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy">
-									<input type="text" class="form-control" name="tanggal_modal" id="tanggal_modal" >
-									<span class="input-group-btn">
-									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Supplier</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="supplier_modal" name="supplier_modal" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Keterangan</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="keterangan_modal" name="keterangan_modal" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">QTY</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="qty_modal" name="qty_modal" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Harga</label>
-								<div class="col-md-4 input-group left-addon">
-									<span class="input-group-addon">Rp.</span>
-									<input type="text" onkeyup="FormatCurrency(this);" class="form-control" id="harga_modal" name="harga_modal" >
-									<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Total</label>
-								<div class="col-md-4 input-group left-addon">
-									<span class="input-group-addon">Rp.</span>
-									<input type="text" onkeyup="FormatCurrency(this);" class="form-control" id="total_modal" name="total_modal" >
-									<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">No OPB</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="no_opb_modal" name="no_opb_modal" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-
-						<div class="form-actions">
-							<div class="row">
-								<div class="col-md-offset-3 col-md-10">
-									<button type="submit" class="btn blue">Simpan</button>
-									<button type="button" id="batal_ubah" class="btn default">Batal</button>
-								</div>
-							</div>
-						</div>
-				</div>
-			</form>
-		</div>
-										<!-- END FORM-->
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 
@@ -1185,4 +1035,6 @@ $(document).ready(function(){
 		}
 	?>
 });
+
+
 </script>

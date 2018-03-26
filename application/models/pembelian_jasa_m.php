@@ -64,7 +64,8 @@ class Pembelian_jasa_m extends CI_Model
 				no_opek,
 				status,
 				prosentase,
-				pembayaran
+				pembayaran,
+				prosentase_akhir
 			) VALUES (
 				'$id_pengembalian_baru',
 				'$nama',
@@ -73,6 +74,7 @@ class Pembelian_jasa_m extends CI_Model
 				'$disc',
 				'$total',
 				'$no_opek',
+				'0',
 				'0',
 				'0',
 				'0'

@@ -61,6 +61,15 @@ class Laporan_penerimaan_m extends CI_Model
 		return $this->db->query($sql)->result();
 	}
 
+	function lihat_data_divisi()
+	{
+		$sql = "
+			SELECT * FROM master_divisi ";
+
+		return $this->db->query($sql)->result();
+	}
+
+
 	function hapus_laporan($id)
 	{
 		$sql = "DELETE FROM  tb_laporan_penerimaan WHERE id_laporan = '$id' " ;
@@ -119,5 +128,13 @@ class Laporan_penerimaan_m extends CI_Model
         $sql = " SELECT * FROM master_barang WHERE id_barang = $id_barang  ";
 
         return $this->db->query($sql)->row();
+    }
+
+    function get_transaction_info($id_barang){
+        $sql = "
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang'
+        ";
+
+        return $this->db->query($sql)->result();
     }
 }

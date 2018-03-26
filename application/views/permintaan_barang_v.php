@@ -321,16 +321,16 @@ function tambah_data(){
 							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_'+i+'">'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="harga[]" id="harga_'+i+'">'+
-						'</div>'+
-					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="harga[]" id="harga_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
@@ -497,12 +497,12 @@ function berhasil(){
 			<div class="portlet-body">
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
 					<div class="col-md-12">
-						<div class="col-md-3">
+						<!-- <div class="col-md-3">
 							<label class="control-label"><b style="font-size:14px;">No SPB</b></label>
 							<div class="input-group" style="width: 100%;">
 								<input type="text" class="form-control" id="no_spb" name="no_spb" required>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="col-md-3">
 							<label class="control-label"><b style="font-size:14px;">Tanggal</b></label>
@@ -530,8 +530,8 @@ function berhasil(){
 									<th style="text-align: center;  widows: 30%;">Keterangan</th>
 									<th style="text-align: center; ">Kuantitas</th>
 									<th style="text-align: center; ">Satuan</th>
-									<th style="text-align: center; ">Harga</th>
-									<th style="text-align: center; ">Total</th>
+									<!-- <th style="text-align: center; ">Harga</th> -->
+									<!-- <th style="text-align: center; ">Total</th> -->
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
@@ -565,16 +565,16 @@ function berhasil(){
 											<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_1">
 										</div>
 									</td>
-									<td align="center" style="vertical-align:middle;">
+									<!-- <td align="center" style="vertical-align:middle;">
 										<div class="controls">
 											<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="harga[]" id="harga_1">
 										</div>
-									</td>
-									<td align="center" style="vertical-align:middle;">
+									</td> -->
+									<!-- <td align="center" style="vertical-align:middle;">
 										<div class="controls">
 											<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_1" required>
 										</div>
-									</td>
+									</td> -->
 									<td align="center" style="vertical-align:middle;">
 										<div class="controls">
 											<button style="width: 100%;" onclick="hapus_row_pertama();" type="button" class="btn btn-danger"> Hapus </button>

@@ -44,7 +44,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     <tr>
         <td align="center">
             <h3 style="text-decoration: underline;">
-                PENERIMAAN BARANG
+                PENYELESAIAN JASA 
             </h3>
             <h5>PT PRIMA ELEKTRIK POWER</h5>
             
@@ -63,20 +63,21 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		$i++;
 	?>
 
-    <h4><?php echo $i; ?>.[<?=$value->tanggal;?>] <?=$value->no_lpb;?></h4>
+    <h4><?php echo $i; ?>.[<?=$value->tanggal;?>] <?=$value->no_spb;?></h4>
     <hr>
     <?php 
-        $ch = $value->id_laporan;
-        $cui = $this->db->query("SELECT *,SUM(kuantitas) as kuin FROM tb_laporan_penerimaan_detail WHERE id_induk = '$ch'")->result();
+        $ch = $value->id_penyelesaian;
+        $cui = $this->db->query("SELECT * FROM tb_penyelesaian_jasa_detail WHERE id_induk = '$ch'")->result();
 
     ?>
     <table style="width: 100%;">
         <tr>
             <th style="width: 5%;text-align: center;">No</th>
             <th style="width: 30%;">Supplier</th>
-            <th style="width: 20%;">Barang</th>
-            <th style="width: 10%;">Jumlah</th>
-            <th style="width: 30%;">Dokumen Reff</th>
+            <th style="width: 20%;">Keterangan Pekerjaan</th>
+            <th style="width: 10%;">% Selesai</th>
+            <th style="width: 10%;">Nilai Jasa</th>
+            <th style="width: 20%;">Dokumen Reff</th>
         </tr>
         <?php 
             foreach ($cui as $key => $valu) {
@@ -85,21 +86,19 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
         ?>
         <tr>
             <td><?php echo $a; ?></td>
-            <td><?=$value->diterima; ?></td>
-            <td><?=$valu->nama_produk; ?></td>
-            <td><?=$valu->kuantitas; ?></td>
-            <td><?=$valu->no_po; ?></td>
+            <td><?=$value->nama_supplier; ?></td>
+            <td><?=$valu->keterangan; ?></td>
+            <td><?=$valu->akhir; ?></td>
+            <td><?=$valu->nilai_jasa; ?></td>
+            <td><?=$valu->no_spk; ?></td>
         </tr>
         <?php 
             }
         ?>
         <tr>
-            <td colspan="5"><hr style="border: 1px dotted;" /></td>
+            <td colspan="6"><hr style="border: 1px dotted;" /></td>
         </tr>
-        <tr>
-            <td colspan="3"> Jumlah Yang diterima : </td>
-            <td colspan="2"> <?=$valu->kuin;?> </td>
-        </tr>
+        
     </table>
 
 	
@@ -115,8 +114,8 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     $height_in_inches = $height_custom;
     $width_in_mm = $width_in_inches * 21.4;
     $height_in_mm = $height_in_inches * 19.8;
-    $html2pdf = new HTML2PDF('P','A4','en');
-    $html2pdf->pdf->SetTitle('Cetak Purchase Order');
+    $html2pdf = new HTML2PDF('L','A4','en');
+    $html2pdf->pdf->SetTitle('Cetak penyelesian jasa');
     $html2pdf->WriteHTML($content, isset($_GET['vuehtml']));
     $html2pdf->Output('cetak_purchase_order.pdf');
 ?>

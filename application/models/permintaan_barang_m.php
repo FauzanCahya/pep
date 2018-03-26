@@ -7,22 +7,26 @@ class Permintaan_barang_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_spb,$tanggal,$uraian)
+	function simpan_data_barang($no_spb,$tanggal,$uraian,$departemen)
 	{
 		$sql = "
 			INSERT INTO tb_permintaan_barang (
 				no_spb,
 				tanggal,
-				uraian
+				uraian,
+				divisi,
+				status
 			) VALUES (
 				'$no_spb',
 				'$tanggal',
-				'$uraian'
+				'$uraian',
+				'$departemen',
+				'0'
 			)";
 		$this->db->query($sql);
 	}
 
-	function simpan_data_barang_detail($id_permintaan_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan,$harga,$jumlah)
+	function simpan_data_barang_detail($id_permintaan_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
 		$harga 		= str_replace(',', '', $harga);
@@ -36,8 +40,6 @@ class Permintaan_barang_m extends CI_Model
 				keterangan,
 				kuantitas,
 				satuan,
-				harga,
-				jumlah,
 				sisa_jumlah,
 				sisa_order_pembelian
 			) VALUES (
@@ -47,8 +49,6 @@ class Permintaan_barang_m extends CI_Model
 				'$keterangan',
 				'$kuantitas',
 				'$satuan',
-				'$harga',
-				'$jumlah',
 				'$kuantitas',
 				'$kuantitas'
 
@@ -93,6 +93,16 @@ class Permintaan_barang_m extends CI_Model
 		$sql = "SELECT * FROM tb_permintaan_barang_detail WHERE id_induk = '$id' ";
 		$query = $this->db->query($sql);
 		return $query->result();
+	}
+
+	function save_next_nomor($tipe)
+	{
+		$sql = "
+			UPDATE ak_nomor SET 
+				NEXT_NOMOR  	= NEXT_NOMOR + 1
+			WHERE TIPE  = '$tipe'
+		";
+		$this->db->query($sql);
 	}
 
 	function ubah_data_permintaan($id,$no_spb,$tanggal,$uraian)
