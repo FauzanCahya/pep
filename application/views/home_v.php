@@ -249,10 +249,10 @@ function MonthToString($month){
 									<a href="<?php echo base_url(); ?>surat_keluar_c">
 									<i class="fa fa-th-list"></i> Surat Keluar </a>
 								</li>
-								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>surat_penawaran_harga_c">
 									<i class="fa fa-th-list"></i> Surat Penawaran Harga </a>
-								</li>
+								</li> -->
 
 								
 							</ul>
@@ -438,7 +438,7 @@ function MonthToString($month){
 									<i class="fa fa-bank"></i> Laporan Jasa Indent </a>
 								</li>
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_opek_c">
+									<a href="<?php echo base_url(); ?>lap_order_pekerjaan_c">
 									<i class="fa fa-bank"></i> Laporan OPEK </a>
 								</li>
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
@@ -449,14 +449,14 @@ function MonthToString($month){
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_list_supplier_c">
+									<a target="_blank" href="<?php echo base_url(); ?>lap_pembelian_jasa_c/cetak_supplier/">
 									<i class="fa fa-bank"></i> Laporan List Supplier </a>
 								</li>
 
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_list_hutang_c">
 									<i class="fa fa-bank"></i> Laporan List Hutang </a>
-								</li>
+								</li> -->
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_pemakaian_barang_c">
