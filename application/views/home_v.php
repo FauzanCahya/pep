@@ -249,10 +249,10 @@ function MonthToString($month){
 									<a href="<?php echo base_url(); ?>surat_keluar_c">
 									<i class="fa fa-th-list"></i> Surat Keluar </a>
 								</li>
-								<!-- <li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>surat_penawaran_harga_c">
 									<i class="fa fa-th-list"></i> Surat Penawaran Harga </a>
-								</li> -->
+								</li>
 
 								
 							</ul>

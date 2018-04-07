@@ -12,6 +12,9 @@ class Pengakuan_hutang_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+         $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -224,6 +227,19 @@ class Pengakuan_hutang_c extends CI_Controller {
 		$data = $this->model->get_data_bukti_detail($id);
 
 		echo json_encode($data); 
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->model->get_data_trx($id);
+
+
+		$data =  array(
+			'page' => "pengakuan_hutang_c", 
+			'dt' => $dt,
+		);
+		
+		$this->load->view('pdf/report_tanda_terima_tagihan_pdf', $data);
 	}
 }
 

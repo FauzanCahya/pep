@@ -98,4 +98,14 @@ class Pengakuan_hutang_m extends CI_Model
 		return $this->db->query($sql)->row();
 	}
 
+	function get_data_trx($id){
+    	$sql = "
+        SELECT pb.* , md.nama_divisi , ms.nama_supplier , ms.alamat_supplier FROM tb_pengakuan_hutang pb , master_divisi md, master_supplier ms WHERE pb.DEPARTEMEN = md.id_divisi AND pb.ID_SUPPLIER = ms.id_supplier AND pb.ID = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    
+
 }

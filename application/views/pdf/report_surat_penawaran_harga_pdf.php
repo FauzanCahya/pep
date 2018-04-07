@@ -47,13 +47,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td style="width: 50%;text-align: left;">Sumangko Wringin Anom Gresik</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">Tgl</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">9-11-2018</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->tanggal;?></td>
 	</tr>
 	<tr>
 		<td style="width: 50%;text-align: left;">Jawa Timur - Indonesia</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">No</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">0000001</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->id_permintaan;?></td>
 	</tr>
 </table>
 
@@ -63,21 +63,16 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     <tr>
         <td align="center">
             <h4 style="text-decoration: underline;">
-                TANDA TERIMA TAGIHAN
-            </h4>
-            <h5><?=$dt->NO_BUKTI;?></h5>
+                SURAT BARANG KELUAR (SBK)
+            </h4><br>
+            <h5><?=$dt->no_spb;?></h5>
         </td>
     </tr>
 </table>
 <br>
 <br>
 <div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;border: 1px solid black;">
-	<table style="width: 100%;">
-		<tr>
-			<td style="width: 50%;text-align:left;font-size: 15px;">DIVISI : SIE GUDANG</td>
-			<td style="width: 50%;text-align:left;font-size: 15px;">UNTUK PEMBELIAN</td>
-		</tr>
-	</table>
+	<h5>Divisi : <?=$dt->nama_divisi;?></h5>
 </div>
 <br>
 <div style="height: 300px;">
@@ -85,41 +80,36 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 	
 		<tr>
 			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No</th>
-			<th style="width: 45%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Pekerjaan</th>
-			<th style="width: 50%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
+			<th style="width: 30%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Nama Barang</th>
+			<th style="width: 15%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Jumlah</th>
+			<th style="width: 15%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Satuan</th>
+			<th style="width: 35%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
 		</tr>
+		<?php 
+		$i = 0;
+			foreach ($dt_det as $key => $value) {
+			$i++;	
+		?>
+		<tr>
+			<td><?php echo $i; ?></td>
+			<td><?=$value->nama_produk;?></td>
+			<td><?=$value->kuantitas;?></td>
+			<td><?=$value->satuan;?></td>
+			<td><?=$value->keterangan;?></td>
+			
+		</tr>
+		<?php } ?>
+		
 	
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			
-		</tr>
 </table>
 </div>
-<label>Catatan Umum</label><br>
-<label>1.Waktu Pekerjaan : _____________ Hari</label><br>
-<label>2.Proyek tersebut diatas diperlukan paling lambat : Senin, 09 Januari 2018</label><br>
-<label>Refrensi</label><br><br>
-<div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;border: 1px solid black;">
-	<table style="width: 100%;">
-		<tr>
-			<td style="width: 50%;text-align:left;font-size: 15px;">00011/OPB/SIE_GUDANG/I/2017</td>
-		</tr>
-	</table>
-</div>
+
 
 <table style="width: 100%;">
 	<tr>
-		<td style="width: 30%;text-align: center;">Mengetahui</td>
-		<td style="width: 30%;text-align: center;">Disetujui Oleh</td>
-		<td style="width: 30%;text-align: center;">Diajukan Oleh </td>
+		<td style="width: 30%;"></td>
+		<td style="width: 30%;text-align: center;">Menyetujui</td>
+		<td style="width: 30%;text-align: center;">Yang Membuat</td>
 	</tr>
 </table>
 <br>
@@ -129,12 +119,11 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <br>
 <table style="width: 100%;">
 	<tr>
-		<td style="width: 30%;text-align: center;">(...................................)</td>
+		<td style="width: 30%;"></td>
 		<td style="width: 30%;text-align: center;">(...................................)</td>
 		<td style="width: 30%;text-align: center;">(...................................)</td>
 	</tr>
 </table>
-<label>Tembusan Kepada : 1. Bag.Gudang 2.Accounting 3.Arsip Kabag Pemakai</label>
 
 <?PHP
     $width_custom = 14;
@@ -146,7 +135,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     $width_in_mm = $width_in_inches * 21.4;
     $height_in_mm = $height_in_inches * 19.8;
     $html2pdf = new HTML2PDF('P','A4','en');
-    $html2pdf->pdf->SetTitle('Laporan Arus Kas');
+    $html2pdf->pdf->SetTitle('Surat Permintaan Barang');
     $html2pdf->WriteHTML($content, isset($_GET['vuehtml']));
-    $html2pdf->Output('Laporan_arus_kas.pdf');
+    $html2pdf->Output('Surat_permintaan_barang.pdf');
 ?>
