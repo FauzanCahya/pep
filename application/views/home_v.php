@@ -655,10 +655,10 @@ function MonthToString($month){
 						</li>
 						<li class="divider">
 						</li> -->
-						<!-- <li>
-							<a href="extra_lock.html">
-							<i class="icon-lock"></i> Lock Screen </a>
-						</li> -->
+						<li>
+							<a href="<?php echo base_url(); ?>user_management_c">
+							<i class="icon-users"></i> User Management </a>
+						</li>
 						<li>
 							<a href="<?php echo base_url(); ?>login_c/logout">
 							<i class="icon-key"></i> Log Out </a>
