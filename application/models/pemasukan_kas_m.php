@@ -98,4 +98,12 @@ class Pemasukan_kas_m extends CI_Model
 		 $this->db->query($sql);
 	}
 
+	function get_data_trx_detail($id){
+    	$sql = "
+        SELECT t.* , m.nama_pelanggan FROM tb_bukti_kas_masuk t , master_pelanggan m WHERE t.ID_PELANGGAN = m.id_pelanggan AND t.ID = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
 }

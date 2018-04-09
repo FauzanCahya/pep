@@ -24,7 +24,7 @@ class User_management_c extends CI_Controller {
 				'menu' 	   	 => 'master_data',
 				'menu2'		 => 'master user_management',
 				'lihat_data'   => $this->user_management->lihat_data_user_management(),
-				'user_management_utama' => $this->user_management->lihat_data_user_management_utama(),
+				'divisi'   => $this->user_management->lihat_data_divisi(),
 				'url_simpan' => base_url().'user_management_c/simpan',
 				'url_hapus'  => base_url().'user_management_c/hapus',
 				'url_ubah'	 => base_url().'user_management_c/ubah_user_management',
@@ -35,14 +35,14 @@ class User_management_c extends CI_Controller {
 
 	function simpan()
 	{
-		$kode_user_management = $this->input->post('kode_user_management');
-		$nama_user_management = $this->input->post('nama_user_management');
-		$konversi = $this->input->post('konversi');
-		$user_management_utama = $this->input->post('user_management_utama');
-		$tipe_user_management = $this->input->post('tipe_user_management');
+		$tipe_user_management 	= $this->input->post('tipe_user_management');
+		$nama_user 				= $this->input->post('nama_user');
+		$username 				= $this->input->post('username');
+		$password 				= md5($this->input->post('password'));;
+		$departemen 			= $this->input->post('departemen');
 
 
-		$this->user_management->simpan_data_user_management($kode_user_management,$nama_user_management,$konversi,$itu,$tipe_user_management);
+		$this->user_management->simpan_data_user_management($tipe_user_management,$nama_user,$username,$password,$departemen);
 		$this->session->set_flashdata('sukses','1');
 		redirect('user_management_c');
 	}

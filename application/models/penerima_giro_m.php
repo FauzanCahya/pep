@@ -107,4 +107,12 @@ class Penerima_giro_m extends CI_Model
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
+
+	function get_data_trx_detail($id){
+    	$sql = "
+        SELECT t.* , m.nama_pelanggan as NAMA_PELANGGAN  FROM tb_penerimaan_giro_masuk t , master_pelanggan m  WHERE t.ID_PELANGGAN = m.id_pelanggan AND ID = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
 }

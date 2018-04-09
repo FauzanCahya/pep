@@ -186,6 +186,7 @@ Tambah Data <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" href="<?=base_url();?>pengeluaran_bank_c/edit/<?=$value->ID;?>"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_divisi(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a target="_blank" class="btn default btn-xs green" id="cetak" href="<?=base_url();?>pengeluaran_bank_c/cetak/<?=$value->ID;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>
 					<?php 

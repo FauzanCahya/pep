@@ -24,7 +24,7 @@ class Pengeluaran_kas_c extends CI_Controller {
 
 		if($this->input->post('save')){
 			$data = array(
-		        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
+		        'NO_BUKTI'      	=> addslashes($this->input->post('no_bukti')),
 				'TGL'         => addslashes($this->input->post('tgl')),
 				'ID_SUPPLIER'         => addslashes($this->input->post('id_supplier')),
 				'TERBILANG'         => addslashes($this->input->post('terbilang')),
@@ -239,17 +239,15 @@ class Pengeluaran_kas_c extends CI_Controller {
 
 	function cetak($id=""){
 
-		$dt = $this->pengembalian->get_data_trx($id);
-		$dt_det = $this->pengembalian->get_data_trx_detail($id);
+		$dt = $this->model->get_lap_pdf($id);
 
 
 		$data =  array(
 			'page' => "pembelian_jasa_c", 
 			'dt' => $dt,
-			'dt_det' => $dt_det,
 		);
 		
-		$this->load->view('pdf/report_surat_perintah_kerja_pdf', $data);
+		$this->load->view('pdf/report_bukti_kas_keluar_pdf', $data);
 	}
 }
 

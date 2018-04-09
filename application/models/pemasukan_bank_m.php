@@ -97,4 +97,13 @@ class Pemasukan_bank_m extends CI_Model
 		 $this->db->query($sql);
 	}
 
+	function get_data_trx_detail($id){
+    	$sql = "
+        SELECT *  FROM tb_bukti_bank_masuk  WHERE ID = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+
 }

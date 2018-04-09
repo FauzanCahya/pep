@@ -2,6 +2,7 @@
 
 	$sess_user = $this->session->userdata('sign_in');
 	$nama = $sess_user['nama_user'];
+	$level = $sess_user['level'];
 	$id_user = $sess_user['id'];
 
 ?>
@@ -655,10 +656,16 @@ function MonthToString($month){
 						</li>
 						<li class="divider">
 						</li> -->
+						<?php 
+
+							if($level == 'direktur'){
+
+						?>
 						<li>
 							<a href="<?php echo base_url(); ?>user_management_c">
 							<i class="icon-users"></i> User Management </a>
 						</li>
+						<?php } ?>
 						<li>
 							<a href="<?php echo base_url(); ?>login_c/logout">
 							<i class="icon-key"></i> Log Out </a>

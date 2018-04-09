@@ -3,7 +3,7 @@
 
 $(document).ready(function(){
 
-	$("#kode_user_management").focus();
+	$("#nama_user").focus();
 
 	$('#hapus').click(function(){
 		$('#popup_hapus').css('display','block');
@@ -74,7 +74,7 @@ function hapus_user_management(id)
 		async : false,
 		success : function(row){
 			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['nama_user_management']+'</b> ini ingin dihapus ?');
+			$('#msg').html('Apakah <b>'+row['username']+'</b> ini ingin dihapus ?');
 		}
 	});
 }
@@ -92,8 +92,8 @@ function ubah_data_user_management(id)
 			async : false,
 			success : function(row){
 				$('#id_user_management_modal').val(id);
-				$('#kode_user_management_modal').val(row['kode_user_management']);
-				$('#nama_user_management_modal').val(row['nama_user_management']);
+				$('#nama_user_modal').val(row['nama_user']);
+				$('#username_modal').val(row['username']);
 			}
 		});
 }
@@ -145,54 +145,52 @@ function berhasil(){
 				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
 					<div class="form-body">
 						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Tipe user_management</label>
+							<label class="col-md-2 control-label" for="form_control_1">Tipe User Management</label>
 							<div class="col-md-5">
 								<select name="tipe_user_management" class="form-control" id="tipe_user_management">
-									<option value="Panjang">Panjang</option>
-									<option value="Berat">Berat</option>
-									<option value="Volume">Volume</option>
-									<option value="Luas">Luas</option>
+									<option value="admin">admin</option>
+									<option value="manager">manager</option>
 								</select>
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
+						
 						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">user_management Utama</label>
-							<div class="col-md-5">
-								<select name="user_management_utama" class="form-control" id="user_management_utama">
-									<option value="">Baru</option>
-									<?php foreach ($user_management_utama as $key => $value) {
-										
+							<label class="col-md-2 control-label" for="form_control_1">Nama User</label>
+							<div class="col-md-10">
+								<input type="text" class="form-control" id="nama_user" name="nama_user" >
+								<div class="form-control-focus">
+								</div>
+							</div>
+						</div>
+						<div class="form-group form-md-line-input">
+							<label class="col-md-2 control-label" for="form_control_1">Username</label>
+							<div class="col-md-10">
+								<input type="text" class="form-control" id="username" name="username" >
+								<div class="form-control-focus">
+								</div>
+							</div>
+						</div>
+						<div class="form-group form-md-line-input">
+							<label class="col-md-2 control-label" for="form_control_1">Password</label>
+							<div class="col-md-10">
+								<input type="password" class="form-control" id="password" name="password" >
+								<div class="form-control-focus">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group form-md-line-input">
+							<label class="col-md-2 control-label" for="form_control_1">Departemen</label>
+							<div class="col-md-10">
+								<select name="departemen" class="form-control" id="">
+									<?php 
+										foreach ($divisi as $key => $value) {
 									?>
-									<option value="<?=$value->kode_user_management;?>"><?=$value->nama_user_management;?></option>
+									<option value="<?php echo $value->id_divisi; ?>"><?php echo $value->nama_divisi; ?></option>
 									<?php } ?>
-									
 								</select>
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Kode user_management</label>
-							<div class="col-md-10">
-								<input type="text" class="form-control" id="kode_user_management" name="kode_user_management" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Nama user_management</label>
-							<div class="col-md-10">
-								<input type="text" class="form-control" id="nama_user_management" name="nama_user_management" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Konversi</label>
-							<div class="col-md-10">
-								<input type="text" class="form-control" id="konversi" name="konversi" >
 								<div class="form-control-focus">
 								</div>
 							</div>
@@ -259,11 +257,11 @@ Tambah Data user_management <i class="fa fa-plus"></i>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_user; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->nama_departemen; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->nama_divisi; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->level; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_user_management(<?php echo $value->id_user_management?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_user_management(<?php echo $value->id_user_management?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_user_management(<?php echo $value->id?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_user_management(<?php echo $value->id?>);"><i class="fa fa-trash-o"></i> Hapus </a>
 					</td>
 				</tr>
 					<?php 
@@ -298,7 +296,7 @@ Tambah Data user_management <i class="fa fa-plus"></i>
 							<div class="form-group form-md-line-input">
 								<label class="col-md-3 control-label" for="form_control_1">Kode user_management</label>
 								<div class="col-md-4">
-									<input required type="text" class="form-control" name="kode_user_management_modal" id="kode_user_management_modal" >
+									<input required type="text" class="form-control" name="nama_user_modal" id="nama_user_modal" >
 									<div class="form-control-focus">
 									</div>
 								</div>
@@ -307,7 +305,7 @@ Tambah Data user_management <i class="fa fa-plus"></i>
 							<div class="form-group form-md-line-input">
 								<label class="col-md-3 control-label" for="form_control_1">Nama user_management</label>
 								<div class="col-md-4">
-									<input required type="text" class="form-control" name="nama_user_management_modal" id="nama_user_management_modal" >
+									<input required type="text" class="form-control" name="username_modal" id="username_modal" >
 									<div class="form-control-focus">
 									</div>
 								</div>

@@ -33,6 +33,7 @@ class Login_c extends CI_Controller {
 					   'id'		   => $dt->id,
 					   'nama_user' => $dt->nama_user,
 					   'departemen' => $dt->departemen,
+					   'level' => $dt->level,
 					   'foto' 	   => $dt->foto,
 			);
 

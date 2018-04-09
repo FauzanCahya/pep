@@ -65,7 +65,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             <h4 style="text-decoration: underline;">
                 BUKTI GIRO KELUAR (BGK)
             </h4>
-            <label>00001/OPB/SIE_LISTRIK/I/2017</label>
+            <label><?=$dt_det->NO_BUKTI;?></label>
         </td>
     </tr>
 </table>
@@ -74,7 +74,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;">
 	<table style="width: 100%;">
 		<tr>
-			<td style="text-align:left;font-size: 15px;">Dikeluarkan Kepada : Tidak Terdaftar</td>
+			<td style="text-align:left;font-size: 15px;">Dikeluarkan Kepada : <?=$dt_det->NAMA_PELANGGAN;?></td>
 		</tr>
 	</table>
 </div>
@@ -93,9 +93,9 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		</tr>
 	
 		<tr >
-			<td style="height: 200px;border:1px solid black;"></td>
-			<td style="height: 200px;border:1px solid black;"></td>
-			<td style="height: 200px;border:1px solid black;"></td>
+			<td style="height: 200px;border:1px solid black;text-align: center;"><?=$dt_det->NO_GIRO;?></td>
+			<td style="height: 200px;border:1px solid black;text-align: center;">Rp.<?=$dt_det->NILAI;?></td>
+			<td style="height: 200px;border:1px solid black;text-align: center;"><?=$dt_det->KETERANGAN;?></td>
 			
 		</tr>
 		

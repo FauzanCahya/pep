@@ -66,7 +66,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
                 BUKTI BANK MASUK (BKM)
             </h4>
             <label>
-                ....................................................
+               <?=$dt_det->NO_BUKTI;?>
             </label>
         </td>
     </tr>
@@ -81,32 +81,32 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<tr>
 			<td>Telah Terima Dari</td>
 			<td>:</td>
-			<td></td>
+			<td><?=$dt_det->DARI;?></td>
 		</tr>
 
 		<tr>
 			<td>Sebesar</td>
 			<td>:</td>
-			<td>0.00</td>
+			<td>Rp.<?=$dt_det->NILAI;?>,00</td>
 		</tr>
 
 		<tr>
 			<td>Terbilang</td>
 			<td>:</td>
-			<td></td>
+			<td><?=$dt_det->TERBILANG;?></td>
 		</tr>
 
 		<tr>
 			<td>Penerimaan Untuk</td>
 			<td>:</td>
-			<td></td>
+			<td><?=$dt_det->UNTUK;?></td>
 		</tr>
 	
 	
 </table>
 </div>
 <div style="width:100%;">
-	<h5 style="float: right;">Gresik, Selasa 9/10/2017</h5>
+	<h5 style="float: right;">Gresik, <?=$dt_det->TGL;?></h5>
 </div>
 <div style="height: 300px;">
 <table style="width: 100%;border: 1px solid black;border-collapse: collapse;">

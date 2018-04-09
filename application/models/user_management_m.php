@@ -7,21 +7,22 @@ class User_management_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_user_management($username,$password,$departemen,$nama_user,$level)
+	function simpan_data_user_management($tipe_user_management,$nama_user,$username,$password,$departemen)
 	{
 		$sql = "
 			INSERT INTO tb_user (
+				level,
+				nama_user,
 				username,
 				password,
-				departemen,
-				nama_user,
-				level
+				departemen
+				
 			) VALUES (
+				'$tipe_user_management',
+				'$nama_user',
 				'$username',
 				'$password',
-				'$departemen',
-				'$nama_user',
-				'$level'
+				'$departemen'
 			)";
 		$this->db->query($sql);
 	}
@@ -29,7 +30,7 @@ class User_management_m extends CI_Model
 	function lihat_data_user_management()
 	{
 		$sql = "
-			SELECT * FROM tb_user ";
+			SELECT t.* , m.nama_divisi FROM tb_user t , master_divisi m WHERE t.departemen = m.id_divisi ";
 
 		return $this->db->query($sql)->result();
 	}
@@ -38,6 +39,14 @@ class User_management_m extends CI_Model
 	{
 		$sql = "
 			SELECT * FROM tb_user ";
+
+		return $this->db->query($sql)->result();
+	}
+
+	function lihat_data_divisi()
+	{
+		$sql = "
+			SELECT * FROM master_divisi ";
 
 		return $this->db->query($sql)->result();
 	}

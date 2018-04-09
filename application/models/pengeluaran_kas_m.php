@@ -115,4 +115,13 @@ class Pengeluaran_kas_m extends CI_Model
         return $this->db->query($sql)->result();
     }
 
+    function get_lap_pdf($id){
+    	$sql = "
+        SELECT t.* , m.nama_supplier FROM tb_bukti_kas_keluar t , master_supplier m WHERE t.ID_SUPPLIER = m.id_supplier AND t.ID = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+
 }

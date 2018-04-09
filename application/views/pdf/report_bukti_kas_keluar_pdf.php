@@ -118,21 +118,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<th style="width: 20%;padding: 5px 5px 5px 5px;text-align: center;">Keterangan</th>
 	</tr>
 
-	<?php
-	$i = 0;
-	foreach ($dt_det as $key => $value) {
-		
-		$i++;
-
-	 ?>
 	<tr>
-		<td style="height: 100px;border: 1px solid black;">-</td>
-		<td style="height: 100px;border: 1px solid black;"><?=$value->KODE_AKUN;?> </td>
-		<td style="height: 100px;border: 1px solid black;"><?=$value->NAMA_AKUN;?> </td>
-		<td style="height: 100px;border: 1px solid black;">-</td>
-		<td style="height: 100px;border: 1px solid black;"><?=$value->KETERANGAN;?> </td>
+		<td style="height: 100px;border: 1px solid black;"> </td>
+		<td style="height: 100px;border: 1px solid black;"> </td>
+		<td style="height: 100px;border: 1px solid black;"> </td>
+		<td style="height: 100px;border: 1px solid black;"> </td>
+		<td style="height: 100px;border: 1px solid black;"> </td>
 	</tr>
-	<?php } ?>
 </table>
 </div>
 

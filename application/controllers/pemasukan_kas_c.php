@@ -12,6 +12,9 @@ class Pemasukan_kas_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -232,6 +235,19 @@ class Pemasukan_kas_c extends CI_Controller {
 		$data = $this->model->get_data_bukti_detail($id);
 
 		echo json_encode($data); 
+	}
+
+	function cetak($id=""){
+
+		$dt_det = $this->model->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "pemasukan_kas_c", 
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_bukti_kas_masuk_pdf', $data);
 	}
 }
 
