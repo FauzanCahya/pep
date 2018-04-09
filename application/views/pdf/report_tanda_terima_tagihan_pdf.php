@@ -71,55 +71,60 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 </table>
 <br>
 <br>
-<div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;border: 1px solid black;">
+<div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;">
 	<table style="width: 100%;">
 		<tr>
-			<td style="width: 50%;text-align:left;font-size: 15px;">DIVISI : SIE GUDANG</td>
-			<td style="width: 50%;text-align:left;font-size: 15px;">UNTUK PEMBELIAN</td>
+			<td style="width: 50%;text-align:left;">DARI : <?=$dt->nama_supplier;?> </td>
 		</tr>
 	</table>
 </div>
 <br>
 <div style="height: 300px;">
-<table style="width: 100%;height: 300px;">
+<table style="width: 100%;height: 300px;border-collapse: collapse;">
 	
 		<tr>
-			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No</th>
-			<th style="width: 45%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Pekerjaan</th>
-			<th style="width: 50%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
+			<td colspan="3" style="text-align: center;border: 1px solid black;">Total Penagihan</td>
+		</tr>
+		<tr >
+			<th style="width: 20%;padding: 5px 5px 5px 5px; border: 1px solid black;">Tanggal</th>
+			<th style="width: 40%;padding: 5px 5px 5px 5px; border: 1px solid black;">No Nota</th>
+			<th style="width: 40%;padding: 5px 5px 5px 5px; border: 1px solid black;">Rupiah</th>
+		</tr>
+		<tr>
+			<td style="border: 1px solid black;height: 200px;padding: 5px 5px 5px 5px;"><?=$dt->TGL_NOTA;?></td>
+			<td style="border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->NO_NOTA;?></td>
+			<td style="border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->NILAI;?></td>
 		</tr>
 	
 		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
+			<td colspan="2" style="border: 1px solid black;">Total Tagihan</td>
+			<td style="border: 1px solid black;">Rp.<?=$dt->NILAI;?>,00</td>
 			
 		</tr>
 		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
+			<td colspan="2" style="border: 1px solid black;">Denda</td>
+			<td style="border: 1px solid black;">Rp.<?=$dt->BIAYA_MATERAI;?>,00</td>
 			
 		</tr>
+		<tr>
+			<td colspan="2" style="border: 1px solid black;">Pajak</td>
+			<td style="border: 1px solid black;"></td>
+			
+		</tr>
+		<tr>
+			<td colspan="2" style="border: 1px solid black;">Total Pembayaran</td>
+			<td style="border: 1px solid black;">Rp.<?=$dt->TOTAL;?>,00</td>
+			
+		</tr>
+		
 </table>
 </div>
-<label>Catatan Umum</label><br>
-<label>1.Waktu Pekerjaan : _____________ Hari</label><br>
-<label>2.Proyek tersebut diatas diperlukan paling lambat : Senin, 09 Januari 2018</label><br>
-<label>Refrensi</label><br><br>
-<div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;border: 1px solid black;">
-	<table style="width: 100%;">
-		<tr>
-			<td style="width: 50%;text-align:left;font-size: 15px;">00011/OPB/SIE_GUDANG/I/2017</td>
-		</tr>
-	</table>
-</div>
+
 
 <table style="width: 100%;">
 	<tr>
-		<td style="width: 30%;text-align: center;">Mengetahui</td>
-		<td style="width: 30%;text-align: center;">Disetujui Oleh</td>
-		<td style="width: 30%;text-align: center;">Diajukan Oleh </td>
+		<td style="width: 50%;text-align: center;">Menyetujui Untuk dibayar</td>
+		<td style="width: 50%;text-align: center;">Diterima Oleh</td>
 	</tr>
 </table>
 <br>
@@ -129,12 +134,10 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <br>
 <table style="width: 100%;">
 	<tr>
-		<td style="width: 30%;text-align: center;">(...................................)</td>
-		<td style="width: 30%;text-align: center;">(...................................)</td>
-		<td style="width: 30%;text-align: center;">(...................................)</td>
+		<td style="width: 50%;text-align: center;">(...................................)</td>
+		<td style="width: 50%;text-align: center;">(...................................)</td>
 	</tr>
 </table>
-<label>Tembusan Kepada : 1. Bag.Gudang 2.Accounting 3.Arsip Kabag Pemakai</label>
 
 <?PHP
     $width_custom = 14;
