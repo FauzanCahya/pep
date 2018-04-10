@@ -678,7 +678,7 @@ Tambah Data Surat Keluar <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-trash-o"></i> Hapus </a>
-						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>surat_keluar_c/cetak/<?=$value->id_permintaan;?>" ><i class="fa fa-print"></i> Cetak </a>
+						<!-- <a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>surat_keluar_c/cetak/<?=$value->id_permintaan;?>" ><i class="fa fa-print"></i> Cetak </a> -->
 					</td>
 				</tr>
 					<?php 
