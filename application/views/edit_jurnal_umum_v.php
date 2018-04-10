@@ -25,6 +25,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-md-2 control-label" for="form_control_1">No. Dokumen</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="no_dokumen" name="no_dokumen" value="<?=$dt->NO_BUKTI;?>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-md-2 control-label" for="form_control_1">Tanggal Jurnal</label>
                             <div class="col-md-5">
                                 <input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=$dt->TGL;?>" name="tgl" readonly style="background: #FFF; cursor: pointer;"/>
