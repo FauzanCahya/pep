@@ -22,6 +22,7 @@ class Jurnal_umum_c extends CI_Controller {
 		if($this->input->post('save')){
 			$data = array(
 		        'NO_VOUCHER'      => addslashes($this->input->post('no_bukti')),
+		        'NO_BUKTI'      => addslashes($this->input->post('no_dokumen')),
 		        'TOTAL'      => str_replace(',', '', $this->input->post('total_all')),
 		        'TGL'      => addslashes($this->input->post('tgl')),
 		        'KETERANGAN'      => addslashes($this->input->post('ket')),
@@ -52,6 +53,7 @@ class Jurnal_umum_c extends CI_Controller {
 
 		    $data = array(
 		        'NO_VOUCHER'      => addslashes($this->input->post('no_bukti')),
+		        'NO_BUKTI'      => addslashes($this->input->post('no_dokumen')),
 		        'TOTAL'      => str_replace(',', '', $this->input->post('total_all')),
 		        'TGL'      => addslashes($this->input->post('tgl')),
 		        'KETERANGAN'      => addslashes($this->input->post('ket'))
