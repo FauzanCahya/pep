@@ -50,7 +50,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
         </td>
     </tr>
 </table>
-<br>
+<!-- <br>
 <br>
 <table>
     <tr>
@@ -72,17 +72,18 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     </tr>
 </table>
 
-<hr><hr style="margin-top: -10px;">
+<hr><hr style="margin-top: -10px;"> -->
 
 <div style="width: 100%;">
     <table style="border: 1px; border-collapse: collapse; width: 100%;">
         <tr>
             <th style="width: 10%; text-align: center; height: 25px; vertical-align: middle;">Tanggal</th>
-            <th style="width: 15%; text-align: center; height: 25px; vertical-align: middle;">No. Dokumen</th>
-            <th style="width: 30%; text-align: center; height: 25px; vertical-align: middle;">Keterangan</th>
-            <th style="width: 15%; text-align: center; height: 25px; vertical-align: middle;">Masuk</th>
-            <th style="width: 15%; text-align: center; height: 25px; vertical-align: middle;">Keluar</th>
-            <th style="width: 15%; text-align: center; height: 25px; vertical-align: middle;">Saldo</th>
+            <th style="width: 20%; text-align: center; height: 25px; vertical-align: middle;">No. Dokumen</th>
+            <th style="width: 20%; text-align: center; height: 25px; vertical-align: middle;">Keterangan</th>
+            <th style="width: 10%; text-align: center; height: 25px; vertical-align: middle;">Satuan</th>
+            <th style="width: 8%; text-align: center; height: 25px; vertical-align: middle;">Masuk</th>
+            <th style="width: 8%; text-align: center; height: 25px; vertical-align: middle;">Keluar</th>
+            <th style="width: 8%; text-align: center; height: 25px; vertical-align: middle;">Saldo</th>
         </tr>
         <?php 
         $i = 0;
@@ -90,12 +91,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             $i++;
         ?>
         <tr style="border: 1px; border-collapse: collapse;">
-            <td style="border:1px dotted"><?=$value->tanggal;?></td>
+            <td style="text-align:center; border:1px dotted"><?=$value->tanggal;?></td>
             <td style="border:1px dotted"><?=$value->no_spb;?></td>
             <td style="border:1px dotted"><?=$value->nama_produk;?></td>
             <td style="border:1px dotted"><?=$value->satuan;?></td>
-            <td style="border:1px dotted"><?=$value->kuantitas;?></td>
-            <td style="border:1px dotted"><?=$value->kuantitas;?></td>
+            <td style="text-align:right; border:1px dotted"><?=$value->kuantitas;?></td>
+            <td style="text-align:right; border:1px dotted">0</td>
+            <td style="text-align:right; border:1px dotted"><?=$value->kuantitas;?></td>
         </tr>
         <?php } ?>
     </table>

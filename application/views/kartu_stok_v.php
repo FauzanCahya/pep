@@ -63,7 +63,7 @@
 									<?php 
 										foreach ($dt as $value){
 									?>
-										<option value="<?php echo $value->kode_barang; ?>"><?php echo $value->kode_barang; ?> - <?php echo $value->nama_barang; ?></option>
+										<option value="<?php echo $value->nama_barang; ?>"><?php echo $value->kode_barang; ?> - <?php echo $value->nama_barang; ?></option>
 									<?php	
 										}
 									?>

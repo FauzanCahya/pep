@@ -42,7 +42,10 @@ class Kartu_stok_c extends CI_Controller {
 		$view = "pdf/lap_kartu_stok_pdf";
 		
 
-        $dt = $this->db->query("SELECT tb.no_spb , tb.tanggal , tbd.keterangan ,  tbd.nama_produk , tbd.kuantitas , tbd.satuan FROM tb_permintaan_barang tb , tb_permintaan_barang_detail tbd WHERE tb.id_permintaan = tbd.id_induk AND tanggal LIKE '%-$bulan-$tahun%' ")->result();
+        $dt = $this->db->query("SELECT tb.no_spb , tb.tanggal , tbd.keterangan ,  tbd.nama_produk , tbd.kuantitas , tbd.satuan 
+        	FROM tb_permintaan_barang tb , tb_permintaan_barang_detail tbd 
+        	WHERE tb.id_permintaan = tbd.id_induk AND tanggal LIKE '%-$bulan-$tahun%' AND tbd.nama_produk LIKE '%$barang%'
+        ")->result();
 
 
 		

@@ -6,6 +6,7 @@ class Lap_akuntansi_c extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('divisi_m','divisi');
+		$this->load->model('lap_akuntansi_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -165,6 +166,13 @@ class Lap_akuntansi_c extends CI_Controller {
                     JOIN ak_input_voucher_detail DETAIL ON VOUCHER.ID = DETAIL.ID_VOUCHER
                     WHERE VOUCHER.TGL LIKE '%-$bulan-$tahun%'
                     GROUP BY DETAIL.KODE_AKUN
+
+                    UNION ALL 
+
+                    SELECT KODE_AKUN, SUM(DEBET) AS DEBET, SUM(KREDIT) AS KREDIT
+                    FROM  ak_input_voucher_lainnya
+                    WHERE TGL LIKE '%-$bulan-$tahun%'
+                    GROUP BY KODE_AKUN
                 ) a
             ) b ON a.KODE_AKUN = b.KODE_AKUN
             JOIN ak_grup_kode_akun c ON a.KODE_GRUP = c.KODE_GRUP
@@ -178,6 +186,32 @@ class Lap_akuntansi_c extends CI_Controller {
 			'title' 		=> 'LAPORAN BUKU BESAR',
 			'title2'		=> 'SEMUA BAGIAN',
 			'dt'			=> $dt,
+			'judul'			=> $this->datetostr($bulan)." ".$tahun,
+		);
+		$this->load->view($view,$data);
+	}
+
+	function cetakNeraca(){
+		$bulan = $this->input->post('bulan');
+		$tahun = $this->input->post('tahun');
+		$view = "pdf/lap_neraca_pdf";
+		
+		$dt = "";
+		$dt_aktiva = $this->model->get_lap_neraca_bulanan($bulan, $tahun, 'AKTIVA');
+		$dt_wajib =  $this->model->get_lap_neraca_bulanan($bulan, $tahun, 'KEWAJIBAN');
+
+		$laba      = $this->model->cetak_laba_rugi_bulanan($bulan, $tahun, 'NOW');
+		$laba_lalu = $this->model->cetak_laba_rugi_bulanan($bulan, $tahun, 'LALU');
+
+		
+		$data = array(
+			'title' 		=> 'LAPORAN BUKU BESAR',
+			'title2'		=> 'SEMUA BAGIAN',
+			'dt'			=> $dt,
+			'dt_aktiva'     => $dt_aktiva,
+			'dt_wajib'      => $dt_wajib,
+			'laba'          => $laba,
+			'laba_lalu'     => $laba_lalu,
 			'judul'			=> $this->datetostr($bulan)." ".$tahun,
 		);
 		$this->load->view($view,$data);
