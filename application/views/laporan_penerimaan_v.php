@@ -472,7 +472,7 @@ function acc_format(n, currency) {
 	return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 }
 
-function add_row(id_peminjaman_detail,nama,sisa,no_po,harga){
+function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -481,6 +481,7 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga){
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+no_po+'" name="no_op[]" id="no_op_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="hidden" class="form-control" value="'+id_produk+'" name="id_produk[]" id="no_op_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -545,7 +546,7 @@ function get_transaction(id) {
                                     '<td style="text-align:center;">'+res.penerimaan+'</td>'+
                                     
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+sisa+'&quot;,&quot;'+res.no_po+'&quot;,&quot;'+res.harga+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+sisa+'&quot;,&quot;'+res.no_po+'&quot;,&quot;'+res.harga+'&quot;,&quot;'+res.id_produk+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -784,10 +785,11 @@ Tambah laporan Penerimaan <i class="fa fa-plus"></i>
 					?>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->no_po; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->no_lpb; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>laporan_penerimaan_c/cetak/<?=$value->id_laporan;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>
 					<?php 

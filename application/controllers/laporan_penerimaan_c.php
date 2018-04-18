@@ -12,6 +12,9 @@ class Laporan_penerimaan_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -34,27 +37,69 @@ class Laporan_penerimaan_c extends CI_Controller {
 
 	function simpan()
 	{
+		$bulan_kas = date("m",strtotime($this->input->post('tanggal')));
+
+		if($bulan_kas == "01"){
+	    $var = "I";
+	   } else if($bulan_kas == "02"){
+	    $var = "II";
+	   } else if($bulan_kas == "03"){
+	    $var = "III";
+	   } else if($bulan_kas == "04"){
+	    $var = "IV";
+	   } else if($bulan_kas == "05"){
+	    $var = "V";
+	   } else if($bulan_kas == "06"){
+	    $var = "VI";
+	   } else if($bulan_kas == "07"){
+	    $var = "VII";
+	   } else if($bulan_kas == "08"){
+	    $var = "VIII";
+	   } else if($bulan_kas == "09"){
+	    $var = "IX";
+	   } else if($bulan_kas == "10"){
+	    $var = "X";
+	   } else if($bulan_kas == "11"){
+	    $var = "XI";
+	   } else if($bulan_kas == "12"){
+	    $var = "XII";
+	   }
+
 		$id_laporan  = $this->input->post('id_laporan');
 		if ($id_laporan == '') {
+			$sess_user = $this->session->userdata('sign_in');
+			$nama = $sess_user['nama_user'];
+			$departemen = $sess_user['departemen'];
+
+			$dept_row = $this->db->query("SELECT * FROM master_divisi WHERE id_divisi = '$departemen'")->row();
 			
-			$no_lpb 	 = $this->input->post('no_lpb');
+			
+			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
+			
+
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('LAPORAN_PENERIMAAN_BARANG');
+			
+			$no_bukti_real = $get_nomor."/LPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+
+			
 			$tanggal 	 = $this->input->post('tanggal');
 			$no_po 		 = $this->input->post('no_po');
 			$diterima 	 = $this->input->post('diterima');
 
-			$this->laporan->simpan_data_laporan($no_lpb,$tanggal,$no_po,$diterima);
+			$this->master_model_m->update_nomor('LAPORAN_PENERIMAAN_BARANG');
+			$this->laporan->simpan_data_laporan($no_bukti_real,$tanggal,$no_po,$diterima);
 
 			$id_laporan_baru = $this->db->insert_id();
 			$id_produk 		 = $this->input->post('id_produk');
 			$nama_produk 	 = $this->input->post('nama_produk');
 			$keterangan  	 = $this->input->post('keterangan');
 			$kuantitas 	 	 = $this->input->post('kuantitas');
-			$harga 		 	 = $this->input->post('harga');
+			$harga 		 	 = $this->input->post('harga_awal');
 			$total 		 	 = $this->input->post('total');
 			$no_opb 	 	 = $this->input->post('no_opb');
 
 			foreach ($nama_produk as $key => $val) {
-				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
+				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('laporan_penerimaan_c');
@@ -168,6 +213,21 @@ class Laporan_penerimaan_c extends CI_Controller {
 		$dt = $this->laporan->get_produk_detail($id_barang);
 
 		echo json_encode($dt);
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->laporan->get_data_trx($id);
+		$dt_det = $this->laporan->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "laporan_penerimaan_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_laporan_penerimaan_barang_pdf', $data);
 	}
 }
 

@@ -47,7 +47,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td style="width: 50%;text-align: left;">Sumangko Wringin Anom Gresik</td>
 		<td style="width: 28%;text-align: left;"></td>
 		<td style="width: 7%;text-align: right;border: 1px solid black;">Tgl</td>
-		<td style="width: 15%;text-align: right;border: 1px solid black;">9-11-2018</td>
+		<td style="width: 15%;text-align: right;border: 1px solid black;"><?=$dt->tanggal;?></td>
 	</tr>
 	<tr>
 		<td style="width: 50%;text-align: left;">Jawa Timur - Indonesia</td>
@@ -65,7 +65,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             <h4 style="text-decoration: underline;">
                 LAPORAN PENERIMAAN BARANG (LPB)
             </h4>
-            <label></label>
+            <label><?=$dt->no_lpb;?></label>
         </td>
     </tr>
 </table>
@@ -74,10 +74,10 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;border: 1px solid black;">
 	<table style="width: 100%;">
 		<tr>
-			<td style="text-align:left;font-size: 15px;">PO No. : 00010/PO/SIE_PEMBELIAN/XII/2016</td>
+			<td style="text-align:left;font-size: 15px;">PO No. : </td>
 		</tr>
 		<tr>
-			<td style="text-align:left;font-size: 15px;">Diterima Dari : [SUSMA0838] SURYA MAKMUR AGUNG SEJAHTERA</td>
+			<td style="text-align:left;font-size: 15px;">Diterima Dari : </td>
 		</tr>
 	</table>
 </div>
@@ -87,7 +87,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 	
 		<tr>
 			
-			<th style="width: 15%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Kode Barang</th>
+			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Kode Barang</th>
 			<th style="width: 25%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Nama Barang</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Jumlah</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Satuan</th>
@@ -95,35 +95,27 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Total Harga</th>
 			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
 		</tr>
-	
+		<?php
+			$i = 0;
+			foreach ($dt_det as $key => $value) {
+				$i++;
+			
+		?>
 		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
+			
+			<td><?=$value->kode_barang;?></td>
+			<td><?=$value->nama_produk;?></td>
+			<td><?=$value->kuantitas;?></td>
+			<td><?=$value->nama_satuan;?></td>
+			<td><?=$value->harga;?></td>
+			<td><?=$value->total;?></td>
+			<td><?=$value->keterangan;?></td>
 			
 		</tr>
-		<tr>
-			<td>1</td>
-			<td>SIE_GUDANG/00178/2018</td>
-			<td>30</td>
-			<td>Kg</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			
-		</tr>
-		<tfoot>
-			<tr>
-				<td colspan="3"></td>
-				<td>Total</td>
-				<td colspan="2">Rp.9.000.000,00</td>
-				<td></td>
-			</tr>
-		</tfoot>
+		<?php
+			}
+		 ?>
+		
 		
 	
 </table>

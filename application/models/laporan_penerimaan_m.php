@@ -39,7 +39,7 @@ class Laporan_penerimaan_m extends CI_Model
 				kuantitas,
 				harga,
 				total,
-				no_opb
+				no_po
 			)	VALUES (
 				'$id_laporan_baru',
 				'$id_produk',
@@ -132,7 +132,23 @@ class Laporan_penerimaan_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang'
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_data_trx($id){
+    	$sql = "
+        SELECT * FROM tb_laporan_penerimaan WHERE id_laporan = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT lp.* , mb.nama_satuan , mb.kode_barang FROM tb_laporan_penerimaan_detail lp , master_barang mb WHERE mb.id_barang = lp.id_produk AND lp.id_induk = '$id'
         ";
 
         return $this->db->query($sql)->result();

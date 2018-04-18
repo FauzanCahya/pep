@@ -109,7 +109,7 @@ class Purchase_order_c extends CI_Controller {
 			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$dta_terms);
 
 			$id_purchase_baru   = $this->db->insert_id();
-			$id_produk    		= $this->input->post('id_peminjaman_detail');
+			$id_produk    		= $this->input->post('id_produk');
 			$nama_produk 		= $this->input->post('nama_produk');
 			$keterangan 		= $this->input->post('keterangan');
 			$kuantitas  		= $this->input->post('kuantitas');
@@ -120,7 +120,7 @@ class Purchase_order_c extends CI_Controller {
 			
 
 			foreach ($nama_produk as $key => $val) {
-				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$disc[$key],$total[$key],$no_opb[$key]);
+				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$disc[$key],$total[$key],$no_opb[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('purchase_order_c');

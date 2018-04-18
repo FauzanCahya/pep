@@ -344,7 +344,7 @@ function tambah_data(){
 }
 
 
-function add_row(id_peminjaman_detail,nama,keterangan,no_opek){
+function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -354,6 +354,7 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek){
 						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+nama+'" name="nama_produk[]" id="keterangan_'+i+'">'+
 							'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
+							'<input type="hidden" id="id_produk_'+i+'" value="'+id_produk+'" name="id_produk[]" readonly style="background:#FFF;" value="0">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -636,7 +637,7 @@ function get_transaction(id) {
                                     '<td style="text-align:center;">'+res.realisasi+'</td>'+
                                     '<td style="text-align:center;">'+res.no_opb+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;,&quot;'+res.id_produk+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
