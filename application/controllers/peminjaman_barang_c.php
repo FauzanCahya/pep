@@ -80,17 +80,13 @@ class Peminjaman_barang_c extends CI_Controller {
 
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			 $sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PEMINJAMAN_BARANG_SATU'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('PEMINJAMAN_BARANG_SATU');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
-
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real = $no_buk."/SP1/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real = $get_nomor."/SP1/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
-			$this->peminjaman->save_next_nomor('PEMINJAMAN_BARANG_SATU');
+			$this->master_model_m->update_nomor('PEMINJAMAN_BARANG_SATU');
 			$this->peminjaman->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen);
 			
 
@@ -100,11 +96,11 @@ class Peminjaman_barang_c extends CI_Controller {
 			$keterangan     	= $this->input->post('keterangan');
 			$kuantitas      	= $this->input->post('kuantitas');
 			$satuan 	    	= $this->input->post('satuan');
-			$harga 		    	= $this->input->post('harga');
-			$jumlah 	    	= $this->input->post('jumlah');
+			// $harga 		    	= $this->input->post('harga');
+			// $jumlah 	    	= $this->input->post('jumlah');
 
 			foreach ($nama_produk as $key => $val) {
-					 $this->peminjaman->simpan_data_barang_detail($id_peminjaman_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$harga[$key],$jumlah[$key]);
+					 $this->peminjaman->simpan_data_barang_detail($id_peminjaman_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('peminjaman_barang_c');

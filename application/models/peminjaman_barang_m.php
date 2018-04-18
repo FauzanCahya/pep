@@ -28,11 +28,9 @@ class Peminjaman_barang_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function simpan_data_barang_detail($id_peminjaman_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan,$harga,$jumlah)
+	function simpan_data_barang_detail($id_peminjaman_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
-		$harga 		= str_replace(',', '', $harga);
-		$jumlah 	= str_replace(',', '', $jumlah);
 
 		$sql = "
 			INSERT INTO tb_peminjaman_barang_detail (
@@ -42,8 +40,6 @@ class Peminjaman_barang_m extends CI_Model
 				keterangan,
 				kuantitas,
 				satuan,
-				harga,
-				jumlah,
 				status_pinjam,
 				sisa_jumlah
 			) VALUES (
@@ -53,8 +49,6 @@ class Peminjaman_barang_m extends CI_Model
 				'$keterangan',
 				'$kuantitas',
 				'$satuan',
-				'$harga',
-				'$jumlah',
 				'0',
 				'$kuantitas'
 			)";
@@ -64,7 +58,7 @@ class Peminjaman_barang_m extends CI_Model
 	function lihat_data_peminjaman()
 	{
 		$sql = "
-			SELECT * FROM tb_peminjaman_barang ";
+			SELECT mb.* , md.nama_divisi FROM tb_peminjaman_barang mb , master_divisi md WHERE mb.divisi = md.id_divisi ";
 
 		return $this->db->query($sql)->result();
 	}

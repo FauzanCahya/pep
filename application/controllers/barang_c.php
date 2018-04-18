@@ -6,6 +6,7 @@ class Barang_c extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('barang_m','barang');
+		$this->load->helper(array('form', 'url'));
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -48,7 +49,25 @@ class Barang_c extends CI_Controller {
 		$id_kategori 	= $this->input->post('id_kategori');
 		$nama_kategori  = $this->input->post('nama_kategori');
 
-		$this->barang->simpan_data_barang($kode_barang,$nama_barang,$id_satuan,$nama_satuan,$harga_jual,$harga_beli,$id_supplier,$nama_supplier,								  $id_kategori,$nama_kategori);
+		  	$config['upload_path'] = './assets/barang/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']	= '200000';
+			$config['max_width']  = '10000';
+			$config['max_height']  = '10000';
+			$this->load->library('upload', $config);
+			$this->upload->do_upload();
+			$data = $this->upload->data();																		
+
+	      
+	      if (!$this->upload->do_upload('userfiles')) {
+	        $erros = array('error' => $this->upload->display_errors());
+	        $src_image = 'no_avatar.png';
+	      }else {
+	        $data = array('upload_data' => $this->upload->data());
+	        $src_image = $_FILES['SRC_IMAGE']['name'];
+	      }
+
+		$this->barang->simpan_data_barang($kode_barang,$nama_barang,$id_satuan,$nama_satuan,$harga_jual,$harga_beli,$id_supplier,$nama_supplier,								  $id_kategori,$nama_kategori,$src_image);
 		$this->session->set_flashdata('sukses','1');
 		redirect('barang_c');
 	}

@@ -114,11 +114,7 @@ function detail_ubah_produk(id)
 							'</div>'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.keterangan+'" name="keterangan[]" id="keterangan_'+no+'">'+
-						'</div>'+
-					'</td>'+
+					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input onkeyup="hitung_total('+no+');" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.kuantitas+'" name="kuantitas[]" id="kuantitas_'+no+'">'+
@@ -433,11 +429,7 @@ function tambah_data(){
 							'</div>'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
@@ -493,11 +485,7 @@ function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
 							'</div>'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
@@ -803,7 +791,6 @@ function get_transaction(id) {
 							<thead class="flip-content">
 								<tr>
 									<th style="text-align: center;  width: 20%;">Produk / Item</th>
-									<th style="text-align: center;  widows: 30%;">Keterangan</th>
 									<th style="text-align: center; ">Kuantitas</th>
 									<th style="text-align: center; ">Satuan</th>
 									<th style="text-align: center; ">Reff No</th>

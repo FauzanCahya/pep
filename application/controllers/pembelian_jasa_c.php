@@ -80,15 +80,10 @@ class Pembelian_jasa_c extends CI_Controller {
 			$dept_row = $this->db->query("SELECT * FROM master_divisi WHERE id_divisi = '$departemen'")->row();
 			
 			
-			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
-			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PEMBELIAN_JASA'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('PEMBELIAN_JASA');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
 
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real 		= $no_buk."/SPK/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real 		= $get_nomor."/SPK/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  		= $this->input->post('tanggal');
 			$uraian 	 	 	= $this->input->post('uraian');
 			$subtotal_text 	  	= $this->input->post('subtotal_text');
@@ -100,9 +95,19 @@ class Pembelian_jasa_c extends CI_Controller {
 			$pot_po 	  		= $this->input->post('pot_po');
 			$ppn 	  			= $this->input->post('ppn');
 			$pph 	  			= $this->input->post('pph');
+			$terms 				= $this->input->post('terms');
+			$terms_dua 			= $this->input->post('terms_dua');
 
-			$this->pengembalian->save_next_nomor('PEMBELIAN_JASA');
-			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier,$pot_po,$ppn,$pph);
+			if($terms == 'Tunai'){
+				$dta_terms = 'Tunai';
+			}else if($terms == 'Minggu'){
+				$dta_terms = $terms_dua.' Minggu';
+			}else if ($terms == 'Proses') {
+				$dta_terms = 'Pembayaran akan dilakukan secara proses </br>'.$terms_dua;
+			}
+
+			$this->master_model_m->update_nomor('PEMBELIAN_JASA');
+			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier,$pot_po,$ppn,$pph,$dta_terms);
 			
 
 			$id_pengembalian_baru = $this->db->insert_id();

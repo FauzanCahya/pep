@@ -204,7 +204,7 @@ function get_popup_produk(){
                 '                        <th>NO</th>'+
                 '                        <th> Kode Barang </th>'+
                 '                        <th style="white-space:nowrap;"> Nama Barang </th>'+
-                '                        <th style="white-space:nowrap;"> Harga Beli </th>'+
+                '                        <th style="white-space:nowrap;"> Stok Beli </th>'+
                 '                    </tr>'+
                 '                </thead>'+
                 '                <tbody>'+
@@ -246,7 +246,8 @@ function ajax_produk(id_form){
                             '<td text-align="center">'+no+'</td>'+
                             '<td text-align="center">'+res.kode_barang+'</td>'+
                             '<td text-align="left">'+res.nama_barang+'</td>'+
-                            '<td text-align="center">Rp '+NumberToMoney(res.harga_beli).split('.00').join('')+'</td>'+
+                            '<td text-align="left">'+res.stok+'</td>'+
+                            
                         '</tr>';
             });
 
@@ -698,7 +699,7 @@ function get_transaction(id) {
 			<div class="portlet-body">
 				<div class="row" style="padding-top: 15px;">
 					<div class="col-md-12">
-						<div class="col-md-3">
+						<!-- <div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
 								<h4 class="control-label"> Sub Total :</h4> 
 							</div>
@@ -708,7 +709,7 @@ function get_transaction(id) {
 							<div style="margin-bottom: 15px;" class="span4">
 								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 

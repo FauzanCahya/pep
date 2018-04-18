@@ -7,7 +7,7 @@ class Penyelesaian_jasa_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen)
+	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen)
 	{
 		$sql = "
 			INSERT INTO tb_penyelesaian_jasa (
@@ -21,16 +21,16 @@ class Penyelesaian_jasa_m extends CI_Model
 				'$no_bukti_real',
 				'$tanggal',
 				'$uraian',
-				'',
+				'$nama',
 				'0',
 				'$departemen'
 			)";
 		$this->db->query($sql);
 	}
 
-	function simpan_data_barang_detail($id_pengembalian_baru,$id_spk,$no_spk)
+	function simpan_data_barang_detail($id_pengembalian_baru,$id_spk,$no_spk,$prosentase_akhir,$disc,$total,$nama)
 	{
-		$harga 	= str_replace(',', '', $harga);
+		
 		$total 	= str_replace(',', '', $total);
 
 		$sql = "
@@ -39,13 +39,21 @@ class Penyelesaian_jasa_m extends CI_Model
 				id_spk,
 				no_spk,
 				status,
-				divisi
+				divisi,
+				prosentase_awal,
+				akhir,
+				nilai_jasa,
+				nama_pekerjaan
 			) VALUES (
 				'$id_pengembalian_baru',
 				'$id_spk',
 				'$no_spk',
 				'0',
-				'0'
+				'0',
+				'$prosentase_akhir',
+				'$disc',
+				'$total',
+				'$nama'
 			)";
 		$this->db->query($sql);
 	}
@@ -179,5 +187,21 @@ class Penyelesaian_jasa_m extends CI_Model
         ";
 
         return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx($id){
+    	$sql = "
+        SELECT * FROM tb_penyelesaian_jasa WHERE id_penyelesaian = '$id'
+        ";
+
+        return $this->db->query($sql)->row();
+    }
+
+    function get_data_trx_detail($id){
+    	$sql = "
+        SELECT * FROM tb_penyelesaian_jasa_detail WHERE id_induk = '$id'
+        ";
+
+        return $this->db->query($sql)->result();
     }
 }

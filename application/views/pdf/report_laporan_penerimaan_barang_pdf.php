@@ -65,7 +65,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             <h4 style="text-decoration: underline;">
                 LAPORAN PENERIMAAN BARANG (LPB)
             </h4>
-            <label>00001/OPB/SIE_LISTRIK/I/2017</label>
+            <label></label>
         </td>
     </tr>
 </table>

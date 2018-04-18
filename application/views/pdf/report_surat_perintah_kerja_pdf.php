@@ -161,8 +161,8 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			
 		</tr>
 		<tr>
-			<td style="height: 150px;border: 1px solid black;"></td>
-			<td style="height: 150px;border: 1px solid black;"></td>
+			<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->terms;?></td>
+			<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->uraian;?></td>
 		</tr>
 </table>
 </div>

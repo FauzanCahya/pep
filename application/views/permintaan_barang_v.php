@@ -204,7 +204,7 @@ function get_popup_produk(){
                 '                        <th>NO</th>'+
                 '                        <th> Kode Barang </th>'+
                 '                        <th style="white-space:nowrap;"> Nama Barang </th>'+
-                '                        <th style="white-space:nowrap;"> Harga Beli </th>'+
+                '                        <th style="white-space:nowrap;"> Stok Barang </th>'+
                 '                    </tr>'+
                 '                </thead>'+
                 '                <tbody>'+
@@ -246,7 +246,8 @@ function ajax_produk(id_form){
                             '<td text-align="center">'+no+'</td>'+
                             '<td text-align="center">'+res.kode_barang+'</td>'+
                             '<td text-align="left">'+res.nama_barang+'</td>'+
-                            '<td text-align="center">Rp '+NumberToMoney(res.harga_beli).split('.00').join('')+'</td>'+
+                            '<td text-align="left">'+res.stok+'</td>'+
+                           
                         '</tr>';
             });
 
@@ -602,13 +603,13 @@ function berhasil(){
 					<div class="col-md-12">
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
-								<h4 class="control-label"> Sub Total :</h4> 
+								<h4 class="control-label" style="visibility: hidden;"> Sub Total :</h4> 
 							</div>
 						</div>
 
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
-								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
+								<h4 id="subtotal_txt" class="control-label" style="visibility: hidden;"> Rp. 0.00 </h4> 
 							</div>
 						</div>
 					</div>
@@ -670,14 +671,21 @@ Tambah Data Permintaan <i class="fa fa-plus"></i>
 					$no = 0 ;
 					foreach ($lihat_data as $value) {
 						$no++;
-					?>
+					
+				if($value->status == '1'){
+				?>
+				<tr style="background-color: grey;">
+				<?php	
+				}else{
+				?>
 				<tr>
+					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_spb; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->uraian; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>permintaan_barang_c/cetak/<?=$value->id_permintaan;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>

@@ -158,7 +158,7 @@ function get_nama_kategori(){
 				</div>
 			</div>
 			<div class="portlet-body form">
-				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
+				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>" enctype="multipart/form-data">
 					<div class="form-body">
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Kode Barang</label>
@@ -240,6 +240,12 @@ function get_nama_kategori(){
 									?>
 								</select>
 								<input type="hidden" name="nama_kategori" id="nama_kategori">	
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Kategori Barang</label>
+							<div class="col-md-4">
+								<input type="file" name="userfiles" class="form-control">
 							</div>
 						</div>
 					</div>

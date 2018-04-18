@@ -7,7 +7,7 @@ class Purchase_order_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_purchase($no_po,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen)
+	function simpan_data_purchase($no_po,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$terms)
 	{
 		$sql = "
 			INSERT INTO tb_purchase_order (
@@ -20,7 +20,8 @@ class Purchase_order_m extends CI_Model
 				dc_ppn,
 				ppn_text,
 				total,
-				divisi
+				divisi,
+				terms
 			) VALUES (
 				'$no_po',
 				'$tanggal',
@@ -31,7 +32,8 @@ class Purchase_order_m extends CI_Model
 				'$ppn',
 				'$ppn_text',
 				'$totla',
-				'$departemen'
+				'$departemen',
+				'$terms'
 
 			)";
 		$this->db->query($sql);

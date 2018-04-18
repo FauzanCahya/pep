@@ -7,7 +7,7 @@ class Pembelian_jasa_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier,$pot_po,$ppn,$pph)
+	function simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen,$subtotal_text,$po_text,$ppn_text,$pph_text,$total_semua,$id_supplier,$pot_po,$ppn,$pph,$terms)
 	{
 		$sql = "
 			INSERT INTO tb_pembelian_jasa (
@@ -26,7 +26,8 @@ class Pembelian_jasa_m extends CI_Model
 				prosentase,
 				po,
 				ppn,
-				pph
+				pph,
+				terms
 			) VALUES (
 				'$no_bukti_real',
 				'$tanggal',
@@ -43,7 +44,8 @@ class Pembelian_jasa_m extends CI_Model
 				'0',
 				'$pot_po',
 				'$ppn',
-				'$pph'
+				'$pph',
+				'$terms'
 			)";
 		$this->db->query($sql);
 	}

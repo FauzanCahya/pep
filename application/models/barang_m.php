@@ -7,7 +7,7 @@ class Barang_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($kode_barang,$nama_barang,$id_satuan,$nama_satuan,$harga_jual,$harga_beli,$id_supplier,$nama_supplier,								  		$id_kategori,$nama_kategori)
+	function simpan_data_barang($kode_barang,$nama_barang,$id_satuan,$nama_satuan,$harga_jual,$harga_beli,$id_supplier,$nama_supplier,								  		$id_kategori,$nama_kategori,$src_image)
 	{
 		$sql = "
 			INSERT INTO master_barang (
@@ -20,7 +20,8 @@ class Barang_m extends CI_Model
 				id_supplier,
 				nama_supplier,
 				id_kategori,
-				nama_kategori
+				nama_kategori,
+				foto
 			) VALUES (
 				'$kode_barang',
 				'$nama_barang',
@@ -31,7 +32,8 @@ class Barang_m extends CI_Model
 				'$id_supplier',
 				'$nama_supplier',
 				'$id_kategori',
-				'$nama_kategori'
+				'$nama_kategori',
+				'$src_image'
 			)";
 		$this->db->query($sql);
 	}

@@ -565,7 +565,7 @@ function berhasil(){
 			<div class="portlet-body">
 				<div class="row" style="padding-top: 15px;">
 					<div class="col-md-12">
-						<div class="col-md-3">
+						<!-- <div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
 								<h4 class="control-label"> Sub Total :</h4> 
 							</div>
@@ -575,7 +575,7 @@ function berhasil(){
 							<div style="margin-bottom: 15px;" class="span4">
 								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 

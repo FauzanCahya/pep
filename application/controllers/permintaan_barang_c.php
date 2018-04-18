@@ -78,19 +78,15 @@ class Permintaan_barang_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PERMINTAAN_BARANG'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('PERMINTAAN_BARANG');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
-
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real 		= $no_buk."/SPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real 		= $get_nomor."/SPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 
 			$no_spb 	  = $this->input->post('no_spb');
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
-			$this->permintaan->save_next_nomor('PERMINTAAN_BARANG');
+			$this->master_model_m->update_nomor('PERMINTAAN_BARANG');
 			$this->permintaan->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen);
 
 			$id_permintaan_baru = $this->db->insert_id();

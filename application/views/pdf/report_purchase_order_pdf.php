@@ -90,7 +90,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Harga</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Disc</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Total</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No OPB</th>
+			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No OPB</th>
 			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
 			
 		</tr>
@@ -99,7 +99,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		foreach ($dt_det as $key => $value) {
 		$i++;
 
-		$no_opb_new = substr($value->no_opb,0,6);
+		
 		 ?>
 		<tr>
 			<td><?php echo $i; ?></td>
@@ -108,7 +108,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			<td><?=$value->harga;?></td>
 			<td><?=$value->disc;?></td>
 			<td><?=$value->total;?></td>
-			<td><?=$no_opb_new;?></td>
+			<td><?=$value->no_opb;?></td>
 			<td><?=$value->keterangan;?></td>
 			
 		</tr>
@@ -155,7 +155,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			
 		</tr>
 		<tr>
-			<td style="height: 150px;border: 1px solid black;"></td>
+			<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->terms;?></td>
 			<td style="height: 150px;border: 1px solid black;"></td>
 		</tr>
 </table>

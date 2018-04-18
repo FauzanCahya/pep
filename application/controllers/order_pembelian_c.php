@@ -96,14 +96,14 @@ class Order_pembelian_c extends CI_Controller {
 			$id_pengembalian_baru = $this->db->insert_id();
 			$nama_produk 	    = $this->input->post('nama_produk');
 			$produk    			= $this->input->post('produk');
-			$keterangan     	= $this->input->post('keterangan');
+			
 			$kuantitas      	= $this->input->post('kuantitas');
 			$satuan 	    	= $this->input->post('satuan');
 			$reff_no 		    = $this->input->post('reff_no');
 			$id_peminjaman_detail 		    = $this->input->post('id_peminjaman_detail');
 
 			foreach ($nama_produk as $key => $val) {
-					 $this->order->simpan_data_order_detail($id_pengembalian_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key]);
+					 $this->order->simpan_data_order_detail($id_pengembalian_baru,$produk[$key],$val,$uraian,$kuantitas[$key],$satuan[$key],$reff_no[$key]);
 			}
 
 			foreach ($id_peminjaman_detail as $keyi => $vali) {

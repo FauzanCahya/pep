@@ -94,9 +94,19 @@ class Purchase_order_c extends CI_Controller {
 			$ppn 					= $this->input->post('ppn');
 			$ppn_text 				= $this->input->post('ppn_text');
 			$totla 					= $this->input->post('total_semua');
+			$terms 					= $this->input->post('terms');
+			$terms_dua 				= $this->input->post('terms_dua');
+
+			if($terms == 'Tunai'){
+				$dta_terms = 'Tunai';
+			}else if($terms == 'Minggu'){
+				$dta_terms = $terms_dua.' Minggu';
+			}else if ($terms == 'Proses') {
+				$dta_terms = 'Pembayaran akan dilakukan secara proses </br>'.$terms_dua;
+			}
 
 			$this->master_model_m->update_nomor('PURCHASE_ORDER');
-			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen);
+			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$dta_terms);
 
 			$id_purchase_baru   = $this->db->insert_id();
 			$id_produk    		= $this->input->post('id_peminjaman_detail');

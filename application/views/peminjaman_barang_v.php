@@ -163,12 +163,12 @@ function ubah_detail(id){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
+							'<input style="font-size: 10px; text-align:right;visibility:hidden;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.jumlah+'" name="jumlah[]" id="jumlah_'+no+'">'+
+							'<input style="font-size: 10px; text-align:right;visibility:hidden;" type="text" class="form-control" value="'+res.jumlah+'" name="jumlah[]" id="jumlah_'+no+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -206,7 +206,7 @@ function get_popup_produk(){
                 '                        <th>NO</th>'+
                 '                        <th> Kode Barang </th>'+
                 '                        <th style="white-space:nowrap;"> Nama Barang </th>'+
-                '                        <th style="white-space:nowrap;"> Harga Beli </th>'+
+                '                        <th style="white-space:nowrap;"> Stok Barang </th>'+
                 '                    </tr>'+
                 '                </thead>'+
                 '                <tbody>'+
@@ -248,7 +248,7 @@ function ajax_produk(id_form){
                             '<td text-align="center">'+no+'</td>'+
                             '<td text-align="center">'+res.kode_barang+'</td>'+
                             '<td text-align="left">'+res.nama_barang+'</td>'+
-                            '<td text-align="center">Rp '+NumberToMoney(res.harga_beli).split('.00').join('')+'</td>'+
+                            '<td text-align="left">'+res.stok+'</td>'+
                         '</tr>';
             });
 
@@ -323,16 +323,16 @@ function tambah_data(){
 							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_'+i+'">'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="harga[]" id="harga_'+i+'">'+
-						'</div>'+
-					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:right;display:none;" type="text" class="form-control" value="" name="harga[]" id="harga_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:right;display:none;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
@@ -533,8 +533,8 @@ function berhasil(){
 									<th style="text-align: center;  widows: 30%;">Keterangan</th>
 									<th style="text-align: center; ">Kuantitas</th>
 									<th style="text-align: center; ">Satuan</th>
-									<th style="text-align: center; ">Harga</th>
-									<th style="text-align: center; ">Total</th>
+									<th style="text-align: center;display: none; ">Harga</th>
+									<th style="text-align: center;display: none; ">Total</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
@@ -568,16 +568,16 @@ function berhasil(){
 											<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_1">
 										</div>
 									</td>
-									<td align="center" style="vertical-align:middle;">
+									<!-- <td align="center" style="vertical-align:middle;">
 										<div class="controls">
-											<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="harga[]" id="harga_1">
+											<input style="font-size: 10px; text-align:right;display: none;" type="text" class="form-control" value="" name="harga[]" id="harga_1">
 										</div>
 									</td>
 									<td align="center" style="vertical-align:middle;">
 										<div class="controls">
-											<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_1" required>
+											<input style="font-size: 10px; text-align:right;display: none;" type="text" class="form-control" value="" name="jumlah[]" id="jumlah_1" required>
 										</div>
-									</td>
+									</td> -->
 									<td align="center" style="vertical-align:middle;">
 										<div class="controls">
 											<button style="width: 100%;" onclick="hapus_row_pertama();" type="button" class="btn btn-danger"> Hapus </button>
@@ -605,13 +605,13 @@ function berhasil(){
 					<div class="col-md-12">
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
-								<h4 class="control-label"> Sub Total :</h4> 
+								<h4 class="control-label" style="visibility: hidden;"> Sub Total :</h4> 
 							</div>
 						</div>
 
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
-								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
+								<h4 id="subtotal_txt" class="control-label" style="visibility: hidden;"> Rp. 0.00 </h4> 
 							</div>
 						</div>
 					</div>
@@ -679,7 +679,7 @@ Tambah Data peminjaman <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_spb; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->divisi; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->nama_divisi; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_peminjaman(<?php echo $value->id_peminjaman?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_peminjaman(<?php echo $value->id_peminjaman?>);"><i class="fa fa-trash-o"></i> Hapus </a>

@@ -74,11 +74,11 @@ class Permintaan_barang_m extends CI_Model
 
 	function hapus_permintaan($id)
 	{
-		$sql = "DELETE FROM  tb_permintaan_barang WHERE id_permintaan = '$id' " ;
+		$sql = "UPDATE tb_permintaan_barang SET status = '1' WHERE id_permintaan = '$id' " ;
 		$this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_permintaan_barang_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql2);
+		// $sql2 = "DELETE FROM  tb_permintaan_barang_detail WHERE id_induk = '$id' " ;
+		// $this->db->query($sql2);
 	}
 
 	function data_permintaan_id($id)

@@ -634,6 +634,15 @@ function get_transaction(id) {
         });
     }
 
+    function tipe_terms(val){
+    	$('.cuy').hide();
+        if(val == "Proses"){
+            $('#prosesi').show();
+        } else if(val == "Minggu"){
+            $('#payment').show();
+        }
+    }
+
 </script>
 
 <style type="text/css">
@@ -877,6 +886,33 @@ function get_transaction(id) {
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
 							<h4 id="total_pph" class="control-label"> Rp. 0.00 </h4> 
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> Terms Of Payment :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<select class="form-control" name="terms" id="terms" onchange="tipe_terms(this.value);">
+								<option value="Tunai">Cash</option>
+								<option value="Minggu">Payment</option>
+								<option value="Proses">Proses</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<select class="form-control cuy" name="terms_dua" id="prosesi" style="display: none;">
+								<option value="Down Payment">Down Payment</option>
+								<option value="Cash Of Delivery">Cash Of Delivery</option>
+								<option value="Retensi">Retensi</option>
+							</select>
+							<input type="text" class="form-control cuy" style="display: none;" id="payment" name="terms_dua" placeholder="Minggu">
 						</div>
 					</div>
 				</div>

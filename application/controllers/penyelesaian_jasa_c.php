@@ -12,6 +12,9 @@ class Penyelesaian_jasa_c extends CI_Controller {
         if($nama == "" || $nama == null){
         	redirect('login_c','refresh');
         }
+
+        $this->load->helper('url');
+		$this->load->library('fpdf/HTML2PDF');
 	}
 
 	public function index()
@@ -79,26 +82,27 @@ class Penyelesaian_jasa_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'PENYELESAIAN_JASA'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('PENYELESAIAN_JASA');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
+			$no_bukti_real 		= $get_nomor."/LPJ/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real 		= $no_buk."/LPJ/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  		= $this->input->post('tanggal');
 			$uraian 	 	 	= $this->input->post('uraian');
 
-			$this->pengembalian->save_next_nomor('PENYELESAIAN_JASA');
-			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen);
+			$this->master_model_m->update_nomor('PENYELESAIAN_JASA');
+			$this->pengembalian->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen);
 			
 
-			$id_pengembalian_baru = $this->db->insert_id();
+			$id_pengembalian_baru 		= $this->db->insert_id();
 			$no_opek 		   			= $this->input->post('no_opek');
 			$id_peminjaman_detail 		= $this->input->post('id_peminjaman_detail');
+			$prosentase_akhir 			= $this->input->post('prosentase_akhir');
+			$disc 						= $this->input->post('disc');
+			$total 						= $this->input->post('total');
+			$nama 						= $this->input->post('nama');
 
 			foreach ($no_opek as $key => $val) {
-					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$val,$id_peminjaman_detail[$key]);
+					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$id_peminjaman_detail[$key],$val,$prosentase_akhir[$key],$disc[$key],$total[$key],$nama[$key]);
 			}
 
 			// foreach ($id_peminjaman_detail as $keyi => $vali) {
@@ -249,6 +253,21 @@ class Penyelesaian_jasa_c extends CI_Controller {
 	   }
 
 	   return $var;
+	}
+
+	function cetak($id=""){
+
+		$dt = $this->pengembalian->get_data_trx($id);
+		$dt_det = $this->pengembalian->get_data_trx_detail($id);
+
+
+		$data =  array(
+			'page' => "penyelesaian_jasa_c", 
+			'dt' => $dt,
+			'dt_det' => $dt_det,
+		);
+		
+		$this->load->view('pdf/report_penerimaan_jasa_pdf', $data);
 	}
 }
 

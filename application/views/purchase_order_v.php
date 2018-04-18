@@ -665,6 +665,15 @@ function get_transaction(id) {
         });
     }
 
+    function tipe_terms(val){
+    	$('.cuy').hide();
+        if(val == "Proses"){
+            $('#prosesi').show();
+        } else if(val == "Minggu"){
+            $('#payment').show();
+        }
+    }
+
 </script>
 
 <style type="text/css">
@@ -772,7 +781,7 @@ function get_transaction(id) {
 									<th style="text-align: center; ">Keterangan</th>
 									<th style="text-align: center; ">Permintaan</th>
 									<th style="text-align: center; ">Realisasi</th>
-									<th style="text-align: center; ">No OPEK</th>
+									<th style="text-align: center; ">No OPB</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
@@ -821,7 +830,7 @@ function get_transaction(id) {
 									<th style="text-align: center; ">Harga</th>
 									<th style="text-align: center; ">Disc</th>
 									<th style="text-align: center; ">Total</th>
-									<th style="text-align: center; ">No OPEK</th>
+									<th style="text-align: center; ">No OPB</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>
@@ -921,6 +930,33 @@ function get_transaction(id) {
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> Terms Of Payment :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<select class="form-control" name="terms" id="terms" onchange="tipe_terms(this.value);">
+								<option value="Tunai">Cash</option>
+								<option value="Minggu">Payment</option>
+								<option value="Proses">Proses</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<select class="form-control cuy" name="terms_dua" id="prosesi" style="display: none;">
+								<option value="Down Payment">Down Payment</option>
+								<option value="Cash Of Delivery">Cash Of Delivery</option>
+								<option value="Retensi">Retensi</option>
+							</select>
+							<input type="text" class="form-control cuy" style="display: none;" id="payment" name="terms_dua" placeholder="Minggu">
+						</div>
+					</div>
+				</div>
+
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
 					<div class="col-md-12">
 						<div class="col-md-offset-2 col-md-10">
@@ -986,7 +1022,7 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->supplier; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-trash-o"></i> Nonaktif </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>purchase_order_c/cetak/<?=$value->id_purchase;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>

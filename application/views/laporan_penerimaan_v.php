@@ -521,7 +521,7 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga){
 
 
 
-	$('#data_item').html(isi);
+	$('#data_item').append(isi);
 	$('#jml_tr').val(i);
 
 }
@@ -617,6 +617,18 @@ function get_transaction(id) {
 										}
 									?>
 								</select>
+								
+							</div>
+							<div class="col-md-2">
+								<select name="filt" class="form-control" onchange="get_transaction(this.value);">
+									<option value="<?php echo date('m'); ?>">Bulan Ini</option>
+									<option value="<?php echo date('Y'); ?>">Tahun Ini</option>
+									<option value="Pencarian">Pencarian</option>
+									
+								</select>
+							</div>
+							<div class="col-md-2">
+								<input type="text" id="nama_filt" name="" class="form-control">
 							</div>
 						</div>
 						<div class="form-group form-md-line-input">
@@ -701,7 +713,7 @@ function get_transaction(id) {
 			<div class="portlet-body">
 				<div class="row" style="padding-top: 15px;">
 					<div class="col-md-12">
-						<div class="col-md-3">
+						<!-- <div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
 								<h4 class="control-label"> Sub Total :</h4> 
 							</div>
@@ -711,7 +723,7 @@ function get_transaction(id) {
 							<div style="margin-bottom: 15px;" class="span4">
 								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 
