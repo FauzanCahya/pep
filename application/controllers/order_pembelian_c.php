@@ -79,17 +79,13 @@ class Order_pembelian_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'ORDER_PEMBELIAN_BARANG'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('ORDER_PEMBELIAN_BARANG');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
-
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real = $no_buk."/OPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real = $get_nomor."/OPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
-			$this->order->save_next_nomor('ORDER_PEMBELIAN_BARANG');
+			$this->master_model_m->update_nomor('ORDER_PEMBELIAN_BARANG');
 			$this->order->simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen);
 			
 

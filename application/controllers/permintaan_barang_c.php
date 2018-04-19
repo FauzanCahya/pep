@@ -78,7 +78,7 @@ class Permintaan_barang_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('PERMINTAAN_BARANG');
+			$get_nomor	   		= $this->master_model_m->get_nomor_dokumen('PERMINTAAN_BARANG');
 
 			$no_bukti_real 		= $get_nomor."/SPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 

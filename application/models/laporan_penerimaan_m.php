@@ -14,12 +14,14 @@ class Laporan_penerimaan_m extends CI_Model
 				no_lpb,
 				tanggal,
 				no_po,
-				diterima
+				diterima,
+				status
 			) VALUES (
 				'$no_lpb',
 				'$tanggal',
 				'$no_po',
-				'$diterima'
+				'$diterima',
+				'0'
 			)";
 		$this->db->query($sql);
 	}
@@ -72,8 +74,11 @@ class Laporan_penerimaan_m extends CI_Model
 
 	function hapus_laporan($id)
 	{
-		$sql = "DELETE FROM  tb_laporan_penerimaan WHERE id_laporan = '$id' " ;
+		$sql = "UPDATE tb_laporan_penerimaan SET status = '1' WHERE id_laporan = '$id' " ;
 		$this->db->query($sql);
+		
+		// $sql = "DELETE FROM  tb_laporan_penerimaan WHERE id_laporan = '$id' " ;
+		// $this->db->query($sql);
 	}
 
 	function data_laporan_id($id)

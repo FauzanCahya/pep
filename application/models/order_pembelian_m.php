@@ -82,11 +82,14 @@ class Order_pembelian_m extends CI_Model
 
 	function hapus_order($id)
 	{
-		$sql = "DELETE FROM  tb_order_pembelian WHERE id_order = '$id' " ;
+		$sql = "UPDATE tb_order_pembelian SET status = '1' WHERE id_order = '$id' " ;
 		$this->db->query($sql);
+		
+		// $sql = "DELETE FROM  tb_order_pembelian WHERE id_order = '$id' " ;
+		// $this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_order_pembelian_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql2);
+		// $sql2 = "DELETE FROM  tb_order_pembelian_detail WHERE id_induk = '$id' " ;
+		// $this->db->query($sql2);
 	}
 
 	function data_order_id($id)

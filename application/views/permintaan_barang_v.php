@@ -674,7 +674,7 @@ Tambah Data Permintaan <i class="fa fa-plus"></i>
 					
 				if($value->status == '1'){
 				?>
-				<tr style="background-color: grey;">
+				<tr style="background-color: #cccbce;">
 				<?php	
 				}else{
 				?>

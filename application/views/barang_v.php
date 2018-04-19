@@ -243,7 +243,7 @@ function get_nama_kategori(){
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Kategori Barang</label>
+							<label class="col-md-2 control-label" for="form_control_1">Gambar Barang</label>
 							<div class="col-md-4">
 								<input type="file" name="userfiles" class="form-control">
 							</div>

@@ -355,7 +355,7 @@ function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
 								'<div class="controls">'+
 									'<div class="input-append" style="width: 100%;">'+
 										'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;" value="'+nama_produk+'">'+
-										'<input type="text" id="id_produk_'+i+'" value="'+kode_barang+'" name="produk[]" readonly style="background:#FFF;" value="0">'+
+										'<input type="text" id="id_produk_'+i+'" value="'+kode_barang+'" name="produk[]" readonly style="background:#FFF;">'+
 										'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
 									'</div>'+
 								'</div>'+
@@ -770,15 +770,21 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					$no = 0 ;
 					foreach ($lihat_data as $value) {
 						$no++;
-					?>
+					if($value->status == '1'){
+				?>
+				<tr style="background-color: #cccbce;">
+				<?php	
+				}else{
+				?>
 				<tr>
+					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_spb; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_div; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_pengembalian?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>pengembalian_barang_c/cetak/<?=$value->id_pengembalian;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>

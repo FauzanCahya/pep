@@ -85,12 +85,10 @@ class Bon_gudang_final_m extends CI_Model
 
 
 	function hapus_bon_gudang_final($id)
-	{
-		$sql = "DELETE FROM  tb_bon_gudang_final WHERE id_bon_gudang_final = '$id' " ;
+	{	
+		$sql = "UPDATE tb_bon_gudang_final SET status = '1' WHERE id_bon_gudang_final = '$id' " ;
 		$this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_bon_gudang_final_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql2);
 	}
 
 	function data_bon_gudang_final_id($id)

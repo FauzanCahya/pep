@@ -73,7 +73,7 @@ function hapus_bon_gudang_final(id)
 		async : false,
 		success : function(row){
 			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['no_spb']+'</b> ini ingin dihapus ?');
+			$('#msg').html('Apakah <b>'+row['no_bon']+'</b> ini ingin dihapus ?');
 		}
 	});
 }
@@ -876,15 +876,21 @@ Tambah Bon Gudang <i class="fa fa-plus"></i>
 					$no = 0 ;
 					foreach ($lihat_data as $value) {
 						$no++;
-					?>
+					if($value->status == '1'){
+				?>
+				<tr style="background-color: #cccbce;">
+				<?php	
+				}else{
+				?>
 				<tr>
+					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_bon; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_div; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_bon_gudang_final(<?php echo $value->id_bon_gudang_final?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_bon_gudang_final(<?php echo $value->id_bon_gudang_final?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_bon_gudang_final(<?php echo $value->id_bon_gudang_final?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>bon_gudang_final_c/cetak/<?=$value->id_bon_gudang_final;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>

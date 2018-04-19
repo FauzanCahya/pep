@@ -882,14 +882,20 @@ Tambah Data Order Pembelian <i class="fa fa-plus"></i>
 					$no = 0 ;
 					foreach ($lihat_data as $value) {
 						$no++;
-					?>
+					if($value->status == '1'){
+				?>
+				<tr style="background-color: #cccbce;">
+				<?php	
+				}else{
+				?>
 				<tr>
+					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_opb; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->uraian; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_order(<?php echo $value->id_order?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_order(<?php echo $value->id_order?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_order(<?php echo $value->id_order?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>order_pembelian_c/cetak/<?=$value->id_order;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
 				</tr>

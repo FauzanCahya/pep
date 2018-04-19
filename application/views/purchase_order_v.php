@@ -66,14 +66,14 @@ function hapus_pengembalian(id)
 	$('#popup_hapus').show();
 
 		$.ajax({
-		url : '<?php echo base_url(); ?>purchase_order_c/data_pengembalian_id',
+		url : '<?php echo base_url(); ?>purchase_order_c/data_purchase_id',
 		data : {id:id},
 		type : "POST",
 		dataType : "json",
 		async : false,
 		success : function(row){
 			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['no_spb']+'</b> ini ingin dihapus ?');
+			$('#msg').html('Apakah <b>'+row['no_po']+'</b> ini ingin dihapus ?');
 		}
 	});
 }
@@ -1015,8 +1015,14 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					$no = 0 ;
 					foreach ($lihat_data as $value) {
 						$no++;
-					?>
+					if($value->status == '1'){
+				?>
+				<tr style="background-color: #cccbce;">
+				<?php	
+				}else{
+				?>
 				<tr>
+					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_po; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>

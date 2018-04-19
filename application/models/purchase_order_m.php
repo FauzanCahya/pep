@@ -99,11 +99,14 @@ class Purchase_order_m extends CI_Model
 
 	function hapus_purchase($id)
 	{
-		$sql = "DELETE FROM  tb_purchase_order WHERE id_purchase = '$id' " ;
+		$sql = "UPDATE tb_purchase_order SET status = '1' WHERE id_purchase = '$id' " ;
 		$this->db->query($sql);
+		
+		// $sql = "DELETE FROM  tb_purchase_order WHERE id_purchase = '$id' " ;
+		// $this->db->query($sql);
 
-		$sql = "DELETE FROM  tb_purchase_order_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql);
+		// $sql = "DELETE FROM  tb_purchase_order_detail WHERE id_induk = '$id' " ;
+		// $this->db->query($sql);
 	}
 
 	function data_purchase_id($id)

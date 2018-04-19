@@ -81,17 +81,13 @@ class Bon_gudang_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'BON_GUDANG_SEMENTARA'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('BON_GUDANG_SEMENTARA');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
-
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real = $no_buk."/BGS/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real = $get_nomor."/BGS/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
-			$this->bon_gudang->save_next_nomor('BON_GUDANG_SEMENTARA');
+			$this->master_model_m->update_nomor('BON_GUDANG_SEMENTARA');
 			$this->bon_gudang->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$nama,$departemen);
 			
 

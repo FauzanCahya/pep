@@ -73,11 +73,12 @@ class Peminjaman_barang_m extends CI_Model
 
 	function hapus_peminjaman($id)
 	{
-		$sql = "DELETE FROM  tb_peminjaman_barang WHERE id_peminjaman = '$id' " ;
+		$sql = "UPDATE tb_peminjaman_barang SET status = '1' WHERE id_peminjaman = '$id' " ;
 		$this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_peminjaman_barang_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql2);
+
+		// $sql2 = "DELETE FROM  tb_peminjaman_barang_detail WHERE id_induk = '$id' " ;
+		// $this->db->query($sql2);
 	}
 
 	function data_peminjaman_id($id)

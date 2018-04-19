@@ -21,7 +21,8 @@ class Barang_m extends CI_Model
 				nama_supplier,
 				id_kategori,
 				nama_kategori,
-				foto
+				foto,
+				stok
 			) VALUES (
 				'$kode_barang',
 				'$nama_barang',
@@ -33,7 +34,8 @@ class Barang_m extends CI_Model
 				'$nama_supplier',
 				'$id_kategori',
 				'$nama_kategori',
-				'$src_image'
+				'$src_image',
+				'0'
 			)";
 		$this->db->query($sql);
 	}
