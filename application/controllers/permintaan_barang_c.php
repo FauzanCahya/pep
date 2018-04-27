@@ -114,17 +114,15 @@ class Permintaan_barang_c extends CI_Controller {
 			$tanggal 	  = $this->input->post('tanggal');
 			$uraian 	  = $this->input->post('uraian');
 
-			$this->permintaan->ubah_data_permintaan($id,$no_spb,$tanggal,$uraian);
+			$this->permintaan->ubah_data_permintaan($id,$tanggal,$uraian);
 
 			$nama_produk  		 = $this->input->post('nama_produk');
 			$keterangan   		 = $this->input->post('keterangan');
 			$kuantitas    		 = $this->input->post('kuantitas');
 			$satuan 	  		 = $this->input->post('satuan');
-			$harga 		  		 = $this->input->post('harga');
-			$jumlah 	  		 = $this->input->post('jumlah');
 
 			foreach ($nama_produk as $key => $val) {
-				$this->permintaan->ubah_data_permintaan_detail($id,$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$harga[$key],$jumlah[$key]);
+				$this->permintaan->ubah_data_permintaan_detail($id,$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('permintaan_barang_c');

@@ -105,11 +105,10 @@ class Permintaan_barang_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function ubah_data_permintaan($id,$no_spb,$tanggal,$uraian)
+	function ubah_data_permintaan($id,$tanggal,$uraian)
 	{
 		$sql = "
 			UPDATE tb_permintaan_barang SET 
-				no_spb  	= '$no_spb',
 				tanggal 	= '$tanggal',
 				uraian  	= '$uraian'
 			WHERE id_permintaan  = '$id'
@@ -117,7 +116,7 @@ class Permintaan_barang_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function ubah_data_permintaan_detail($id,$nama_produk,$keterangan,$kuantitas,$satuan,$harga,$jumlah)
+	function ubah_data_permintaan_detail($id,$nama_produk,$keterangan,$kuantitas,$satuan)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
 		$harga 		= str_replace(',', '', $harga);
@@ -128,9 +127,7 @@ class Permintaan_barang_m extends CI_Model
 				nama_produk = '$nama_produk',
 				keterangan  = '$keterangan',
 				kuantitas  	= '$kuantitas',
-				satuan  	= '$satuan',
-				harga  		= '$harga',
-				jumlah  	= '$jumlah'
+				satuan  	= '$satuan'
 			WHERE id_induk  = '$id'
 		";
 		$this->db->query($sql);
