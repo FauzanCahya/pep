@@ -59,7 +59,7 @@ class Permintaan_barang_m extends CI_Model
 	function lihat_data_permintaan()
 	{
 		$sql = "
-			SELECT * FROM tb_permintaan_barang ";
+			SELECT * FROM tb_permintaan_barang ORDER BY id_permintaan DESC";
 
 		return $this->db->query($sql)->result();
 	}

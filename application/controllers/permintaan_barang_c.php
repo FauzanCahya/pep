@@ -99,9 +99,12 @@ class Permintaan_barang_c extends CI_Controller {
 			// $jumlah 	    	= $this->input->post('jumlah');
 
 			foreach ($nama_produk as $key => $val) {
-					 $this->permintaan->simpan_data_barang_detail($id_permintaan_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
+					 $this->permintaan->simpan_data_barang_detail($id_permintaan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
 			}
+
+			$this->cetak($id_permintaan_baru);
 			$this->session->set_flashdata('sukses','1');
+
 			redirect('permintaan_barang_c');
 		
 		}else{

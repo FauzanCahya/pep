@@ -78,13 +78,9 @@ class Order_pekerjaan_c extends CI_Controller {
 			
 			$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
 			
-			$sql_buk = "SELECT NEXT_NOMOR FROM ak_nomor WHERE TIPE = 'ORDER_PEKERJAAN'";
+			$get_nomor	   = $this->master_model_m->get_nomor_dokumen('ORDER_PEKERJAAN');
 
-	        $row_buk = $this->db->query($sql_buk)->row();
-
-			$no_buk = $row_buk->NEXT_NOMOR + 1;
-
-			$no_bukti_real = $no_buk."/OPEK/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+			$no_bukti_real = $get_nomor."/OPEK/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 
 			$tanggal 	  	  = $this->input->post('tanggal');
 			$uraian 	 	  = $this->input->post('uraian');
@@ -92,7 +88,7 @@ class Order_pekerjaan_c extends CI_Controller {
 			$tipe_waktu 	  = $this->input->post('tipe_waktu');
 			$proyek_lambat 	  = $this->input->post('proyek_lambat');
 
-			$this->permintaan->save_next_nomor('ORDER_PEKERJAAN');
+			$this->master_model_m->update_nomor('ORDER_PEKERJAAN');
 			$this->permintaan->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$waktu,$tipe_waktu,$proyek_lambat,$departemen);
 
 			$id_permintaan_baru = $this->db->insert_id();

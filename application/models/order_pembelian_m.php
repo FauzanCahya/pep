@@ -179,7 +179,7 @@ class Order_pembelian_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
         ";
 
         return $this->db->query($sql)->result();

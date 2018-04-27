@@ -74,16 +74,19 @@ class Order_pekerjaan_m extends CI_Model
 
 	function hapus_permintaan($id)
 	{
-		$sql = "DELETE FROM  tb_order_pekerjaan WHERE id_permintaan = '$id' " ;
+		$sql = "UPDATE tb_order_pekerjaan SET status = '1' WHERE id_opek = '$id' " ;
 		$this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_order_pekerjaan_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql2);
+		// $sql = "DELETE FROM  tb_order_pekerjaan WHERE id_permintaan = '$id' " ;
+		// $this->db->query($sql);
+
+		// $sql2 = "DELETE FROM  tb_order_pekerjaan_detail WHERE id_induk = '$id' " ;
+		// $this->db->query($sql2);
 	}
 
 	function data_permintaan_id($id)
 	{
-		$sql = "SELECT * FROM tb_order_pekerjaan WHERE id_permintaan = '$id' ";
+		$sql = "SELECT * FROM tb_order_pekerjaan WHERE id_opek = '$id' ";
 		$query = $this->db->query($sql);
 		return $query->row();
 	}

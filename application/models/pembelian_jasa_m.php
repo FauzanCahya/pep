@@ -119,11 +119,14 @@ class Pembelian_jasa_m extends CI_Model
 
 	function hapus_pengembalian($id)
 	{
-		$sql = "DELETE FROM  tb_pembelian_jasa WHERE id_pengembalian = '$id' " ;
+		$sql = "UPDATE tb_pembelian_jasa SET status = '1' WHERE id_pengembalian = '$id' " ;
 		$this->db->query($sql);
+		
+		// $sql = "DELETE FROM  tb_pembelian_jasa WHERE id_pengembalian = '$id' " ;
+		// $this->db->query($sql);
 
-		$sql2 = "DELETE FROM  tb_pembelian_jasa_detail WHERE id_induk = '$id' " ;
-		$this->db->query($sql2);
+		// $sql2 = "DELETE FROM  tb_pembelian_jasa_detail WHERE id_induk = '$id' " ;
+		// $this->db->query($sql2);
 	}
 
 	function data_pengembalian_id($id)

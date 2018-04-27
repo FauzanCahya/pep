@@ -694,7 +694,7 @@ function get_transaction(id) {
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold uppercase">Form Pengembalian Barang</span>
+					<span class="caption-subject font-green-sharp bold uppercase">Form Purchase Order</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group btn-group-devided" data-toggle="buttons">
@@ -986,7 +986,7 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Table pengembalian Barang
+					<i class="fa fa-edit"></i>Table Purchase Order
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">

@@ -49,16 +49,18 @@ class Barang_c extends CI_Controller {
 		$id_kategori 	= $this->input->post('id_kategori');
 		$nama_kategori  = $this->input->post('nama_kategori');
 
-		  $config['upload_path'] = './assets/barang';
+		  $config['upload_path'] = 'files/';
 	      $config['allowed_types'] = 'gif|jpg|png';
 	      $config['max_size'] = '2048';
-	      $config['max_width'] = '2000';
-	      $config['max_height'] = '2000';
-	      $this->load->library('upload', $config);
+	      // $config['max_width'] = '1024';
+	      // $config['max_height'] = '768';
+	      $this->upload->initialize($config);
 
 	      if ($this->upload->do_upload('userfiles')) {
 	        $data = array('upload_data' => $this->upload->data());
 	        $src_image = $_FILES['userfiles']['name'];
+	      }else{
+	      	$src_image = 'Kosong';
 	      }
 
 		$this->barang->simpan_data_barang($kode_barang,$nama_barang,$id_satuan,$nama_satuan,$harga_jual,$harga_beli,$id_supplier,$nama_supplier,								  $id_kategori,$nama_kategori,$src_image);

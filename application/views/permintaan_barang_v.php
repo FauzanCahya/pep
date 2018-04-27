@@ -161,16 +161,6 @@ function ubah_detail(id){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
-						'</div>'+
-					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.jumlah+'" name="jumlah[]" id="jumlah_'+no+'">'+
-						'</div>'+
-					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
 							'<button style="width: 100%;" onclick="hapus('+no+');" type="button" class="btn btn-danger"> Hapus </button>'+
 						'</div>'+
 					'</td>'+
@@ -205,6 +195,7 @@ function get_popup_produk(){
                 '                        <th> Kode Barang </th>'+
                 '                        <th style="white-space:nowrap;"> Nama Barang </th>'+
                 '                        <th style="white-space:nowrap;"> Stok Barang </th>'+
+                '                        <th style="white-space:nowrap;"> Gambar </th>'+
                 '                    </tr>'+
                 '                </thead>'+
                 '                <tbody>'+
@@ -247,6 +238,7 @@ function ajax_produk(id_form){
                             '<td text-align="center">'+res.kode_barang+'</td>'+
                             '<td text-align="left">'+res.nama_barang+'</td>'+
                             '<td text-align="left">'+res.stok+'</td>'+
+                            '<td text-align="left"><img src="<?php echo base_url(); ?>/files/'+res.foto+'" width="60" height="60"></td>'+
                            
                         '</tr>';
             });
@@ -314,7 +306,7 @@ function tambah_data(){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'" onkeyup="FormatCurrency(this);">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -558,7 +550,7 @@ function berhasil(){
 									</td>
 									<td align="center" style="vertical-align:middle;">
 										<div class="controls">
-											<input onkeyup="hitung_total(1);" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_1">
+											<input onkeyup="FormatCurrency(this);" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_1" >
 										</div>
 									</td>
 									<td align="center" style="vertical-align:middle;">
