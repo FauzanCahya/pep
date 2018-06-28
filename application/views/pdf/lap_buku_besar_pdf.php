@@ -178,7 +178,6 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 </table>
 
 <?PHP if(count($dt) == 0){ ?>
-
 <table align="center" class="grid" style="width:100%;">
     <tr>
         <th style='text-align:center; width:15%;' class='kolom_header'> No </th>
@@ -192,14 +191,12 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
         <td class='gridtd' colspan='6' align="center"> <b> Tidak ada data yang dapat ditampilkan </b> </td>
     </tr>
 </table>
-
 <?PHP } ?>
 
 
 <?PHP
     $width_custom = 14;
-    $height_custom = 8.50;
-    
+    $height_custom = 8.50; 
     $content = ob_get_clean();
     $width_in_inches = $width_custom;
     $height_in_inches = $height_custom;
