@@ -94,12 +94,12 @@ class Laporan_penerimaan_c extends CI_Controller {
 			$nama_produk 	 = $this->input->post('nama_produk');
 			$keterangan  	 = $this->input->post('keterangan');
 			$kuantitas 	 	 = $this->input->post('kuantitas');
-			$harga 		 	 = $this->input->post('harga_awal');
-			$total 		 	 = $this->input->post('total');
+			// $harga 		 	 = $this->input->post('harga_awal');
+			// $total 		 	 = $this->input->post('total');
 			$no_opb 	 	 = $this->input->post('no_opb');
 
 			foreach ($nama_produk as $key => $val) {
-				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
+				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$no_opb[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('laporan_penerimaan_c');

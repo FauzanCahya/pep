@@ -96,13 +96,21 @@ class Purchase_order_c extends CI_Controller {
 			$totla 					= $this->input->post('total_semua');
 			$terms 					= $this->input->post('terms');
 			$terms_dua 				= $this->input->post('terms_dua');
+			$prosesi_a 				= $this->input->post('prosesi_a');
+			$awal_proses 			= $this->input->post('awal_proses');
+			$akhir_proses 			= $this->input->post('akhir_proses');
 
 			if($terms == 'Tunai'){
 				$dta_terms = 'Tunai';
 			}else if($terms == 'Minggu'){
 				$dta_terms = $terms_dua.' Minggu';
 			}else if ($terms == 'Proses') {
-				$dta_terms = 'Pembayaran akan dilakukan secara proses </br>'.$terms_dua;
+
+				foreach ($prosesi_a as $key => $baris) {
+					$this->purchase->simpan_terms($no_bukti_real,$baris,$awal_proses[$key],$akhir_proses[$key]);
+				}
+
+				$dta_terms = 'Proses';
 			}
 
 			$this->master_model_m->update_nomor('PURCHASE_ORDER');

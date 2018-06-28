@@ -58,7 +58,7 @@ class Peminjaman_barang_m extends CI_Model
 	function lihat_data_peminjaman()
 	{
 		$sql = "
-			SELECT mb.* , md.nama_divisi FROM tb_peminjaman_barang mb , master_divisi md WHERE mb.divisi = md.id_divisi ";
+			SELECT mb.* , md.nama_divisi FROM tb_peminjaman_barang mb , master_divisi md WHERE mb.divisi = md.id_divisi ORDER BY mb.id_peminjaman DESC";
 
 		return $this->db->query($sql)->result();
 	}

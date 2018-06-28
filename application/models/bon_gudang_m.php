@@ -60,7 +60,7 @@ class Bon_gudang_m extends CI_Model
 	function lihat_data_bon_gudang()
 	{
 		$sql = "
-			SELECT pb.* , md.nama_divisi as nama_div FROM tb_bon_gudang pb , master_divisi md WHERE pb.divisi = md.id_divisi ";
+			SELECT pb.* , md.nama_divisi as nama_div FROM tb_bon_gudang pb , master_divisi md WHERE pb.divisi = md.id_divisi ORDER BY pb.id_bon_gudang DESC";
 
 		return $this->db->query($sql)->result();
 	}

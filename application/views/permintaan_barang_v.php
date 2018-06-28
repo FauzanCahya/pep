@@ -310,8 +310,7 @@ function tambah_data(){
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_'+i+'">'+
+						'<div class="controls`							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					// '<td align="center" style="vertical-align:middle;">'+
@@ -623,9 +622,49 @@ function berhasil(){
 </form>
 
 
-<button id="tambah_permintaan_barang" class="btn green">
-Tambah Data Permintaan <i class="fa fa-plus"></i>
-</button>
+
+<br>
+<br>
+<div class="row">
+	
+	<div class="col-md-3">
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4">
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
+
+	<div class="col-md-2">
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button style="float: right;" id="tambah_permintaan_barang" class="btn green">
+			Tambah Data Permintaan <i class="fa fa-plus"></i>
+			</button>
+		</a>
+	</div>
+</div>
+
 </br>
 </br>
 
@@ -654,6 +693,7 @@ Tambah Data Permintaan <i class="fa fa-plus"></i>
 				<tr>
 					<th style="text-align:center;"> No</th>
 					<th style="text-align:center;"> No SPB</th>
+					<th style="text-align:center;"> Tanggal</th>
 					<th style="text-align:center;"> Uraian</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
@@ -674,9 +714,10 @@ Tambah Data Permintaan <i class="fa fa-plus"></i>
 					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_spb; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->uraian; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<!-- <a class="btn default btn-xs purple" id="ubah" href="<?=base_url();?>permintaan_barang_c/ubah_data/<?=$value->id_permintaan;?>"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_permintaan(<?php echo $value->id_permintaan?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>permintaan_barang_c/cetak/<?=$value->id_permintaan;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>

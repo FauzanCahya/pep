@@ -50,7 +50,7 @@ class Retur_pembelian_m extends CI_Model
 	function lihat_data_retur()
 	{
 		$sql = "
-			SELECT * FROM tb_retur_pembelian ";
+			SELECT * FROM tb_retur_pembelian ORDER BY id_retur DESC";
 
 		return $this->db->query($sql)->result();
 	}

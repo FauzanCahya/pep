@@ -181,10 +181,36 @@ function MonthToString($month){
 												<a href="<?php echo base_url(); ?>konversi_c">
 												<i class="fa fa-arrows-alt"></i> Master Konversi </a>
 											</li>
+											
 										</ul>
 									</div>
 								</div>
 							</div>
+						</li>
+					</ul>
+				</li>
+
+				<li class ="mega-menu-dropdown">
+					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
+					Setup  <i class="fa fa-angle-down"></i><span class="selected"></span>
+					</a>
+					<ul class="dropdown-menu" style="min-width: 400px;">
+						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>akun_barang_c">
+							<i class="fa fa-bank"></i> Barang </a>
+						</li>
+
+						
+						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>akun_pelanggan_c">
+							<i class="fa fa-users"></i> Pelanggan </a>
+						</li>
+
+						
+
+						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>akun_supplier_c">
+							<i class="fa fa-users"></i> Supplier </a>
 						</li>
 					</ul>
 				</li>
@@ -291,10 +317,10 @@ function MonthToString($month){
 									<a href="<?php echo base_url(); ?>pengakuan_hutang_c">
 									<i class="fa fa-bank"></i> Pengakuan Hutang (TTT) </a>
 								</li>
-								<!-- <li <?php if ($menu2 == 'perintah_membayar') { echo "class = 'active'";}?>>
+								<li <?php if ($menu2 == 'perintah_membayar') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>perintah_membayar_c">
 									<i class="fa fa-bank"></i> Perintah Membayar </a>
-								</li> -->
+								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
 
@@ -313,6 +339,11 @@ function MonthToString($month){
 								<li <?php if ($menu2 == 'pengambilan_giro') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>pengambilan_giro_c">
 									<i class="fa fa-cube"></i> Pengambilan Giro </a>
+								</li>
+
+								<li <?php if ($menu2 == 'pengeluaran_giro') { echo "class = 'active'";}?>>
+									<a href="<?php echo base_url(); ?>pengeluaran_giro_c">
+									<i class="fa fa-cube"></i> Pengeluaran Giro </a>
 								</li>
 
 								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>

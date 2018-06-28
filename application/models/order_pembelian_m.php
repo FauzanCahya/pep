@@ -56,10 +56,37 @@ class Order_pembelian_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+
+	function simpan_data_order_detail_a($id_order_baru,$id_produk,$nama_produk,$kuantitas,$satuan,$no_spb)
+	{
+
+		$kuantitas 	= str_replace(',', '', $kuantitas);
+
+		$sql = "
+			INSERT INTO tb_order_pembelian_detail (
+				id_induk,
+				id_produk,
+				nama_produk,
+				kuantitas,
+				satuan,
+				no_spb,
+				realisasi
+			) VALUES (
+				'$id_order_baru',
+				'$id_produk',
+				'$nama_produk',
+				'$kuantitas',
+				'$satuan',
+				'$no_spb',
+				'0'
+			)";
+		$this->db->query($sql);
+	}
+
 	function lihat_data_order()
 	{
 		$sql = "
-			SELECT * FROM tb_order_pembelian ";
+			SELECT * FROM tb_order_pembelian ORDER BY id_order DESC";
 
 		return $this->db->query($sql)->result();
 	}
@@ -106,28 +133,23 @@ class Order_pembelian_m extends CI_Model
 		return $query->result();
 	}
 
-	function ubah_data_order($id,$no_opb,$tanggal,$uraian)
+	function ubah_data_order($id,$uraian)
 	{
 		$sql = "
 			UPDATE tb_order_pembelian SET
-				no_opb  		= '$no_opb',
-				tanggal 		= '$tanggal',
 				uraian  		= '$uraian'
 			WHERE id_order  	= '$id'
 		";
 		$this->db->query($sql);
 	}
 
-	function ubah_data_order_detail($id,$nama_produk,$keterangan,$kuantitas,$satuan,$harga,$total,$no_spb)
+	function ubah_data_order_detail($id,$nama_produk,$kuantitas,$satuan,$no_spb)
 	{
 		$sql = "
 			UPDATE tb_order_pembelian_detail SET
 				nama_produk  	= '$nama_produk',
-				keterangan  	= '$keterangan',
 				kuantitas  		= '$kuantitas',
 				satuan  		= '$satuan',
-				harga  			= '$harga',
-				total  			= '$total',
 				no_spb  		= '$no_spb'
 			WHERE id_induk  	= '$id'
 		";
@@ -167,6 +189,13 @@ class Order_pembelian_m extends CI_Model
         return $this->db->query($sql)->row();
     }
 
+    function hapus_data_order_detail($id)
+	{
+		
+		$sql2 = "DELETE FROM  tb_order_pembelian_detail WHERE id_induk = '$id' " ;
+		$this->db->query($sql2);
+	}
+
     function update_selisih_detail($vali,$kuantitas)
 	{
 		$sql = "
@@ -177,9 +206,9 @@ class Order_pembelian_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-    function get_transaction_info($id_barang){
+    function get_transaction_info($id_barang,$tahun){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang' AND pb.tanggal LIKE '%$tahun%'
         ";
 
         return $this->db->query($sql)->result();

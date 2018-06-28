@@ -38,6 +38,7 @@ $(document).ready(function(){
 	$("#tambah_purchase_order").click(function(){
 		$("#tambah_purchase_order").fadeOut('slow');
 		$("#table_purchase_order").fadeOut('slow');
+		$(".cui").fadeOut('slow');
 		$("#form_purchase_order").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
@@ -73,7 +74,7 @@ function hapus_pengembalian(id)
 		async : false,
 		success : function(row){
 			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['no_po']+'</b> ini ingin dihapus ?');
+			$('#msg').html('Apakah <b>'+row['no_po']+'</b> ini ingin anda cancel ?');
 		}
 	});
 }
@@ -162,6 +163,11 @@ function ubah_detail(id){
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="" name="diskon[]" id="diskon_'+no+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -369,17 +375,18 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" onkeyup="gen_harga('+i+');FormatCurrency(this);"  type="text" class="form-control" value="" name="harga[]" id="harga_awal_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="gen_harga('+i+');FormatCurrency(this);hitung_total_semua();"  type="text" class="form-control" value="" name="harga[]" id="harga_awal_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" onkeyup="harga_disc('+i+');hitung_total_semua();" type="text" class="form-control" value="" name="disc[]" id="disc_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="harga_disc('+i+');" type="text" class="form-control" value="" name="disc[]" id="disc_'+i+'">'+
+							
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:center;" onkeyup="" type="hidden" class="form-control" value="" name="disc[]" id="tep_harga_'+i+'">'+
-						'</div>'+
-					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_disc_'+i+'">'+
 						'</div>'+
 					'</td>'+
@@ -425,13 +432,13 @@ function gen_harga(id){
 	var total = (parseFloat(harga_awal) * parseFloat(kuantitas)) ;
 
 
-	$('#tep_harga_'+id).val(acc_format(total, "").split('.00').join('') );
+	$('#total_disc_'+id).val(acc_format(total, "").split('.00').join('') );
 
 }
 
 function harga_disc(id){
 
-	var harga_awal = $('#tep_harga_'+id).val();
+	var harga_awal = $('#harga_awal_'+id).val();
 	harga_awal = harga_awal.split(',').join('');
 
 	if(harga_awal == ""){
@@ -445,7 +452,14 @@ function harga_disc(id){
 		disc = 0;
 	}
 
-	var total = (parseFloat(harga_awal) - (parseFloat(disc)/100) * parseFloat(harga_awal))  ;
+	var kuantitas = $('#kuantitas_'+id).val();
+	kuantitas = kuantitas.split(',').join('');
+
+	if(kuantitas == "" || kuantitas== null){
+		kuantitas = 0;
+	}
+
+	var total = (parseFloat(harga_awal) - (parseFloat(disc)/100) * parseFloat(harga_awal)) * parseFloat(kuantitas) ;
 
 
 	$('#total_disc_'+id).val(acc_format(total, "").split('.00').join('') );
@@ -469,7 +483,7 @@ function po(disc){
 	var total = (parseFloat(disc)/100) * parseFloat(harga_awal)  ;
 	var accu = parseFloat(harga_awal) - total;
 
-	$('#total_po').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#total_po').html(' '+acc_format(accu, "").split('.00').join('') );
 	$('#po_text').val(total);
 
 	
@@ -491,36 +505,37 @@ function ppn_ici(disc){
 	var accu = parseFloat(total_po) + total;
 
 	
-	$('#total_ppn').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#total_ppn').html(' '+acc_format(accu, "").split('.00').join('') );
 	$('#ppn_text').val(total);
-	
-}
-
-function pph_ici(disc){
-
-	var total_po = $('#total_po').html();
-	total_po = total_po.split(',').join('');
-	total_po = total_po.split('Rp. ').join('');
-
-	var total_ppn = $('#total_ppn').html();
-	total_ppn = total_ppn.split(',').join('');
-	total_ppn = total_ppn.split('Rp. ').join('');
-
-
-	if(total_po == ""){
-		total_po = 0;
-	}
-
-	
-	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
-	var accu = parseFloat(total_ppn) - total;
-
-	
-	$('#total_pph').html('Rp. '+acc_format(accu, "").split('.00').join('') );
-	$('#pph_text').val(total);
 	$('#total_semua').val(accu);
 	
 }
+
+// function pph_ici(disc){
+
+// 	var total_po = $('#total_po').html();
+// 	total_po = total_po.split(',').join('');
+// 	total_po = total_po.split('Rp. ').join('');
+
+// 	var total_ppn = $('#total_ppn').html();
+// 	total_ppn = total_ppn.split(',').join('');
+// 	total_ppn = total_ppn.split('Rp. ').join('');
+
+
+// 	if(total_po == ""){
+// 		total_po = 0;
+// 	}
+
+	
+// 	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
+// 	var accu = parseFloat(total_ppn) - total;
+
+	
+// 	$('#total_pph').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+// 	$('#pph_text').val(total);
+	
+	
+// }
 
 function hitung_total_semua(){
 	var sum = 0;
@@ -532,7 +547,7 @@ function hitung_total_semua(){
 		}
     });
 
-    $('#subtotal_txt').html('Rp. '+acc_format(sum, ""));
+    $('#subtotal_txt').html(' '+acc_format(sum, ""));
     $('#subtotal_text').val(sum);
 }
 
@@ -670,10 +685,118 @@ function get_transaction(id) {
     	$('.cuy').hide();
         if(val == "Proses"){
             $('#prosesi').show();
+            $('#prosen_awal').show();
+            $('#prosen_akhir').show();
+            $('#label_awal').show();
+            $('#label_akhir').show();
+            $('#label_proses').show();
+            $('#tambah_proses').show();
+            $('#hapus_proses').show();
+            $('#tabel_proses').show();
         } else if(val == "Minggu"){
             $('#payment').show();
+            $('#prosen_awal').hide();
+            $('#prosen_akhir').hide();
+            $('#label_awal').hide();
+            $('#label_akhir').hide();
+            $('#label_proses').hide();
+            $('#tambah_proses').hide();
+            $('#hapus_proses').hide();
+            $('#tabel_proses').hide();
+        } else if(val == "Tunai"){
+        	$('#prosen_awal').hide();
+            $('#prosen_akhir').hide();
+            $('#label_awal').hide();
+            $('#label_akhir').hide();
+            $('#label_proses').hide();
+            $('#tambah_proses').hide();
+            $('#hapus_proses').hide();
+            $('#tabel_proses').hide();
         }
     }
+
+    function proses(val){
+    	// $('.cuy').hide();
+        if(val == "Down Payment"){
+            document.getElementById('prosen_awal').readOnly = true;
+            document.getElementById('prosen_akhir').readOnly = false;
+            $('#prosen_awal').val('0');
+            $('#prosen_akhir').val('0');
+        } else if(val == "Retensi"){
+        	document.getElementById('prosen_awal').readOnly = true;
+        	document.getElementById('prosen_akhir').readOnly = false;
+            $('#prosen_awal').val('100');
+            $('#prosen_akhir').val('0');
+        } else if(val == "Cash Of Delivery"){
+        	document.getElementById('prosen_awal').readOnly = true;
+        	document.getElementById('prosen_akhir').readOnly = true;
+            $('#prosen_awal').val('100');
+            $('#prosen_akhir').val('100');
+        } else if(val == "Progress"){
+        	document.getElementById('prosen_akhir').readOnly = true;
+        	document.getElementById('prosen_awal').readOnly = false;
+        	$('#prosen_awal').val('0');
+            $('#prosen_akhir').val('0');
+        }
+    }
+
+    function ganti_mata(id){
+    	if(id == "Rupiah"){
+    		$('#mata_uang_depan').html('Rp.');
+    		$('#mata_uang_depan_1').html('Rp.');
+    		$('#mata_uang_depan_2').html('Rp.');
+    		document.getElementById('kurs_uang').readOnly = true;
+    	}else if(id == "Dollar"){
+    		$('#mata_uang_depan').html('$.');
+    		$('#mata_uang_depan_1').html('$.');
+    		$('#mata_uang_depan_2').html('$.');
+    		document.getElementById('kurs_uang').readOnly = false;
+    	}
+    }
+
+    function tambah_proses_js(){
+	var jml_tr = $('#jml_tr_pr').val();
+	var i = parseFloat(jml_tr) + 1;
+	var a = $('#prosen_awal').val();
+	var b = $('#prosen_akhir').val();
+	var c = $('#prosesi').val();
+
+	var isi = 	'<tr id="tr_a_'+i+'">'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<label style="font-size:13px;"></label>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:center;" type="text" class="form-control" value="'+c+'" name="prosesi_a[]" id="kuantitas_'+i+'" readonly>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:center;" type="text" class="form-control" value="'+a+'" name="awal_proses[]" id="satuan_'+i+'" readonly>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:right;" type="text" class="form-control" value="'+b+'" name="akhir_proses[]" id="harga_'+i+'" readonly>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button type="button" name="hapus_proses_a" onclick="hapus_proses('+i+')" class="btn btn-danger">HAPUS</button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+
+	$('#tabel_proses').append(isi);
+	$('#jml_tr_pr').val(i);
+
+}
+
+function hapus_proses(i){
+	$('#tr_a_'+i).remove();
+}
 
 </script>
 
@@ -685,6 +808,7 @@ function get_transaction(id) {
 
 <form role="form" action="<?php echo $url_simpan; ?>" method="post">
 <input type="hidden" id="jml_tr" value="1">
+<input type="hidden" id="jml_tr_pr" value="1">
 <input type="hidden" id="id_purchase" name="id_purchase">
 
 <div class="row" id="form_purchase_order" style="display:none; ">
@@ -732,7 +856,7 @@ function get_transaction(id) {
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<textarea  rows="3" id="uraian" name="uraian" class="form-control" required></textarea>
+								<textarea  rows="3" id="uraian" name="uraian" class="form-control" ></textarea>
 							</div>
 						</div>
 					</div>
@@ -743,7 +867,7 @@ function get_transaction(id) {
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Supplier</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<select name="dept" class="form-control" onchange="get_supplier(this.value);">
+								<select name="dept" class="form-control input-large select2me input-sm" onchange="get_supplier(this.value);">
 									<option>Pilih Supplier ......</option>
 									<?php 
 										foreach ($dt_supp as $key => $dt_value) {
@@ -753,6 +877,7 @@ function get_transaction(id) {
 										}
 									?>
 								</select>
+								<span class="input-group-btn"><a target="_blank" href="<?php base_url(); ?>supplier_c"><button class="btn btn-success" type="button"><i class="fa fa-plus"></i></button></a></span>
 							</div>
 						</div>
 						<div class="col-md-4">
@@ -820,6 +945,23 @@ function get_transaction(id) {
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-md-12">
+						<label class="col-md-2 control-label" for="form_control_1">Mata Uang yang Dipakai</label>
+						<div class="col-md-3">
+							<select name="mata_uang" id="mata_uang" class="form-control" onchange="ganti_mata(this.value);">
+								<option value="Rupiah">Rupiah</option>
+								<option value="Dollar">Dollar</option>
+							</select>	
+						</div>
+						<div class="col-md-2"></div>
+						<label class="col-md-2 control-label" for="form_control_1">Kurs yang Dipakai Saat Ini</label>
+						<div class="col-md-3">
+							<input type="text" name="kurs_uang" class="form-control col-md-6" id="kurs_uang" readonly>
+						</div>
+					</div>
+				</div>
+
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
 					<div class="portlet-body flip-scroll">
 						<table class="table table-bordered table-striped table-condensed flip-content">
@@ -866,7 +1008,12 @@ function get_transaction(id) {
 
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
-								<h4 id="subtotal_txt" class="control-label"> Rp. 0.00 </h4> 
+								<table>
+									<tr>
+										<td><h4 class="control-label" id="mata_uang_depan">Rp. </h4></td>
+										<td><h4 class="control-label" id="subtotal_txt">0.00</h4></td>
+									</tr>
+								</table>
 								<input type="hidden" id="subtotal_text" name="subtotal_text" class="form-control">
 							</div>
 						</div>
@@ -887,7 +1034,12 @@ function get_transaction(id) {
 					</div>
 					<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
-								<h4 id="total_po" class="control-label"> Rp. 0.00 </h4> 
+								<table>
+									<tr>
+										<td><h4 class="control-label" id="mata_uang_depan_1">Rp. </h4></td>
+										<td><h4 class="control-label" id="total_po">0.00</h4></td>
+									</tr>
+								</table>
 							</div>
 						</div>
 				</div>
@@ -902,16 +1054,22 @@ function get_transaction(id) {
 						<div style="margin-bottom: 15px;" class="span4">
 							<input type="text" id="ppn" onkeyup="ppn_ici(this.value);" name="ppn" class="form-control">
 							<input type="hidden" id="ppn_text" name="ppn_text" class="form-control">
+							<input type="hidden" id="total_semua" name="total_semua" class="form-control">
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
-							<h4 id="total_ppn" class="control-label"> Rp. 0.00 </h4> 
+							<table>
+								<tr>
+									<td><h4 class="control-label" id="mata_uang_depan_2">Rp. </h4></td>
+									<td><h4 class="control-label" id="total_ppn">0.00</h4></td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
 							<h4 class="control-label"> PPH :</h4> 
@@ -921,7 +1079,7 @@ function get_transaction(id) {
 						<div style="margin-bottom: 15px;" class="span4">
 							<input type="text" id="pph" onkeyup="pph_ici(this.value);" name="pph" class="form-control">
 							<input type="hidden" id="pph_text" name="pph_text" class="form-control">
-							<input type="hidden" id="total_semua" name="total_semua" class="form-control">
+							
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -929,7 +1087,7 @@ function get_transaction(id) {
 							<h4 id="total_pph" class="control-label"> Rp. 0.00 </h4> 
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="row">
 					<div class="col-md-3">
@@ -948,14 +1106,58 @@ function get_transaction(id) {
 					</div>
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
-							<select class="form-control cuy" name="terms_dua" id="prosesi" style="display: none;">
+							<select class="form-control cuy" name="terms_dua" id="prosesi" onchange="proses(this.value);" style="display: none;">
 								<option value="Down Payment">Down Payment</option>
-								<option value="Cash Of Delivery">Cash Of Delivery</option>
 								<option value="Retensi">Retensi</option>
+								<option value="Cash Of Delivery">Cash Of Delivery</option>
+								<option value="Progress">Progress</option>
+								
 							</select>
 							<input type="text" class="form-control cuy" style="display: none;" id="payment" name="terms_dua" placeholder="Minggu">
 						</div>
 					</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<label style="display: none;" id="label_awal">Prosentase Pekerjaan</label>
+							<input type="text" class="form-control" style="display: none;" id="prosen_awal" name="prosen_awal" placeholder="%" value="0" readonly>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<label style="display: none;" id="label_akhir">Prosentase Pembayaran</label>
+							<input type="text" class="form-control" style="display: none;" id="prosen_akhir" name="prosen_awal" placeholder="Minggu" value="0">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;margin-top: 5px;" class="span4">
+							<br>
+							<button class="btn btn-success" type="button" style="display: none;" id="tambah_proses" onclick="tambah_proses_js();">TAMBAH</button>
+							<!-- <button class="btn btn-danger" style="display: none;" id="hapus_proses" onclick="kurang_proses_js();">HAPUS</button> -->
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						
+					</div>
+					<div class="col-md-6">
+						<table style="display: none" id="tabel_proses" class="table table-bordered table-striped table-condensed flip-content">
+							<tr>
+								<th>No</th>
+								<th>Tipe Pembayaran</th>
+								<th>Kerjaan</th>
+								<th>Pembayaran</th>
+								<th>Aksi</th>
+							</tr>
+						</table>
+					</div>
+					
 				</div>
 
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
@@ -973,10 +1175,46 @@ function get_transaction(id) {
 </div>
 </form>
 
+<div class="row">
+	
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4 cui" >
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
 
-<button id="tambah_purchase_order" class="btn green">
-Tambah Data pengembalian <i class="fa fa-plus"></i>
-</button>
+	<div class="col-md-2">
+		<button id="tambah_purchase_order" class="btn green" style="float: right;">
+		Tambah Purchase Order <i class="fa fa-plus"></i>
+		</button>
+	</div>
+</div>
+
+
 </br>
 </br>
 
@@ -1028,7 +1266,7 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->supplier; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<!-- <a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pengembalian(<?php echo $value->id_purchase?>);"><i class="fa fa-trash-o"></i> Nonaktif </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>purchase_order_c/cetak/<?=$value->id_purchase;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>
@@ -1056,7 +1294,7 @@ Tambah Data pengembalian <i class="fa fa-plus"></i>
 					<form action="<?php echo $url_hapus; ?>" method="post">
 						<input type="hidden" name="id_hapus" id="id_hapus" value="">
 						<input type="button" class="btn btn-default" data-bb-handler="cancel" value="Batal" id="batal_hapus">
-						<input type="submit" class="btn btn-primary" data-bb-handler="confirm" value="Hapus" id="hapus" onclick="loading();">
+						<input type="submit" class="btn btn-primary" data-bb-handler="confirm" value="Cancel" id="hapus" onclick="loading();">
 					</form>
 				</div>
 			</div>

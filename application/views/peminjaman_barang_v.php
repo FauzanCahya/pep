@@ -38,6 +38,7 @@ $(document).ready(function(){
 	$("#tambah_peminjaman_barang").click(function(){
 		$("#tambah_peminjaman_barang").fadeOut('slow');
 		$("#table_peminjaman_barang").fadeOut('slow');
+		$(".cui").fadeOut('slow');
 		$("#form_peminjaman_barang").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
@@ -632,10 +633,45 @@ function berhasil(){
 </div>
 </form>
 
+<div class="row">
+	
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4 cui" >
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
 
-<button id="tambah_peminjaman_barang" class="btn green">
-Tambah Data peminjaman <i class="fa fa-plus"></i>
-</button>
+	<div class="col-md-2">
+		<button id="tambah_peminjaman_barang" class="btn green" style="float: right;">
+		Tambah Data peminjaman <i class="fa fa-plus"></i>
+		</button>
+	</div>
+</div>
+
 </br>
 </br>
 
@@ -687,7 +723,7 @@ Tambah Data peminjaman <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_divisi; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_peminjaman(<?php echo $value->id_peminjaman?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<!-- <a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_peminjaman(<?php echo $value->id_peminjaman?>);"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_peminjaman(<?php echo $value->id_peminjaman?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>peminjaman_barang_c/cetak/<?=$value->id_peminjaman;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>

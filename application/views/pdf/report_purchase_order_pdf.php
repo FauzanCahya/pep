@@ -81,14 +81,14 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 </div>
 <br>
 <div style="height: 300px;">
-<table style="width: 100%;height: 300px;">
+<table style="width: 95%;height: 300px;">
 	
 		<tr>
 			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Nama Barang</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Jumlah</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Harga</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Disc</th>
+			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Disc</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Total</th>
 			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No OPB</th>
 			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
@@ -124,25 +124,25 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td>Harap segera memberitahukan kepada kami</td>
 		<td>DPP</td>
 		<td></td>
-		<td style="float: right;"><?=$dt->sub_total;?>,00</td>
+		<td style="float: right;">Rp. <?php echo number_format($dt->sub_total,2);?></td>
 	</tr>
 	<tr>
 		<td>bila syarat tersebut tidak terpenuhi</td>
 		<td>Discount</td>
 		<td><?=$dt->dc_po;?>%</td>
-		<td style="float: right;">Rp.<?=$dt->po_text;?>,00</td>
+		<td style="float: right;">Rp. <?php echo number_format($dt->po_text,2);?></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>PPN</td>
 		<td><?=$dt->dc_ppn;?>%</td>
-		<td style="float: right;">Rp.<?=$dt->ppn_text;?>,00</td>
+		<td style="float: right;">Rp. <?php echo number_format($dt->ppn_text,2);?></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>Total</td>
 		<td></td>
-		<td style="float: right;">Rp.<?=$dt->total;?>,00</td>
+		<td style="float: right;">Rp. <?php echo number_format($dt->total,2);?></td>
 	</tr>
 </table>
 <br>
@@ -155,6 +155,27 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 			
 		</tr>
 		<tr>
+			<?php 
+
+				if($dt->terms == 'Proses'){
+				?>
+					<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;">
+						Pembayaran akan dilakukan secara proses : <br>
+						<?php 
+							$idp = $dt->no_po;
+							$trm = $this->db->query("SELECT * FROM tb_terms WHERE ID_PO = '$idp' ")->result();
+							foreach ($trm as $key => $va) {
+								echo $va->NAMA_PROSES.' = '.$va->AKHIR_PROSEN.'%';
+								echo '<br>';
+							}
+
+						?>
+
+					</td>
+				<?php
+				}
+
+			?>
 			<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->terms;?></td>
 			<td style="height: 150px;border: 1px solid black;"></td>
 		</tr>

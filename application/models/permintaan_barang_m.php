@@ -29,8 +29,6 @@ class Permintaan_barang_m extends CI_Model
 	function simpan_data_barang_detail($id_permintaan_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
-		$harga 		= str_replace(',', '', $harga);
-		$jumlah 	= str_replace(',', '', $jumlah);
 
 		$sql = "
 			INSERT INTO tb_permintaan_barang_detail (
@@ -81,6 +79,13 @@ class Permintaan_barang_m extends CI_Model
 		// $this->db->query($sql2);
 	}
 
+	function hapus_data_permintaan_detail($id)
+	{
+		
+		$sql2 = "DELETE FROM  tb_permintaan_barang_detail WHERE id_induk = '$id' " ;
+		$this->db->query($sql2);
+	}
+
 	function data_permintaan_id($id)
 	{
 		$sql = "SELECT * FROM tb_permintaan_barang WHERE id_permintaan = '$id' ";
@@ -116,15 +121,14 @@ class Permintaan_barang_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function ubah_data_permintaan_detail($id,$nama_produk,$keterangan,$kuantitas,$satuan)
+	function ubah_data_permintaan_detail($id,$nama_produk,$keterangan,$kuantitas,$satuan,$produk)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
-		$harga 		= str_replace(',', '', $harga);
-		$jumlah 	= str_replace(',', '', $jumlah);
 		
 		$sql = "
 			UPDATE tb_permintaan_barang_detail SET 
 				nama_produk = '$nama_produk',
+				id_produk   = '$produk',
 				keterangan  = '$keterangan',
 				kuantitas  	= '$kuantitas',
 				satuan  	= '$satuan'

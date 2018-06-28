@@ -82,7 +82,7 @@ class Pengakuan_hutang_c extends CI_Controller {
 		$userinfo					= $this->master_model_m->get_user_info();
 		$get_nomor					= $this->master_model_m->get_nomor_dokumen('TTT')."/TTT/".$userinfo->nama_divisi."/".$this->tgl_to_romawi(date('m'))."/".date('Y');
 		$data = array(
-				'title' 	 		=> 'Tambah Pengakuan Hutang (TTT)',
+				'title' 	 		=> 'Tanda Terima Tagihan (TTT)',
 				'page'  	 		=> 'add_pengakuan_hutang_v',
 				'sub_menu' 	 		=> 'Flow Sistem',
 				'sub_menu1'	 		=> 'Pengakuan Hutang',

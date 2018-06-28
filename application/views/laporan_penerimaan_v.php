@@ -27,6 +27,7 @@ $(document).ready(function(){
 	$("#tambah_laporan").click(function(){
 		$("#tambah_laporan").fadeOut('slow');
 		$("#table_laporan").fadeOut('slow');
+		$(".cui").fadeOut('slow');
 		$("#form_laporan").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
@@ -302,11 +303,11 @@ function po_detail_produk(id)
 								'<input onkeyup="hitung_total(1);" style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.kuantitas+'" name="kuantitas[]" id="kuantitas_'+no+'">'+
 							'</div>'+
 						'</td>'+
-						'<td align="center" style="vertical-align:middle;">'+
-							'<div class="controls">'+
-								'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
-							'</div>'+
-						'</td>'+
+						// '<td align="center" style="vertical-align:middle;">'+
+						// 	'<div class="controls">'+
+						// 		'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.harga+'" name="harga[]" id="harga_'+no+'">'+
+						// 	'</div>'+
+						// '</td>'+
 						'<td align="center" style="vertical-align:middle;">'+
 							'<div class="controls">'+
 								'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.total+'" name="total[]" id="total_'+no+'">'+
@@ -496,22 +497,22 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+sisa+'" name="sisa[]" id="sisa_'+i+'">'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+harga+'" name="harga_awal[]" id="harga_awal_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+harga+'" name="harga_awal[]" id="harga_awal_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
 
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" onkeyup="hitung_total('+i+'),FormatCurrency(this);"  type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="hitung_total('+i+'),FormatCurrency(this);" onchange="ewek(this.value,'+i+');" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
 					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
@@ -525,6 +526,18 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 	$('#data_item').append(isi);
 	$('#jml_tr').val(i);
 
+}
+
+function ewek(jml,id){
+	var qty           = $('#sisa_'+id).val();
+
+	var besar_lah	= parseInt(qty);
+	var isi_lah		= parseInt(jml);
+
+	if(isi_lah > besar_lah){
+		alert('Kuantitas yang anda masukkan kelebihan');
+		$('#kuantitas_'+id).val(besar_lah);
+	}
 }
 
 function get_transaction(id) {
@@ -541,6 +554,7 @@ function get_transaction(id) {
                     	var sisa = res.kuantitas - res.penerimaan;
                         isine += '<tr>'+
                                     '<td style="text-align:center;">'+res.no_po+'</td>'+
+                                    '<td style="text-align:center;">'+res.supplier+'</td>'+
                                     '<td style="text-align:center;">'+res.nama_produk+'</td>'+
                                     '<td style="text-align:center;">'+res.kuantitas+'</td>'+
                                     '<td style="text-align:center;">'+res.penerimaan+'</td>'+
@@ -640,6 +654,15 @@ function get_transaction(id) {
 								</div>
 							</div>
 						</div>
+
+						<div class="form-group form-md-line-input">
+							<label class="col-md-2 control-label" for="form_control_1">Surat Jalan</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="surat_jalan" name="surat_jalan" >
+								<div class="form-control-focus">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -649,7 +672,8 @@ function get_transaction(id) {
 							<thead class="flip-content">
 								<tr>
 									<th style="text-align: center; ">No PO</th>
-									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center; ">Supplier</th>
+									<th style="text-align: center;  width: 30%;">Nama Barang</th>
 									<th style="text-align: center; ">Kuantitas</th>
 									<th style="text-align: center; ">Penerimaan</th>
 									<th style="text-align: center; ">Aksi</th>
@@ -657,6 +681,9 @@ function get_transaction(id) {
 							</thead>
 							<tbody id="data_transaction">
 								<tr>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
 									<td align="center" style="vertical-align:middle;">
 										
 									</td>
@@ -689,9 +716,7 @@ function get_transaction(id) {
 								<th style="text-align: center; width: 20%;">NO PO</th>
 								<th style="text-align: center; widows: 30%;">Nama</th>
 								<th style="text-align: center;">Sisa</th>
-								<th style="text-align: center;">Harga</th>
-								<th style="text-align: center;">Kuantitas</th>
-								<th style="text-align: center;">Total</th>
+								<th style="text-align: center;">Qty Pengembalian</th>
 								<th style="text-align: center;">Aksi</th>
 							</tr>
 						</thead>
@@ -743,9 +768,46 @@ function get_transaction(id) {
 </div>
 </form>
 
-<button id="tambah_laporan" class="btn green">
-Tambah laporan Penerimaan <i class="fa fa-plus"></i>
-</button>
+<div class="row">
+	
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4 cui" >
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
+
+	<div class="col-md-2">
+		<button id="tambah_laporan" class="btn green" style="float: right;">
+		Tambah laporan Penerimaan <i class="fa fa-plus"></i>
+		</button>
+	</div>
+</div>
+
+
 </br>
 </br>
 
@@ -793,7 +855,7 @@ Tambah laporan Penerimaan <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_lpb; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<!-- <a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>laporan_penerimaan_c/cetak/<?=$value->id_laporan;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>

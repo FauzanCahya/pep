@@ -17,8 +17,33 @@ class Order_pembelian_c extends CI_Controller {
 		$this->load->library('fpdf/HTML2PDF');
 	}
 
-	public function index()
+	public function index()	
 	{
+		if ($this->input->post('simpan_data')) {
+
+			$id_order 	  = $this->input->post('id_order');
+			$uraian 	  = $this->input->post('uraian');
+
+			// $this->pengembalian->save_next_nomor('ORDER_PEMBELIAN_BARANG');
+			$this->order->ubah_data_order($id_order,$uraian);
+			$this->order->hapus_data_order_detail($id_order);
+			
+
+			// $id_pengembalian_baru = $this->db->insert_id();
+			$nama_produk 	    = $this->input->post('nama_produk');
+			$produk    			= $this->input->post('produk');
+			$kuantitas      	= $this->input->post('kuantitas');
+			$satuan 	    	= $this->input->post('satuan');
+			$no_spb 		    = $this->input->post('no_spb');
+
+			foreach ($nama_produk as $key => $val) {
+					 $this->order->simpan_data_order_detail_a($id_order,$produk[$key],$val,$kuantitas[$key],$satuan[$key],$no_spb[$key]);
+			}
+
+			// foreach ($id_peminjaman_detail as $keyi => $vali) {
+			// 	$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
+			// }
+		}
 		$data = array(
 				'title' 	      => 'Order Pembelian Barang',
 				'page'  	      => 'order_pembelian_v',
@@ -106,7 +131,7 @@ class Order_pembelian_c extends CI_Controller {
 				$this->order->update_selisih_detail($vali,$kuantitas[$keyi]);
 			}
 			$this->session->set_flashdata('sukses','1');
-			redirect('pengembalian_barang_c');
+			redirect('order_pembelian_c');
 		
 		}else{
 
@@ -152,6 +177,32 @@ class Order_pembelian_c extends CI_Controller {
 			$this->session->set_flashdata('sukses','1');
 			redirect('pengembalian_barang_c');
 		}
+	}
+
+	function ubah_data($id= ""){
+		$msg = "";
+		
+
+		$dt = $this->order->get_data_trx($id);
+		$dt_detail = $this->order->get_data_trx_detail($id);
+
+		$data =  array(
+			'page' => "ubah_data_order_pembelian_v", 
+			'title' => "Buat Permintaan Baru", 
+			'sub_menu' 	      => 'pembelian',
+			'sub_menu1'	      => 'order Pembelian',
+			'menu' 	   	      => 'penjualan',
+			'menu2'		      => 'order_pembelian',
+			'msg' => "", 
+			'master' => "pembelian", 
+			'view' => "purchase_order", 
+			'msg' => $msg,  
+			'dt' => $dt,  
+			'dt_detail' => $dt_detail,  
+			'post_url' => 'order_pembelian_c', 
+		);
+		
+		$this->load->view('home_v', $data);
 	}
 
 
@@ -206,7 +257,8 @@ class Order_pembelian_c extends CI_Controller {
 
 	function get_transaction_info(){
 		$id = $this->input->post('id');
-		$dt = $this->order->get_transaction_info($id);
+		$tahun = $this->input->post('tahun');
+		$dt = $this->order->get_transaction_info($id,$tahun);
 
 		echo json_encode($dt);
 	}

@@ -73,10 +73,28 @@ class Purchase_order_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+	function simpan_terms($nomor,$baris,$awal_proses,$akhir_proses)
+	{
+
+		$sql = "
+			INSERT INTO tb_terms (
+				ID_PO,
+				NAMA_PROSES,
+				AWAL_PROSEN,
+				AKHIR_PROSEN
+			) VALUES (
+				'$nomor',
+				'$baris',
+				'$awal_proses',
+				'$akhir_proses'
+			)";
+		$this->db->query($sql);
+	}
+
 	function lihat_data_purchase()
 	{
 		$sql = "
-			SELECT * FROM tb_purchase_order ";
+			SELECT * FROM tb_purchase_order ORDER BY id_purchase DESC ";
 
 		return $this->db->query($sql)->result();
 	}

@@ -29,6 +29,7 @@ $(document).ready(function(){
 	$("#tambah_order").click(function(){
 		$("#tambah_order").fadeOut('slow');
 		$("#table_order").fadeOut('slow');
+		$(".cui").fadeOut('slow');
 		$("#form_order_pembelian").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
@@ -467,7 +468,7 @@ function tambah_data(){
 
 }
 
-function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
+function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb,limitis){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -488,7 +489,7 @@ function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
 					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input onkeyup="limit_kuantitas('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -499,11 +500,12 @@ function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+no_spb+'" name="reff_no[]" id="ref_no_'+i+'">'+
+							'<input type="hidden" class="form-control" id="limit_'+i+'" value="'+limitis+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
+							'<button style="width: 100%;" onclick="hapus('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
 						'</div>'+
 					'</td>'+
 				'</tr>';
@@ -511,6 +513,17 @@ function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
 	$('#data_item').append(isi);
 	$('#jml_tr').val(i);
 
+}
+
+function limit_kuantitas(id) {
+	var kuantitas = $('#kuantitas_'+id).val();
+	var limitasi = $('#limit_'+id).val();
+
+
+	if(kuantitas > limitasi){
+		alert('Kuantitas anda melebihi dari jumlah pinjaman');
+		$('#kuantitas_'+id).val(limitasi);
+	}
 }
 
 function hapus(i){
@@ -647,12 +660,12 @@ function hapus_toas(){
     toastr.success("Data Berhasil Dihapus!", "Terhapus");
 }
 
-function get_transaction(id) {
-
+function get_transaction(tahun) {
+	var id = $('#dept_ser').val();
         
         $.ajax({
             url : '<?php echo base_url(); ?>order_pembelian_c/get_transaction_info',
-            data : {id:id},
+            data : {id:id,tahun:tahun},
             type : "POST",
             dataType : "json",
             success : function(result){   
@@ -667,7 +680,7 @@ function get_transaction(id) {
                                     '<td style="text-align:center;">'+res.satuan+'</td>'+
                                     '<td style="text-align:center;">'+res.no_spb+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.satuan+'&quot;,&quot;'+res.no_spb+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.satuan+'&quot;,&quot;'+res.no_spb+'&quot;,&quot;'+res.sisa_jumlah+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -679,6 +692,10 @@ function get_transaction(id) {
             }
         });
     }
+
+    function hapus(i){
+	$('#tr_'+i).remove();
+}
 
 </script>
 
@@ -710,10 +727,10 @@ function get_transaction(id) {
 			<div class="portlet-body">	
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px;">
 					<div class="col-md-12">
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<label class="control-label"><b style="font-size:14px;">Departemen</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<select name="dept" class="form-control" onchange="get_transaction(this.value);">
+								<select name="dept" class="form-control" id="dept_ser">
 									<option>Pilih Departemen ......</option>
 									<?php 
 										foreach ($dt_dept as $key => $dt_value) {
@@ -726,8 +743,20 @@ function get_transaction(id) {
 							</div>
 						</div>
 
+						<div class="col-md-3">
+							<label class="control-label"><b style="font-size:14px;">Tahun</b></label>
+							<div class="input-group" style="width: 100%; ">
+								<select name="tahuni" class="form-control" id="tahuni" onchange="get_transaction(this.value);">
+									<option value="<?php echo date('Y'); ?>"><?php echo date('Y'); ?></option>
+									<option value="2016">2016</option>
+									<option value="2017">2017</option>
+									<option value="2018">2018</option>
+								</select>
+							</div>
+						</div>
 
-						<div class="col-md-4">
+
+						<div class="col-md-3">
 							<label class="control-label"><b style="font-size:14px;">Tanggal</b></label>
 							<div class="input-group" style="width: 100%;">
 								<input type="text" class="form-control" name="tanggal" id="tanggal" value="<?=date('d-m-Y');?>" readonly required>
@@ -735,18 +764,35 @@ function get_transaction(id) {
 							</div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
 							<div class="input-group" style="width: 100%; ">
 								<input type="text" rows="1" id="uraian" name="uraian" class="form-control" required></textarea>
 							</div>
 						</div>
-					</div>
+						<div class="col-md-3" style="margin-top: 15px;">
+								<label class="control-label"><strong style="font-size:14px;">Tanggal Kedatangan</strong></label>
+								<div class="input-group" style="width: 100%; ">
+									<input type="text" rows="1" id="uraian" name="uraian" class="form-control" required></textarea>
+								</div>
+							</div>
+					</div>	
+
+					<!-- <div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+						<div class="col-md-12">
+							<div class="col-md-3">
+								<label class="control-label"><strong style="font-size:14px;">Tanggal Kedatangan</strong></label>
+								<div class="input-group" style="width: 100%; ">
+									<input type="text" rows="1" id="uraian" name="uraian" class="form-control" required></textarea>
+								</div>
+							</div>
+						</div>
+					</div> -->
 				</div>
 
-				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-y: 300px;">
 					<div class="portlet-body flip-scroll">
-						<table class="table table-bordered table-striped table-condensed flip-content">
+						<table class="table table-bordered table-striped table-condensed flip-content" >
 							<thead class="flip-content">
 								<tr>
 									<th style="text-align: center;  width: 10%;">Kode Barang</th>
@@ -841,10 +887,46 @@ function get_transaction(id) {
 </div>
 </form>
 
+<div class="row">
+	
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4 cui" >
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
 
-<button id="tambah_order" class="btn green">
-Tambah Data Order Pembelian <i class="fa fa-plus"></i>
-</button>
+	<div class="col-md-2">
+		<button id="tambah_order" class="btn green" style="float: right;">
+		Tambah Data Order Pembelian <i class="fa fa-plus"></i>
+		</button>
+	</div>
+</div>
+
+
 </br>
 </br>
 
@@ -894,7 +976,7 @@ Tambah Data Order Pembelian <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_opb; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->uraian; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_order(<?php echo $value->id_order?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<!-- <a class="btn default btn-xs purple" id="ubah" href="<?=base_url();?>order_pembelian_c/ubah_data/<?=$value->id_order;?>"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_order(<?php echo $value->id_order?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>order_pembelian_c/cetak/<?=$value->id_order;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>

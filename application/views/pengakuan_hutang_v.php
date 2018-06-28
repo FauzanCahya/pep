@@ -127,10 +127,46 @@ function berhasil(){
 
 </script>
 
+<div class="row">
+	
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4 cui" >
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
 
-<a href="<?=base_url();?>pengakuan_hutang_c/add_new" class="btn green">
-Tambah Data <i class="fa fa-plus"></i>
-</a>
+	<div class="col-md-2">
+		<a href="<?=base_url();?>pengakuan_hutang_c/add_new" class="btn green" style="float: right;">
+		Tambah Data Pengakuan Hutang <i class="fa fa-plus"></i>
+		</a>
+	</div>
+</div>
+
+
 </br>
 </br>
 
@@ -140,7 +176,7 @@ Tambah Data <i class="fa fa-plus"></i>
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>Data Pengakuan Hutang
+					<i class="fa fa-edit"></i>Data Tanda Terima Tagihan
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse">

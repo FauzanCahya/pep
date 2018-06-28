@@ -38,6 +38,7 @@ $(document).ready(function(){
 	$("#tambah_pembelian_jasa").click(function(){
 		$("#tambah_pembelian_jasa").fadeOut('slow');
 		$("#table_pembelian_jasa").fadeOut('slow');
+		$(".cui").fadeOut('slow');
 		$("#form_pembelian_jasa").fadeIn('slow');
 		$("#tabel_total").fadeIn('slow');
 	});
@@ -641,6 +642,20 @@ function get_transaction(id) {
         });
     }
 
+    function ganti_mata(id){
+    	if(id == "Rupiah"){
+    		$('#mata_uang_depan').html('Rp.');
+    		$('#mata_uang_depan_1').html('Rp.');
+    		$('#mata_uang_depan_2').html('Rp.');
+    		document.getElementById('kurs_uang').readOnly = true;
+    	}else if(id == "Dollar"){
+    		$('#mata_uang_depan').html('$.');
+    		$('#mata_uang_depan_1').html('$.');
+    		$('#mata_uang_depan_2').html('$.');
+    		document.getElementById('kurs_uang').readOnly = false;
+    	}
+    }
+
 </script>
 
 <style type="text/css">
@@ -744,6 +759,23 @@ function get_transaction(id) {
 						</table>
 
 						
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<label class="col-md-2 control-label" for="form_control_1">Mata Uang yang Dipakai</label>
+						<div class="col-md-3">
+							<select name="mata_uang" id="mata_uang" class="form-control" onchange="ganti_mata(this.value);">
+								<option value="Rupiah">Rupiah</option>
+								<option value="Dollar">Dollar</option>
+							</select>	
+						</div>
+						<div class="col-md-2"></div>
+						<label class="col-md-2 control-label" for="form_control_1">Kurs yang Dipakai Saat Ini</label>
+						<div class="col-md-3">
+							<input type="text" name="kurs_uang" class="form-control col-md-6" id="kurs_uang" readonly>
+						</div>
 					</div>
 				</div>
 
@@ -879,10 +911,46 @@ function get_transaction(id) {
 </div>
 </form>
 
+<div class="row">
+	
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="01">Januari</option>
+			<option value="02">Februari</option>
+			<option value="03">Maret</option>
+			<option value="04">April</option>
+			<option value="05">Mei</option>
+			<option value="06">Juni</option>
+			<option value="07">Juli</option>
+			<option value="08">Agustus</option>
+			<option value="09">September</option>
+			<option value="10">Oktober</option>
+			<option value="11">November</option>
+			<option value="12">Desember</option>
+		</select>
+	</div>
+	<div class="col-md-3 cui" >
+		<select class="form-control">
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+		</select>
+	</div>
+	<div class="col-md-4 cui" >
+		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+			Cari <i class="fa fa-search"></i>
+			</button>
+		</a>
+	</div>
 
-<button id="tambah_pembelian_jasa" class="btn green">
-Tambah Data penyelesaian <i class="fa fa-plus"></i>
-</button>
+	<div class="col-md-2">
+		<button id="tambah_pembelian_jasa" class="btn green" style="float: right;">
+		Tambah Data penyelesaian <i class="fa fa-plus"></i>
+		</button>
+	</div>
+</div>
+
+
 </br>
 </br>
 
@@ -928,7 +996,7 @@ Tambah Data penyelesaian <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_div; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_penyelesaian(<?php echo $value->id_penyelesaian?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<!-- <a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_penyelesaian(<?php echo $value->id_penyelesaian?>);"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_penyelesaian(<?php echo $value->id_penyelesaian?>);"><i class="fa fa-trash-o"></i> Batal </a>
 						<a target="_blank" class="btn default btn-xs green" id="hapus" href="<?=base_url();?>penyelesaian_jasa_c/cetak/<?=$value->id_penyelesaian;?>" ><i class="fa fa-print"></i> Cetak </a>
 					</td>

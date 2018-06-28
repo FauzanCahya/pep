@@ -58,7 +58,7 @@ class Pengembalian_barang_m extends CI_Model
 	function lihat_data_pengembalian()
 	{
 		$sql = "
-			SELECT pb.* , md.nama_divisi as nama_div FROM tb_pengembalian_barang pb , master_divisi md WHERE pb.divisi = md.id_divisi ";
+			SELECT pb.* , md.nama_divisi as nama_div FROM tb_pengembalian_barang pb , master_divisi md WHERE pb.divisi = md.id_divisi ORDER BY pb.id_pengembalian";
 
 		return $this->db->query($sql)->result();
 	}

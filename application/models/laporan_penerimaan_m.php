@@ -26,7 +26,7 @@ class Laporan_penerimaan_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function simpan_data_laporan_detail($id_laporan_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$harga,$total,$no_opb)
+	function simpan_data_laporan_detail($id_laporan_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$no_opb)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
 		$harga 		= str_replace(',', '', $harga);
@@ -39,8 +39,6 @@ class Laporan_penerimaan_m extends CI_Model
 				nama_produk,
 				keterangan,
 				kuantitas,
-				harga,
-				total,
 				no_po
 			)	VALUES (
 				'$id_laporan_baru',
@@ -48,8 +46,6 @@ class Laporan_penerimaan_m extends CI_Model
 				'$nama_produk',
 				'$keterangan',
 				'$kuantitas',
-				'$harga',
-				'$total',
 				'$no_opb'
 		)";
 		$this->db->query($sql);
@@ -58,7 +54,7 @@ class Laporan_penerimaan_m extends CI_Model
 	function lihat_data_laporan()
 	{
 		$sql = "
-			SELECT * FROM tb_laporan_penerimaan ";
+			SELECT * FROM tb_laporan_penerimaan ORDER BY id_laporan DESC ";
 
 		return $this->db->query($sql)->result();
 	}
@@ -137,7 +133,7 @@ class Laporan_penerimaan_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status != '1'
         ";
 
         return $this->db->query($sql)->result();

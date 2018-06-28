@@ -19,6 +19,103 @@ class Permintaan_barang_c extends CI_Controller {
 
 	public function index()
 	{
+		if ($this->input->post('simpan')) {
+			
+
+			$bulan_kas = date("m",strtotime($this->input->post('tanggal')));
+
+			if($bulan_kas == "01"){
+		    $var = "I";
+		   } else if($bulan_kas == "02"){
+		    $var = "II";
+		   } else if($bulan_kas == "03"){
+		    $var = "III";
+		   } else if($bulan_kas == "04"){
+		    $var = "IV";
+		   } else if($bulan_kas == "05"){
+		    $var = "V";
+		   } else if($bulan_kas == "06"){
+		    $var = "VI";
+		   } else if($bulan_kas == "07"){
+		    $var = "VII";
+		   } else if($bulan_kas == "08"){
+		    $var = "VIII";
+		   } else if($bulan_kas == "09"){
+		    $var = "IX";
+		   } else if($bulan_kas == "10"){
+		    $var = "X";
+		   } else if($bulan_kas == "11"){
+		    $var = "XI";
+		   } else if($bulan_kas == "12"){
+		    $var = "XII";
+		   }
+			
+
+
+				$sess_user = $this->session->userdata('sign_in');
+				$nama = $sess_user['nama_user'];
+				$departemen = $sess_user['departemen'];
+
+				$dept_row = $this->db->query("SELECT * FROM master_divisi WHERE id_divisi = '$departemen'")->row();
+				
+				
+				$tahun_kas = date("Y",strtotime($this->input->post('tanggal')));
+				
+				$get_nomor	   		= $this->master_model_m->get_nomor_dokumen('PERMINTAAN_BARANG');
+
+				$no_bukti_real 		= $get_nomor."/SPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
+
+				$no_spb 	  = $this->input->post('no_spb');
+				$tanggal 	  = $this->input->post('tanggal');
+				$uraian 	  = $this->input->post('uraian');
+
+				$this->master_model_m->update_nomor('PERMINTAAN_BARANG');
+				$this->permintaan->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen);
+
+				$id_permintaan_baru = $this->db->insert_id();
+				$id_produk 	    	= $this->input->post('produk');
+				$nama_produk    	= $this->input->post('nama_produk');
+				$keterangan     	= $this->input->post('keterangan');
+				$kuantitas      	= $this->input->post('kuantitas');
+				$satuan 	    	= $this->input->post('satuan');
+				// $harga 		    	= $this->input->post('harga');
+				// $jumlah 	    	= $this->input->post('jumlah');
+
+				foreach ($nama_produk as $key => $val) {
+						 $this->permintaan->simpan_data_barang_detail($id_permintaan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
+				}
+				
+				$this->cetak($id_permintaan_baru);
+				$this->session->set_flashdata('sukses','1');
+			
+
+		}
+
+		if($this->input->post('simpan_ciu')){
+
+			$id 		  = $this->input->post('id_permintaan');
+			$no_spb 	  = $this->input->post('no_spb');
+			$tanggal 	  = $this->input->post('tanggal');
+			$uraian 	  = $this->input->post('uraian');
+
+			$this->permintaan->ubah_data_permintaan($id,$tanggal,$uraian);
+			$this->permintaan->hapus_data_permintaan_detail($id);
+
+			$nama_produk  		 = $this->input->post('nama_produk');
+			$keterangan   		 = $this->input->post('keterangan');
+			$kuantitas    		 = $this->input->post('kuantitas');
+			$satuan 	  		 = $this->input->post('satuan');
+			$produk 	  		 = $this->input->post('produk');
+
+			foreach ($nama_produk as $key => $val) {
+				$this->permintaan->simpan_data_barang_detail($id,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
+			}
+
+			$this->cetak($id);
+			$this->session->set_flashdata('sukses','1');
+			// redirect('permintaan_barang_c');
+		}
+
 		$data = array(
 				'title' 	      => 'Permintaan Barang',
 				'page'  	      => 'permintaan_barang_v',
@@ -107,26 +204,55 @@ class Permintaan_barang_c extends CI_Controller {
 
 			redirect('permintaan_barang_c');
 		
-		}else{
+		} 
+	}
 
-			$id 		  = $this->input->post('id_permintaan');
-			$no_spb 	  = $this->input->post('no_spb');
-			$tanggal 	  = $this->input->post('tanggal');
-			$uraian 	  = $this->input->post('uraian');
+	function ubah_data($id= ""){
+		$msg = "";
+		
 
-			$this->permintaan->ubah_data_permintaan($id,$tanggal,$uraian);
+		$dt = $this->permintaan->data_permintaan_id($id);
+		$dt_detail = $this->permintaan->data_permintaan_detail_id($id);
 
-			$nama_produk  		 = $this->input->post('nama_produk');
-			$keterangan   		 = $this->input->post('keterangan');
-			$kuantitas    		 = $this->input->post('kuantitas');
-			$satuan 	  		 = $this->input->post('satuan');
+		$data =  array(
+			'page' => "ubah_data_permintaan_v", 
+			'title' => "Buat Permintaan Baru", 
+			'sub_menu' 	      => 'pembelian',
+			'sub_menu1'	      => 'permintaan barang',
+			'menu' 	   	      => 'penjualan',
+			'menu2'		      => 'permintaan',
+			'msg' => "", 
+			'master' => "pembelian", 
+			'view' => "purchase_order", 
+			'msg' => $msg,  
+			'dt' => $dt,  
+			'dt_detail' => $dt_detail,  
+			'post_url' => 'permintaan_barang_c', 
+		);
+		
+		$this->load->view('home_v', $data);
+	}
 
-			foreach ($nama_produk as $key => $val) {
-				$this->permintaan->ubah_data_permintaan_detail($id,$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
-			}
-			$this->session->set_flashdata('sukses','1');
-			redirect('permintaan_barang_c');
-		}
+	function tambah_barang(){
+		$msg = "";
+		
+
+
+		$data =  array(
+			'page' 			  => "tambah_data_permintaan_barang_v", 
+			'title'			  => "Buat Permintaan Baru", 
+			'sub_menu' 	      => 'pembelian',
+			'sub_menu1'	      => 'permintaan barang',
+			'menu' 	   	      => 'penjualan',
+			'menu2'		      => 'permintaan',
+			'msg' => "", 
+			'master' => "pembelian", 
+			'view' => "purchase_order", 
+			'msg' => $msg,   
+			'post_url' => 'permintaan_barang_c', 
+		);
+		
+		$this->load->view('home_v', $data);
 	}
 
 	function hapus()
