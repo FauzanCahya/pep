@@ -639,10 +639,104 @@ function get_transaction(id) {
     	$('.cuy').hide();
         if(val == "Proses"){
             $('#prosesi').show();
+            $('#prosen_awal').show();
+            $('#prosen_akhir').show();
+            $('#label_awal').show();
+            $('#label_akhir').show();
+            $('#label_proses').show();
+            $('#tambah_proses').show();
+            $('#hapus_proses').show();
+            $('#tabel_proses').show();
         } else if(val == "Minggu"){
             $('#payment').show();
+            $('#prosen_awal').hide();
+            $('#prosen_akhir').hide();
+            $('#label_awal').hide();
+            $('#label_akhir').hide();
+            $('#label_proses').hide();
+            $('#tambah_proses').hide();
+            $('#hapus_proses').hide();
+            $('#tabel_proses').hide();
+        } else if(val == "Tunai"){
+        	$('#prosen_awal').hide();
+            $('#prosen_akhir').hide();
+            $('#label_awal').hide();
+            $('#label_akhir').hide();
+            $('#label_proses').hide();
+            $('#tambah_proses').hide();
+            $('#hapus_proses').hide();
+            $('#tabel_proses').hide();
         }
     }
+
+    function proses(val){
+    	// $('.cuy').hide();
+        if(val == "Down Payment"){
+            document.getElementById('prosen_awal').readOnly = true;
+            document.getElementById('prosen_akhir').readOnly = false;
+            $('#prosen_awal').val('0');
+            $('#prosen_akhir').val('0');
+        } else if(val == "Retensi"){
+        	document.getElementById('prosen_awal').readOnly = true;
+        	document.getElementById('prosen_akhir').readOnly = false;
+            $('#prosen_awal').val('100');
+            $('#prosen_akhir').val('0');
+        } else if(val == "Cash Of Delivery"){
+        	document.getElementById('prosen_awal').readOnly = true;
+        	document.getElementById('prosen_akhir').readOnly = true;
+            $('#prosen_awal').val('100');
+            $('#prosen_akhir').val('100');
+        } else if(val == "Progress"){
+        	document.getElementById('prosen_akhir').readOnly = true;
+        	document.getElementById('prosen_awal').readOnly = false;
+        	$('#prosen_awal').val('0');
+            $('#prosen_akhir').val('0');
+        }
+    }
+
+    function tambah_proses_js(){
+	var jml_tr = $('#jml_tr_pr').val();
+	var i = parseFloat(jml_tr) + 1;
+	var a = $('#prosen_awal').val();
+	var b = $('#prosen_akhir').val();
+	var c = $('#prosesi').val();
+
+	var isi = 	'<tr id="tr_a_'+i+'">'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<label style="font-size:13px;"></label>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:center;" type="text" class="form-control" value="'+c+'" name="prosesi_a[]" id="kuantitas_'+i+'" readonly>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:center;" type="text" class="form-control" value="'+a+'" name="awal_proses[]" id="satuan_'+i+'" readonly>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:right;" type="text" class="form-control" value="'+b+'" name="akhir_proses[]" id="harga_'+i+'" readonly>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button type="button" name="hapus_proses_a" onclick="hapus_proses('+i+')" class="btn btn-danger">HAPUS</button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+
+	$('#tabel_proses').append(isi);
+	$('#jml_tr_pr').val(i);
+
+}
+
+function hapus_proses(i){
+	$('#tr_a_'+i).remove();
+}
 
 </script>
 
@@ -654,6 +748,7 @@ function get_transaction(id) {
 
 <form role="form" action="<?php echo $url_simpan; ?>" method="post">
 <input type="hidden" id="jml_tr" value="1">
+<input type="hidden" id="jml_tr_pr" value="1">
 <input type="hidden" id="id_pengembalian" name="id_pengembalian">
 
 <div class="row" id="form_pembelian_jasa" style="display:none; ">
@@ -908,7 +1003,7 @@ function get_transaction(id) {
 					</div>
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
-							<select class="form-control cuy" name="terms_dua" id="prosesi" style="display: none;">
+							<select class="form-control cuy" name="terms_dua" id="prosesi" style="display: none;" onchange="proses(this.value);">
 								<option value="Down Payment">Down Payment</option>
 								<option value="Cash Of Delivery">Cash Of Delivery</option>
 								<option value="Retensi">Retensi</option>
@@ -916,6 +1011,48 @@ function get_transaction(id) {
 							<input type="text" class="form-control cuy" style="display: none;" id="payment" name="terms_dua" placeholder="Minggu">
 						</div>
 					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<label style="display: none;" id="label_awal">Prosentase Pekerjaan</label>
+							<input type="text" class="form-control" style="display: none;" id="prosen_awal" name="prosen_awal" placeholder="%" value="0" readonly>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span4">
+							<label style="display: none;" id="label_akhir">Prosentase Pembayaran</label>
+							<input type="text" class="form-control" style="display: none;" id="prosen_akhir" name="prosen_awal" placeholder="Minggu" value="0">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;margin-top: 5px;" class="span4">
+							<br>
+							<button class="btn btn-success" type="button" style="display: none;" id="tambah_proses" onclick="tambah_proses_js();">TAMBAH</button>
+							<!-- <button class="btn btn-danger" style="display: none;" id="hapus_proses" onclick="kurang_proses_js();">HAPUS</button> -->
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						
+					</div>
+					<div class="col-md-6">
+						<table style="display: none" id="tabel_proses" class="table table-bordered table-striped table-condensed flip-content">
+							<tr>
+								<th>No</th>
+								<th>Tipe Pembayaran</th>
+								<th>Kerjaan</th>
+								<th>Pembayaran</th>
+								<th>Aksi</th>
+							</tr>
+						</table>
+					</div>
+					
 				</div>
 
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
@@ -960,7 +1097,7 @@ function get_transaction(id) {
 		</select>
 	</div>
 	<div class="col-md-4 cui" >
-		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+		<a href=""><button id="tambah_permintaan_barang" class="btn green">
 			Cari <i class="fa fa-search"></i>
 			</button>
 		</a>

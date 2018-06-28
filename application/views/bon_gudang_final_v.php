@@ -861,7 +861,7 @@ function get_transaction(id) {
 		</select>
 	</div>
 	<div class="col-md-4 cui" >
-		<a href="<?=base_url()?>permintaan_barang_c/tambah_barang"><button id="tambah_permintaan_barang" class="btn green">
+		<a href=""><button id="tambah_permintaan_barang" class="btn green">
 			Cari <i class="fa fa-search"></i>
 			</button>
 		</a>
