@@ -675,7 +675,7 @@ function get_transaction(id) {
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold uppercase">Form penyelesaian Barang</span>
+					<span class="caption-subject font-green-sharp bold uppercase">Form penyelesaian Jasa</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group btn-group-devided" data-toggle="buttons">

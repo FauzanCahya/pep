@@ -758,7 +758,7 @@ function hapus_proses(i){
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold uppercase">Form Pengembalian Barang</span>
+					<span class="caption-subject font-green-sharp bold uppercase">Form Pembelian Jasa</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group btn-group-devided" data-toggle="buttons">

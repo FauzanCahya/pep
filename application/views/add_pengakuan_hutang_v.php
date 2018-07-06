@@ -15,6 +15,29 @@
 			<div class="portlet-body form">
 				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
 					<div class="form-body">
+						
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1"></label>
+							<div class="col-md-5">
+								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Kwitansi / Invoice / Nota
+								<br>
+								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Faktur Pajak
+								<br>
+								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Surat Pesanan Asli / PO / SPK
+								<br>
+								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Surat Jalan Asli
+								<br>
+								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Berita Acara
+								<br>
+								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Lain - lain 
+								<br>
+								<input type="text" class="form-control" name="lain_lain" style="width: 30%;">
+								
+								
+
+							</div>
+						</div>
+
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">No. Dokumen</label>
 							<div class="col-md-5">
@@ -112,18 +135,20 @@
 					<hr>
 
 					<div class="form-group">
+						<label class="col-md-3 control-label" for="form_control_1">Tanggal Pengakuan TTT</label>
+						<div class="col-md-2">
+							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_pengakuan" readonly style="background: #FFF; cursor: pointer;"/>
+						</div>
+					</div>
+					
+					<div class="form-group">
 						<label class="col-md-3 control-label" for="form_control_1">Harap Menghubungi pada Tanggal</label>
 						<div class="col-md-2">
 							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_hubungi" readonly style="background: #FFF; cursor: pointer;"/>
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label class="col-md-3 control-label" for="form_control_1">Tanggal Pengakuan TTT</label>
-						<div class="col-md-2">
-							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_pengakuan" readonly style="background: #FFF; cursor: pointer;"/>
-						</div>
-					</div>
+					
 
 					<hr> 
 					
