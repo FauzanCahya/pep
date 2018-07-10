@@ -36,58 +36,106 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 
 </style>
 
-
-
-
 <br>
 <table align="center">
     <tr>
         <td align="center">
             <h4>
                 LAPORAN JURNAL UMUM <br>
-                <?=$judul;?>
+                <hr>
+                <?=$judul;?><br>
+                PT. Prima Elektrik Power<br>
+                Periode berlaku mulai tanggal 
             </h4>
         </td>
     </tr>
 </table>
-
+<table align="right">
+    <tr>
+        <td>Tanggal Cetak : </td>
+    </tr>
+</table>
+<hr>
 
 <div style="width: 100%;">
     <table style="border: 1px; border-collapse: collapse; width: 100%;">
+    <?php
+        $sql = "
+            SELECT a.* FROM ak_input_voucher a
+            WHERE a.TGL LIKE '%-$bulan-$tahun%' AND a.TIPE = 'JU'
+            ORDER BY a.ID ASC
+        ";
+        $qry = $this->db->query($sql);
+        $res = $qry->result();
+
+        foreach ($res as $key => $val) {
+    ?>
         <tr>
-            <th style="width: 10%; text-align: center; height: 25px; vertical-align: middle;">Tanggal</th>
-            <th style="width: 20%; text-align: center; height: 25px; vertical-align: middle;">No. Dokumen</th>
-            <th style="width: 10%; text-align: center; height: 25px; vertical-align: middle;">Kode</th>
-            <th style="width: 25%; text-align: center; height: 25px; vertical-align: middle;">Nama Akuntansi</th>
-            <th style="width: 12%; text-align: center; height: 25px; vertical-align: middle;">Debet</th>
-            <th style="width: 12%; text-align: center; height: 25px; vertical-align: middle;">Kredit</th>
+            <td>Tgl Transaksi</td>
+            <td style="width: 60%;">: <?=$val->TGL;?></td>
+            <td style="text-align:right;">Tgl Posting : <?=$val->TGL;?></td>
         </tr>
-        <?php 
-        $i = 0;
-        $tot_debet = 0;
-        $tot_kredit = 0;
-        foreach ($dt as $key => $value) {
-            $tot_debet += $value->KREDIT;
-            $tot_kredit += $value->DEBET;
-        ?>
-        <tr style="border: 1px; border-collapse: collapse;">
-            <td style="border:1px dotted; text-align: center;"><?=$value->TGL;?></td>
-            <td style="border:1px dotted; text-align: left;"><?=$value->NO_BUKTI;?></td>
-            <td style="border:1px dotted; text-align: center;"><?=$value->KODE_AKUN;?></td>
-            <td style="border:1px dotted; text-align: left;"><?=$value->NAMA_AKUN;?></td>
-            <td style="border:1px dotted; text-align: right;"><?=number_format($value->DEBET);?></td>
-            <td style="border:1px dotted; text-align: right;"><?=number_format($value->KREDIT);?></td>
-        </tr>
-        <?php } ?>
         <tr>
-            <td colspan="4" style="border:1px dotted;  text-align: center;"><b>Jumlah Total</b></td>
-            <td style="border:1px dotted; text-align: right;"><b><?=number_format($tot_debet);?></b></td>
-            <td style="border:1px dotted; text-align: right;"><b><?=number_format($tot_kredit);?></b></td>
+            <td>Reff</td>
+            <td>: <?=$val->NO_VOUCHER;?></td>
+        </tr>
+        <tr>
+            <td>Keterangan</td>
+            <td>: <?=$val->KETERANGAN;?></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+    <?php
+            $s = "
+                SELECT a.*, b.NAMA_AKUN FROM ak_input_voucher_detail a 
+                JOIN ak_kode_akuntansi b ON a.KODE_AKUN = b.KODE_AKUN
+                WHERE a.TGL LIKE '%-$bulan-$tahun%' AND a.TIPE = 'JU'
+                AND a.ID_VOUCHER = '".$val->ID."'
+                ORDER BY a.ID ASC
+            ";
+            $q = $this->db->query($s);
+            $r = $q->result();
+    ?>
+        <tr>
+            <td style="border-bottom:1px dotted;">No Akun</td>
+            <td style="border-bottom:1px dotted;">Nama Akun</td>
+            <td style="border-bottom:1px dotted; text-align: center;">Debet</td>
+            <td style="border-bottom:1px dotted; text-align: center;">Kredit</td>
+        </tr>
+    <?php
+            $i = 0;
+            $tot_debet = 0;
+            $tot_kredit = 0;
+
+            foreach ($r as $k => $value) {
+                $tot_debet += $value->KREDIT;
+                $tot_kredit += $value->DEBET;
+    ?>
+        <tr>
+            <td><?=$value->KODE_AKUN;?></td>
+            <td><?=$value->NAMA_AKUN;?></td>
+            <td style="text-align: right;"><?=number_format($value->DEBET);?></td>
+            <td style="text-align: right;"><?=number_format($value->KREDIT);?></td>
+        </tr>
+    <?php
+            }
+    ?>
+        <tr>
+            <td style="border-bottom: 1px solid black;">&nbsp;</td>
+            <td style="border-bottom: 1px solid black;">&nbsp;</td>
+            <td style="border-bottom: 1px solid black;">&nbsp;</td>
+            <td style="border-bottom: 1px solid black;">&nbsp;</td>
+            <td style="border-bottom: 1px solid black;">&nbsp;</td>
+        </tr>
+    <?php
+        }
+    ?>
+        <tr>
+            <td colspan="2" style="text-align: center;"><b>Jumlah Total</b></td>
+            <td style="text-align: right;"><b><?=number_format($tot_debet);?></b></td>
+            <td style="text-align: right;"><b><?=number_format($tot_kredit);?></b></td>
         </tr>
     </table>
 </div>
-
-
 
 <?PHP
     $width_custom = 14;

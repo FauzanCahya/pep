@@ -73,6 +73,8 @@ class Lap_akuntansi_c extends CI_Controller {
 			'title2'		=> 'SEMUA BAGIAN',
 			'dt'			=> $dt,
 			'judul'			=> $this->datetostr($bulan)." ".$tahun,
+			'bulan'			=> $bulan,
+			'tahun'			=> $tahun
 		);
 		$this->load->view($view,$data);
 	}
