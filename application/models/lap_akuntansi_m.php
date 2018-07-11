@@ -160,4 +160,75 @@ class Lap_akuntansi_m extends CI_Model
 
         return $this->db->query($sql)->row();
     }
+
+    function trial_balance($bulan,$tahun,$jenis){
+        $bulan_lalu = $bulan - 1;
+        if($bulan_lalu == 0){
+            $bulan_lalu = 12;
+        }
+
+        if($bulan_lalu < 10){
+            $bulan_txt = '0'.$bulan_lalu;
+        }
+
+        if($jenis == "AKTIVA"){
+            $n = "-";
+        } else {
+            $n = "-";
+        }
+
+        $sql = "
+            SELECT
+                KOPER.KODE_AKUN,
+                KOPER.NAMA_AKUN,
+                IFNULL(SALDO_AWAL_BLN_LALU.DEBET,0) AS DEBET_LALU,
+                IFNULL(SALDO_AWAL_BLN_LALU.KREDIT,0) AS KREDIT_LALU,
+                IFNULL(SALDO_MUTASI.DEBET,0) AS DEBET,
+                IFNULL(SALDO_MUTASI.KREDIT,0) AS KREDIT
+            FROM ak_kode_akuntansi KOPER
+            JOIN ak_grup_kode_akun GRUP ON GRUP.KODE_GRUP = KOPER.KODE_GRUP 
+            JOIN ak_setup_neraca SETUP ON GRUP.GRUP = SETUP.NAMA_KATEGORI
+            LEFT JOIN(
+                SELECT 
+                    KODE_AKUN, 
+                    DEBET,
+                    KREDIT
+                FROM ak_input_voucher_detail 
+                WHERE TGL LIKE '%-$bulan_txt-$tahun%' 
+                GROUP BY KODE_AKUN 
+
+                UNION ALL 
+                            
+                SELECT 
+                    KODE_AKUN,
+                    DEBET,
+                    KREDIT
+                FROM ak_input_voucher_lainnya 
+                WHERE TGL LIKE '%-$bulan_txt-$tahun%' 
+                GROUP BY KODE_AKUN
+            ) SALDO_AWAL_BLN_LALU ON SALDO_AWAL_BLN_LALU.KODE_AKUN = KOPER.KODE_AKUN
+            LEFT JOIN(
+                SELECT 
+                    KODE_AKUN, 
+                    DEBET,
+                    KREDIT
+                FROM ak_input_voucher_detail 
+                WHERE TGL LIKE '%-$bulan-$tahun%' 
+                GROUP BY KODE_AKUN 
+
+                UNION ALL 
+                            
+                SELECT 
+                    KODE_AKUN,
+                    DEBET,
+                    KREDIT
+                FROM ak_input_voucher_lainnya 
+                WHERE TGL LIKE '%-$bulan-$tahun%' 
+                GROUP BY KODE_AKUN
+            ) SALDO_MUTASI ON SALDO_MUTASI.KODE_AKUN = KOPER.KODE_AKUN
+            WHERE SETUP.KELOMPOK = '$jenis'
+            ORDER BY KOPER.KODE_AKUN ASC
+        ";
+        return $this->db->query($sql)->result();
+    }
 }

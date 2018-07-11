@@ -18,8 +18,7 @@ class Lap_akuntansi_c extends CI_Controller {
 		$this->load->library('fpdf/HTML2PDF');
 	}
 
-	public function index()
-	{
+	public function index(){
 		if($this->input->post('cetak')){
 			$lap = $this->input->post('lap');
 			if($lap == "JU"){
@@ -34,22 +33,24 @@ class Lap_akuntansi_c extends CI_Controller {
 				$this->cetakNeraca();
 			} else if($lap == "LABARUGI"){
 				$this->cetakLabaRugi();
+			}else if($lap == "TRIALBALANCE"){
+				$this->cetakTrialBal();
 			}
 		}
 
 		$data = array(
-				'title' 	 		=> 'Laporan Akuntansi',
-				'page'  	 		=> 'lap_akuntansi_v',
-				'sub_menu' 	 		=> 'Akunting',
-				'sub_menu1'	 		=> 'Laporan Akuntansi',
-				'menu' 	   	 		=> 'master_data',
-				'menu2'		 		=> 'divisi',
-				'lihat_data' 		=> $this->divisi->lihat_data_divisi(),
-				'lihat_departemen'  => $this->divisi->lihat_data_depart(),
-				'url_simpan' 		=> base_url().'divisi_c/simpan',
-				'url_hapus'  		=> base_url().'divisi_c/hapus',
-				'url_ubah'	 		=> base_url().'divisi_c/ubah_divisi',
-			);
+			'title' 	 		=> 'Laporan Akuntansi',
+			'page'  	 		=> 'lap_akuntansi_v',
+			'sub_menu' 	 		=> 'Akunting',
+			'sub_menu1'	 		=> 'Laporan Akuntansi',
+			'menu' 	   	 		=> 'master_data',
+			'menu2'		 		=> 'divisi',
+			'lihat_data' 		=> $this->divisi->lihat_data_divisi(),
+			'lihat_departemen'  => $this->divisi->lihat_data_depart(),
+			'url_simpan' 		=> base_url().'divisi_c/simpan',
+			'url_hapus'  		=> base_url().'divisi_c/hapus',
+			'url_ubah'	 		=> base_url().'divisi_c/ubah_divisi',
+		);
 		
 		$this->load->view('home_v',$data);
 	}
@@ -59,7 +60,9 @@ class Lap_akuntansi_c extends CI_Controller {
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
 		$view = "pdf/lap_jurnal_umum_pdf";
-		
+		$first_day_this_month = date('01-'.$bulan.'-Y'); // hard-coded '01' for first day
+		$last_day_this_month  = date('t-'.$bulan.'-Y');
+		$judul =  $first_day_this_month." s/d ".$last_day_this_month;
 
         $dt = $this->db->query("
         	SELECT a.*, b.NAMA_AKUN FROM ak_input_voucher_detail a 
@@ -72,7 +75,7 @@ class Lap_akuntansi_c extends CI_Controller {
 			'title' 		=> 'LAPORAN JURNAL UMUM',
 			'title2'		=> 'SEMUA BAGIAN',
 			'dt'			=> $dt,
-			'judul'			=> $this->datetostr($bulan)." ".$tahun,
+			'judul'			=> $judul,
 			'bulan'			=> $bulan,
 			'tahun'			=> $tahun
 		);
@@ -128,25 +131,52 @@ class Lap_akuntansi_c extends CI_Controller {
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
 		$view = "pdf/lap_buku_besar_pdf";
-		
+		$first_day_this_month = date('01-'.$bulan.'-Y'); // hard-coded '01' for first day
+		$last_day_this_month  = date('t-'.$bulan.'-Y');
+		$judul =  $first_day_this_month." s/d ".$last_day_this_month;
+		$bulan_txt = '';
+
+		$bulan_lalu = $bulan - 1;
+		if($bulan_lalu == 0){
+			$bulan_lalu = 12;
+		}
+
+		if($bulan_lalu < 10){
+			$bulan_txt = '0'.$bulan_lalu;
+		}
 
         $dt = $this->db->query("
-        SELECT a.*, b.NAMA_AKUN FROM (	
-        	SELECT a.NO_BUKTI, b.TGL, b.KETERANGAN, a.KODE_AKUN, SUM(a.DEBET) AS DEBET, SUM(a.KREDIT) AS KREDIT
-            FROM ak_input_voucher_detail a
-            JOIN ak_input_voucher b ON a.ID_VOUCHER = b.ID
-            WHERE b.TGL LIKE '%-$bulan-$tahun%'
-            GROUP BY a.NO_BUKTI, b.TGL, b.KETERANGAN, a.KODE_AKUN
-        ) a JOIN ak_kode_akuntansi b ON a.KODE_AKUN = b.KODE_AKUN
-
-        ORDER BY a.KODE_AKUN ASC, a.TGL,  a.DEBET DESC
+        SELECT 
+			a.KODE,
+			a.KODE_AKUN,
+			c.KODE_GRUP,
+			c.GRUP,
+			b.NAMA_AKUN
+		FROM (	
+			SELECT 
+				a.NO_BUKTI, 
+				b.TGL, 
+				b.KETERANGAN, 
+				a.KODE_AKUN,
+				SUBSTR(a.KODE_AKUN,1,3) AS KODE
+			FROM ak_input_voucher_detail a
+			JOIN ak_input_voucher b ON a.ID_VOUCHER = b.ID
+			WHERE b.TGL LIKE '%-$bulan-$tahun%'
+			GROUP BY a.NO_BUKTI, b.TGL, b.KETERANGAN, a.KODE_AKUN
+		) a JOIN ak_kode_akuntansi b ON a.KODE_AKUN = b.KODE_AKUN
+		LEFT JOIN ak_grup_kode_akun c ON c.KODE_GRUP = b.KODE_GRUP
+		WHERE a.KODE = '111'
+		ORDER BY a.KODE_AKUN ASC, a.TGL DESC
         ")->result();
 		
 		$data = array(
 			'title' 		=> 'LAPORAN BUKU BESAR',
 			'title2'		=> 'SEMUA BAGIAN',
 			'dt'			=> $dt,
-			'judul'			=> $this->datetostr($bulan)." ".$tahun,
+			'judul'			=> $judul,
+			'bulan'			=> $bulan,
+			'tahun'			=> $tahun,
+			'bulan_lalu'	=> $bulan_txt
 		);
 		$this->load->view($view,$data);
 	}
@@ -197,6 +227,8 @@ class Lap_akuntansi_c extends CI_Controller {
 		$bulan = $this->input->post('bulan');
 		$tahun = $this->input->post('tahun');
 		$view = "pdf/lap_neraca_pdf";
+		$last_day_this_month  = date('t-'.$bulan.'-Y');
+		$judul = $last_day_this_month;
 		
 		$dt = "";
 		$dt_aktiva = $this->model->get_lap_neraca_bulanan($bulan, $tahun, 'AKTIVA');
@@ -214,8 +246,30 @@ class Lap_akuntansi_c extends CI_Controller {
 			'dt_wajib'      => $dt_wajib,
 			'laba'          => $laba,
 			'laba_lalu'     => $laba_lalu,
-			'judul'			=> $this->datetostr($bulan)." ".$tahun,
+			'judul'			=> $judul,
 		);
+		$this->load->view($view,$data);
+	}
+
+	function cetakTrialBal(){
+		$bulan = $this->input->post('bulan');
+		$tahun = $this->input->post('tahun');
+		$view = "pdf/lap_trial_balance_pdf";
+		$first_day_this_month = date('01-'.$bulan.'-Y'); // hard-coded '01' for first day
+		$last_day_this_month  = date('t-'.$bulan.'-Y');
+		$judul =  $first_day_this_month." s/d ".$last_day_this_month;
+		
+		$dt_aktiva = $this->model->trial_balance($bulan, $tahun, 'AKTIVA');
+
+		$data = array(
+			'title' 		=> 'LAPORAN TRIAL BALANCE',
+			'judul'			=> $judul,
+			'bulan'			=> $bulan,
+			'tahun'			=> $tahun,
+			'dt_aktiva'     => $dt_aktiva,
+
+		);
+		
 		$this->load->view($view,$data);
 	}
 

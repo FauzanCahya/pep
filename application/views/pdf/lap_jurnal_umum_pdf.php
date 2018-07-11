@@ -43,16 +43,15 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             <h4>
                 LAPORAN JURNAL UMUM <br>
                 <hr>
-                <?=$judul;?><br>
                 PT. Prima Elektrik Power<br>
-                Periode berlaku mulai tanggal 
+                Periode berlaku mulai tanggal <?php echo $judul; ?> 
             </h4>
         </td>
     </tr>
 </table>
 <table align="right">
     <tr>
-        <td>Tanggal Cetak : </td>
+        <td>Tanggal Cetak : <?php echo date('d-m-Y'); ?></td>
     </tr>
 </table>
 <hr>
