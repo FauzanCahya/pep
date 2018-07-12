@@ -33,7 +33,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Supplier / Penagih</label>
 							<div class="col-md-5">
-								<select  class="form-control input-large select2me input-sm" id="id_supplier" name="id_supplier" data-placeholder="Select..." required>
+								<select  class="form-control input-large select2me input-sm" id="id_supplier" name="id_supplier" data-placeholder="Select..." required onchange="get_po_spk();">
 									<option value=""></option>
 									<?php 
 										foreach ($lihat_data_supp as $value){
@@ -154,6 +154,21 @@
 						</div>
 						<hr>
 
+						<table class="table table-bordered table-hover">
+                            <thead>
+                                <tr style="background: #333; color: #FFF;">
+                                    <th style="text-align: center;"> Keterangan Penagihan </th>
+                                    <th style="text-align: center;"> Dasar Dokumen </th>
+                                    <th style="text-align: center;"> Nilai  Tagihan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data_dibayar">
+                            	<tr>
+                            		<td colspan="4" style="text-align: center;"></td>
+                            	</tr>
+                            </tbody>
+                        </table>     
+
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Total Tagihan</label>
 							<div class="col-md-2">
@@ -216,6 +231,32 @@
 
 <input type="hidden" name="total_row" id="total_row" value="2">
 <script charset="utf-8" type="text/javascript">
+
+function get_po_spk(){
+	var id_supplier = $('#id_supplier').val();
+	$.ajax({
+		url : '<?php echo base_url(); ?>pengakuan_hutang_c/get_po_spk',
+		data : {id_supplier:id_supplier},
+		type : "POST",
+		dataType : "json",
+		success : function(result){
+			var isine = '';
+			if(result.length > 0){
+	            $.each(result,function(i,res){
+
+	                isine += 	'<tr onclick="pilih('+res.id+');" style="cursor:pointer;">'+
+		                            '<td text-align="center">'+res.tanggal+'</td>'+
+		                            '<td text-align="center">'+res.nama+'</td>'+
+		                            '<td text-align="center">'+res.no_spb+'</td>'+
+		                            '<td text-align="center">Rp '+NumberToMoney(res.total).split('.00').join('')+'</td>'+
+	                        	'</tr>';
+	            });
+            }
+
+            $('#data_spk').html(isine);
+		}
+	});
+}
 
 function is_lain(){
 	if ($('#kl_lain').is(':checked')) {

@@ -241,6 +241,19 @@ class Pengakuan_hutang_c extends CI_Controller {
 		
 		$this->load->view('pdf/report_tanda_terima_tagihan_pdf', $data);
 	}
+
+	function get_po_spk(){
+		$id_supplier = $this->input->post('id_supplier');
+		$sql = "
+		SELECT b.id, a.no_spb, a.tanggal, b.nama, b.total FROM tb_pembelian_jasa a 
+		JOIN tb_pembelian_jasa_detail b ON a.id_pengembalian = b.id_induk
+		WHERE a.kode_supplier = $id_supplier
+		";
+
+		$dt = $this->db->query($sql)->result();
+
+		echo json_encode($dt);
+	}
 }
 
 /* End of file welcome.php */
