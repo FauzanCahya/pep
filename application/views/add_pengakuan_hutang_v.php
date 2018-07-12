@@ -17,28 +17,6 @@
 					<div class="form-body">
 						
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1"></label>
-							<div class="col-md-5">
-								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Kwitansi / Invoice / Nota
-								<br>
-								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Faktur Pajak
-								<br>
-								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Surat Pesanan Asli / PO / SPK
-								<br>
-								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Surat Jalan Asli
-								<br>
-								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Berita Acara
-								<br>
-								<input type="checkbox" class="form-control" id="no_bukti" name="no_bukti"> Lain - lain 
-								<br>
-								<input type="text" class="form-control" name="lain_lain" style="width: 30%;">
-								
-								
-
-							</div>
-						</div>
-
-						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">No. Dokumen</label>
 							<div class="col-md-5">
 								<input type="text" class="form-control" id="no_bukti" name="no_bukti" readonly value="<?=$get_nomor;?>">
@@ -71,6 +49,28 @@
 						<hr>
 
 						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Kelengkapan Dokumen</label>
+							<div class="col-md-3">
+								<input type="checkbox" class="form-control" id="kl_nota" name="kl_nota"> Kwitansi / Invoice / Nota
+								<br>
+								<input type="checkbox" class="form-control" id="kl_faktur" name="kl_faktur"> Faktur Pajak
+								<br>
+								<input type="checkbox" class="form-control" id="kl_spa" name="kl_spa"> Surat Pesanan Asli / PO / SPK
+							</div>
+							<div class="col-md-3">
+								<input type="checkbox" class="form-control" id="kl_sj" name="kl_sj"> Surat Jalan Asli
+								<br>
+								<input type="checkbox" class="form-control" id="kl_ba" name="kl_ba"> Berita Acara
+								<br>
+								<input type="checkbox" class="form-control" id="kl_lain" name="kl_lain" onclick="is_lain();"> Lain - lain 
+								<br>
+								<input type="text" class="form-control" readonly="" id="kl_lain_isi" name="kl_lain_isi" style="width: 100%;" placeholder="lain - lain">
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Tanggal Nota</label>
 							<div class="col-md-2">
 								<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_nota" readonly style="background: #FFF; cursor: pointer;"/>
@@ -92,6 +92,35 @@
 						</div> -->
 
 						<div class="form-group">
+							<label class="col-md-2 control-label" style="font-weight: bold;">DAFTAR PEKERJAAN</label>
+						</div>
+						<hr>
+
+						<div class="form-group" style="padding-left: 100px;">
+						<button  type="button" class="btn default" onclick="$('#dari_spk').show(); $('#selian_spk').hide();">Dari PO / SPK</button>
+						<button  type="button" class="btn default" onclick="$('#selian_spk').show(); $('#dari_spk').hide();">Selain PO / SPK</button>
+						</div>
+
+						<div class="table-scrollable" id="dari_spk">
+	                        <table class="table table-bordered table-hover">
+	                            <thead>
+	                                <tr style="background: #333; color: #FFF;">
+	                                    <th style="text-align: center; width: 20%;"> Tanggal  Diterima</th>
+	                                    <th style="text-align: center;"> Keterangan Penagihan </th>
+	                                    <th style="text-align: center;"> Dasar Dokumen </th>
+	                                    <th style="text-align: center;"> Nilai </th>
+	                                </tr>
+	                            </thead>
+	                            <tbody id="data_spk">
+	                            	<tr>
+	                            		<td colspan="4" style="text-align: center;">Pilih Supplier terlebih dahulu</td>
+	                            	</tr>
+	                            </tbody>
+	                        </table>                        
+	                    </div>
+
+	                    <div id="selian_spk" style="display: none;">
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Untuk Pembayaran</label>
 							<div class="col-md-5">
 								<input type="text" class="form-control" id="untuk" name="untuk">
@@ -107,6 +136,11 @@
 								</select>
 							</div>
 						</div>
+						</div>
+
+						<center>
+						<button class="btn green">Tambahkan</button>
+						</center>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Nilai Tagihan</label>
@@ -116,6 +150,19 @@
 						</div>
 
 						<div class="form-group">
+							<label class="col-md-2 control-label" style="font-weight: bold;">Daftar yang akan dibayar</label>
+						</div>
+						<hr>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="form_control_1">Total Tagihan</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control text-right text-right" id="total" name="total" readonly>
+							</div>
+						</div>
+
+
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Biaya Materai</label>
 							<div class="col-md-2">
 								<input type="text" class="form-control text-right" id="nilai_materai" name="nilai_materai" onkeyup="FormatCurrency(this); hitung_bayar();">
@@ -123,12 +170,14 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Total Pembayaran</label>
+							<label class="col-md-2 control-label" for="form_control_1">Dibayar</label>
 							<div class="col-md-2">
-								<input type="text" class="form-control text-right text-right" id="total" name="total" readonly>
+								<input type="text" class="form-control text-right text-right" id="dibayar" name="dibayar" readonly>
 							</div>
 						</div>
 
+
+						
 						<hr>
 					</div>
 
@@ -147,8 +196,6 @@
 							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_hubungi" readonly style="background: #FFF; cursor: pointer;"/>
 						</div>
 					</div>
-
-					
 
 					<hr> 
 					
@@ -169,6 +216,14 @@
 
 <input type="hidden" name="total_row" id="total_row" value="2">
 <script charset="utf-8" type="text/javascript">
+
+function is_lain(){
+	if ($('#kl_lain').is(':checked')) {
+		$('#kl_lain_isi').prop('readonly', false);
+	} else {
+		$('#kl_lain_isi').prop('readonly', true);
+	}
+}
 
 function hapus(id){
 	$('#tr_'+id).remove();
