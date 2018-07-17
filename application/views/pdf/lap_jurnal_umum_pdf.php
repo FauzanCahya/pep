@@ -119,11 +119,13 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
             }
     ?>
         <tr>
+            <td colspan="3" style="border-bottom: 1px solid black;">&nbsp;</td>
+            <!-- 
             <td style="border-bottom: 1px solid black;">&nbsp;</td>
             <td style="border-bottom: 1px solid black;">&nbsp;</td>
             <td style="border-bottom: 1px solid black;">&nbsp;</td>
-            <td style="border-bottom: 1px solid black;">&nbsp;</td>
-            <td style="border-bottom: 1px solid black;">&nbsp;</td>
+            -->
+            <td style="border-bottom: 1px solid black;">&nbsp;</td> 
         </tr>
     <?php
         }

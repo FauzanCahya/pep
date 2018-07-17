@@ -61,11 +61,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style-devan.css"/>
 <!-- END THEME STYLES -->
-<link rel="shortcut icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="<?php echo base_url(); ?>ico/howto02.png">
 <style type="text/css">
-	.control-label{
-		color: #000 !important;
-	}
+.control-label{
+	color: #000 !important;
+}
 </style>
 </head>
 <!-- BEGIN BODY -->
