@@ -5,6 +5,7 @@ class Dashboard_c extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('dashboard_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -26,6 +27,28 @@ class Dashboard_c extends CI_Controller {
 
 		$this->load->view('home_v',$data);
 	}
+
+	function cek_no_di_spb(){
+		$nomor = $this->input->post('nomor');
+		$data = $this->model->tampil_no_spb($nomor);
+
+		echo json_encode($data);
+	}
+
+	function cek_no_spb_di_opb(){
+		$nomor = $this->input->post('nomor');
+		$data2 = $this->model->tampil_no_spb_di_opb($nomor);
+
+		echo json_encode($data2);
+	}
+
+	function cek_no_opb_di_po(){
+		$nomor = $this->input->post('nomor');
+		$data3 = $this->model->tampil_no_opb_di_po($nomor);
+
+		echo json_encode($data3);
+	}
+
 }
 
 /* End of file welcome.php */

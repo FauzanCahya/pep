@@ -1,4 +1,105 @@
-<div class="row" id="form_kode_akun" >
+<script src="<?php echo base_url(); ?>js/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_cari').click(function(){
+		trace_nomor();
+	});
+});
+
+function trace_nomor(){
+	var nomor = $('#nomor').val();
+
+	$.ajax({
+		url : '<?php echo base_url(); ?>dashboard_c/cek_no_di_spb',
+		data : {nomor:nomor},
+		type : "POST",
+		dataType : "json",
+		success : function(spb){
+
+			$tr = '';
+
+			var no = 0;
+
+			if(spb.length != 0){
+				for(var i=0; i<spb.length; i++){
+					no++;
+
+					$tr += '<tr>'+
+								'<td style="text-align:center;">'+no+'</td>'+
+								'<td>'+spb[i].no_spb+'</td>'+
+								'<td>&nbsp;</td>'+
+								'<td>Permintaan Barang (SPB)</td>'+
+							'</tr>';
+				}
+
+				$('#tabel_data tbody').html($tr);
+
+				$.ajax({
+					url : '<?php echo base_url(); ?>dashboard_c/cek_no_spb_di_opb',
+					data : {nomor:nomor},
+					type : "POST",
+					dataType : "json",
+					success : function(opb){
+						$tr2 = '';
+
+						if(opb.length != 0){
+							for(var j=0; j<opb.length; j++){
+								no++;
+
+								$tr2 += '<tr>'+
+											'<td style="text-align:center;">'+no+'</td>'+
+											'<td>&nbsp;</td>'+
+											'<td>'+opb[j].no_opb+'</td>'+
+											'<td>Order Pembelian Barang (OPB)</td>'+
+										'</tr>';
+							}
+
+							$('#tabel_data tbody').append($tr2);
+
+							$.ajax({
+								url : '<?php echo base_url(); ?>dashboard_c/cek_no_opb_di_po',
+								data : {nomor:nomor},
+								type : "POST",
+								dataType : "json",
+								success : function(po){
+									$tr3 = '';
+
+									if(po.length != 0){
+										for(var k=0; k<po.length; k++){
+											no++;
+
+											$tr3 += '<tr>'+
+														'<td style="text-align:center;">'+no+'</td>'+
+														'<td>&nbsp;</td>'+
+														'<td>'+po[k].no_opb+'</td>'+
+														'<td>Purchase Order (PO)</td>'+
+													'</tr>';
+										}
+
+										$('#tabel_data tbody').append($tr3);
+
+									}else{
+										$tr = '<tr class="warning"><td colspan="4">&nbsp;</td></tr>';
+										$('#tabel_data tbody').append($tr);
+									}
+								}
+							});
+						}else{
+							$tr = '<tr class="warning"><td colspan="4">&nbsp;</td></tr>';
+							$('#tabel_data tbody').append($tr);
+						}
+					}
+				});
+			}else{
+				$tr = '<tr class="warning"><td colspan="4">&nbsp;</td></tr>';
+				$('#tabel_data tbody').append($tr);
+			}
+		}
+	});
+}
+</script>
+
+<div class="row" id="form_kode_akun">
 	<div class="col-md-12">
 		<!-- BEGIN SAMPLE FORM PORTLET-->
 		<div class="portlet light bordered">
@@ -6,10 +107,6 @@
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
 					<span class="caption-subject bold uppercase"> DASHBOARD </span>
-				</div>
-				<div class="actions">
-					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
-					</a>
 				</div>
 			</div>
 			<div class="portlet-body form">
@@ -114,5 +211,50 @@
 			</div>
 		</div>
 		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+</div>
+
+<div class="row" id="form_kode_akun">
+	<div class="col-md-12">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption font-green-haze">
+					<i class="fa fa-search font-green-haze"></i>
+					<span class="caption-subject bold uppercase"> DOKUMEN LINK </span>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<h4 class="block">Masukkan Nomor</h4>
+				<form role="form">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="input-group">
+								<input type="text" class="form-control" name="nomor" id="nomor" value="">
+								<span class="input-group-btn">
+									<button type="button" class="btn blue" id="btn_cari">Cari</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+				<br>
+				<br>
+				<div class="table-responsive">
+					<table class="table table-bordered" id="tabel_data">
+						<thead>
+							<tr class="success">
+								<th>NO</th>
+								<th>NOMOR SPB</th>
+								<th>NOMOR OPB</th>
+								<th>URAIAN</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
