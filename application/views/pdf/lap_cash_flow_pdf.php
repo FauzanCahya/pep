@@ -8,71 +8,76 @@
 <br>
 <table align="center">
     <tr>
-        <td align="center">
-            <h3 style="text-decoration: underline;">
-                <?php echo $title; ?>
-            </h3>
-            <h5>PT PRIMA ELEKTRIK POWER</h5>
-            
-        </td>
+        <td align="center" style="font-weight: bold; font-size: 16px;"><u><?php echo $title; ?></u></td>
+    </tr>
+    <tr>
+        <td align="center" style="font-weight: bold;">PT PRIMA ELEKTRIK POWER</td>
+    </tr>
+    <tr>
+        <td align="center" style="font-weight: bold;">Per tanggal <?php echo $judul; ?></td>
     </tr>
 </table>
 <br>
 <br>
+<table align="right">
+    <tr>
+        <td>Tanggal Cetak : <?php echo date('d-m-Y'); ?></td>
+    </tr>
+</table>
 <hr style="border:1px double">
-<h5>Nilai Kurs yang Berlaku saat ini terhadap dollar Rp.</h5>
+<table>
+    <tr>
+        <td style="width: 400px;">&nbsp;</td>
+        <td style="text-align: center;">Nilai Kurs yang Berlaku saat ini terhadap dollar Rp.</td>
+        <td style="width: 350px; text-align: right;">1.00</td>
+    </tr>
+</table>
 <hr style="border:1px double;">
 <table>
     <tr>
-        <td>Nama Bank/Kas :</td>
+        <td>Nama Bank/Kas : <?php echo $bank; ?></td>
         <td></td>
     </tr>
+</table>
+
+<table align="right">
+<?php
+    $sak = 0;
+    foreach ($dt as $key => $value) {
+        $sa = $value->SALDO_BLN_LALU;
+        $mut = $value->MUTASI;
+        $sak = $sa + $mut;
+?>
     <tr>
         <td>Saldo Awal</td>
-        <td>4.788.888.699</td>
+        <td><?php echo number_format($value->SALDO_BLN_LALU,0,',','.'); ?></td>
     </tr>
     <tr>
         <td>Mutasi</td>
-        <td>4.788.888.699</td>
+        <td><?php echo number_format($mut,0,',','.'); ?></td>
+    </tr>
+<?php
+    }
+?>
+    <tr>
+        <td>&nbsp;</td>
+        <td><hr></td>
     </tr>
     <tr>
         <td>Saldo Akhir</td>
-        <td>4.788.888.699</td>
+        <td><?php echo number_format($sak,0,',','.'); ?></td>
     </tr>
 </table>
+
 <br>
 <br>
 <hr>
 <h5>Pemasukan</h5>
 <hr>
-<table style="width: 100%;">
-    <tr>
-        <th style="width: 10%;text-align: center;"></th>
-        <th style="width: 10%;text-align: center;">Saldo Buku</th>
-        <th style="width: 20%;text-align: center;">Saldo Efektif</th>
-        <th style="width: 10%;text-align: center;">Saldo Bank</th>
-    </tr>
-
-    <?php 
-        $u = 0;
-        foreach ($dt as $key => $value) { 
-    ?>
-    <tr style="">
-        <td style="padding: 5px;border-top: 1px dotted;border-bottom: 1px dotted;text-align: center;"></td>
-        <td style="padding: 5px;border-top: 1px dotted;border-bottom: 1px dotted;text-align: left;"><?php echo $value->TGL_KELUAR; ?></td>
-        <td style="padding: 5px;border-top: 1px dotted;border-bottom: 1px dotted;text-align: center;"><?php echo $value->kuantitas; ?></td>
-        <td style="padding: 5px;border-top: 1px dotted;border-bottom: 1px dotted;text-align: center;"><?php echo $value->NILAI; ?></td>
-    </tr>
-    <?php 
-        }
-    ?>
-    <tr>
-        <td><strong>Total</strong></td>
-        <td><strong></strong></td>
-        <td><strong></strong></td>
-        <td><strong></strong></td>
-    </tr>
-</table>
+<h5>Pengeluaran</h5>
+<hr>
+Total Pemasukan - Total Pengeluaran
+<hr>
 
 <?PHP
     $width_custom = 14;

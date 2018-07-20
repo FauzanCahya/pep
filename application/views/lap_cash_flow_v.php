@@ -109,7 +109,7 @@ $(document).ready(function(){
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Nama Bank</label>
 							<div class="col-md-3">
-								<select name="tahun" class="form-control">
+								<select name="bank" class="form-control">
 									<option value="BCA">BCA</option>
 									<option value="MANDIRI">MANDIRI</option>
 									<option value="PERMATA">PERMATA</option>
