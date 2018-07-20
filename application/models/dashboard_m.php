@@ -18,7 +18,9 @@ class Dashboard_m extends CI_Model
 			SELECT 
 				a.id,
 				a.no_spb,
-				b.no_opb
+				b.no_opb,
+				b.tanggal,
+				b.uraian
 			FROM tb_order_pembelian_detail a
 			LEFT JOIN tb_order_pembelian b ON b.id_order = a.id_induk
 			WHERE a.no_spb = '$nomor'
@@ -28,7 +30,14 @@ class Dashboard_m extends CI_Model
 	}
 
 	function tampil_no_opb_di_po($nomor){
-		$sql = "SELECT * FROM tb_purchase_order_detail WHERE no_opb = '$nomor'";
+		$sql = "
+			SELECT 
+				a.*,
+				b.tanggal
+			FROM tb_purchase_order_detail a
+			LEFT JOIN tb_purchase_order b ON b.id_purchase = a.id_induk
+			WHERE a.no_opb = '$nomor'
+		";
 		$query = $this->db->query($sql);
 		return $query->row();
 	}

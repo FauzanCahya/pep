@@ -27,7 +27,8 @@ function trace_nomor(){
 					$tr += '<tr>'+
 								'<td style="text-align:center;">'+no+'</td>'+
 								'<td>'+spb[i].no_spb+'</td>'+
-								'<td>&nbsp;</td>'+
+								'<td>'+spb[i].tanggal+'</td>'+
+								'<td>'+spb[i].uraian+'</td>'+
 								'<td>Permintaan Barang (SPB)</td>'+
 							'</tr>';
 				}
@@ -48,8 +49,9 @@ function trace_nomor(){
 
 								$tr2 += '<tr>'+
 											'<td style="text-align:center;">'+no+'</td>'+
-											'<td>&nbsp;</td>'+
 											'<td>'+opb[j].no_opb+'</td>'+
+											'<td>'+opb[j].tanggal+'</td>'+
+											'<td>'+opb[j].uraian+'</td>'+
 											'<td>Order Pembelian Barang (OPB)</td>'+
 										'</tr>';
 							}
@@ -70,8 +72,9 @@ function trace_nomor(){
 
 											$tr3 += '<tr>'+
 														'<td style="text-align:center;">'+no+'</td>'+
-														'<td>&nbsp;</td>'+
 														'<td>'+po[k].no_opb+'</td>'+
+														'<td>'+po[k].tanggal+'</td>'+
+														'<td>'+po[k].uraian+'</td>'+
 														'<td>Purchase Order (PO)</td>'+
 													'</tr>';
 										}
@@ -79,19 +82,19 @@ function trace_nomor(){
 										$('#tabel_data tbody').append($tr3);
 
 									}else{
-										$tr = '<tr class="warning"><td colspan="4">&nbsp;</td></tr>';
+										$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
 										$('#tabel_data tbody').append($tr);
 									}
 								}
 							});
 						}else{
-							$tr = '<tr class="warning"><td colspan="4">&nbsp;</td></tr>';
+							$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
 							$('#tabel_data tbody').append($tr);
 						}
 					}
 				});
 			}else{
-				$tr = '<tr class="warning"><td colspan="4">&nbsp;</td></tr>';
+				$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
 				$('#tabel_data tbody').append($tr);
 			}
 		}
@@ -118,13 +121,11 @@ function trace_nomor(){
 							</div>
 							<div class="details">
 								<div class="number">
-
 								<?php 
-								$tanggal = date('d-m-Y');
+									$tanggal = date('d-m-Y');
 									$po = $this->db->query("SELECT COUNT(*) as hitung FROM tb_purchase_order WHERE tanggal = '$tanggal'")->row();
-
 								?>
-									 <?=$po->hitung;?>
+									<?=$po->hitung;?>
 								</div>
 								<div class="desc">
 									 Purchase Order Hari Ini 
@@ -142,14 +143,13 @@ function trace_nomor(){
 							</div>
 							<div class="details">
 								<div class="number">
-									 <?php 
-									 	$pb = $this->db->query("SELECT COUNT(*) as hitung FROM tb_permintaan_barang WHERE tanggal = '$tanggal'")->row();
-
-									 ?>
-									 <?=$pb->hitung;?>
+								<?php 
+									$pb = $this->db->query("SELECT COUNT(*) as hitung FROM tb_permintaan_barang WHERE tanggal = '$tanggal'")->row();
+								?>
+									<?=$pb->hitung;?>
 								</div>
 								<div class="desc">
-									 Permintaan Barang Hari Ini
+									Permintaan Barang Hari Ini
 								</div>
 							</div>
 							<a class="more" href="javascript:;">
@@ -244,9 +244,10 @@ function trace_nomor(){
 						<thead>
 							<tr class="success">
 								<th>NO</th>
-								<th>NOMOR SPB</th>
-								<th>NOMOR OPB</th>
+								<th>NOMOR DOKUMEN</th>
+								<th>TANGGAL</th>
 								<th>URAIAN</th>
+								<th>KETERANGAN</th>
 							</tr>
 						</thead>
 						<tbody>
