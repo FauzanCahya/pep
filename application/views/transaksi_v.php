@@ -9,6 +9,7 @@
 $(document).ready(function(){
 	pagingKategori();
 	pagingKonsumen();
+	pagingBank();
 
 	$('#btn_simpan1').click(function(){
 		var id_kategori = $('#id_kategori').val();
@@ -149,6 +150,32 @@ $(document).ready(function(){
 			});	
 		}
 	});
+
+	$('#btn_simpan1_bank').click(function(){
+		var id_bank = $('#id_bank').val();
+		var kode_akun = $('#akun_transaksi_bank').val();
+
+		if(id_bank == ""){
+			notif_kon_kosong();
+		}else{
+			$('#popup_load').show();
+
+			$.ajax({
+				url : '<?php echo base_url(); ?>transaksi_c/simpan_akun_bank',
+				data : {
+					id_bank:id_bank,
+					kode_akun:kode_akun
+				},
+				type : "POST",
+				dataType : "json",
+				success : function(row){
+					$('#popup_load').hide();
+					berhasil();
+					klik_bank(id_bank);
+				}
+			});	
+		}
+	});
 });
 
 function pagingKategori($selector){
@@ -190,6 +217,36 @@ function pagingKonsumen($selector){
     }
 
     window.tp = new Pagination('#tablePagingKonsumen', {
+        itemsCount:$selector.length,
+        pageSize : parseInt(jumlah_tampil),
+        onPageSizeChange: function (ps) {
+            console.log('changed to ' + ps);
+        },
+        onPageChange: function (paging) {
+            //custom paging logic here
+            //console.log(paging);
+            var start = paging.pageSize * (paging.currentPage - 1),
+                end = start + paging.pageSize,
+                $rows = $selector;
+
+            $rows.hide();
+
+            for (var i = start; i < end; i++) {
+                $rows.eq(i).show();
+            }
+        }
+    });
+}
+
+function pagingBank($selector){
+    var jumlah_tampil = 10;
+
+    if(typeof $selector == 'undefined')
+    {
+        $selector = $("#tabel_bank tbody tr"); 
+    }
+
+    window.tp = new Pagination('#tablePagingBank', {
         itemsCount:$selector.length,
         pageSize : parseInt(jumlah_tampil),
         onPageSizeChange: function (ps) {
@@ -257,6 +314,60 @@ function klik_konsumen(id){
 		}
 	});
 }
+
+function klik_bank(id){
+	$('#popup_load').show();
+
+	$.ajax({
+		url : '<?php echo base_url(); ?>transaksi_c/get_bank_id',
+		data : {id:id},
+		type : "POST",
+		dataType : "json",
+		success : function(row){
+			$('#id_bank').val(id);
+			
+			$('#kode_akun_transaksi_bank').html(row['AKUN_TRANSAKSI']);
+			$('#text_akun_transaksi_bank').html(row['NAMA_AKUN']);
+
+			$('#popup_load').hide();
+		}
+	});
+}
+
+function get_trx_lain(id){
+	$('#popup_load').show();
+	$.ajax({
+		url : '<?php echo base_url(); ?>transaksi_c/get_trx_lain_id',
+		data : {id:id},
+		type : "POST",
+		dataType : "json",
+		success : function(row){
+			$('#text_akun_trx'+id).html(row['AKUN_LAINNYA']+" - "+row['NAMA_AKUN']);
+			$('#popup_load').hide();
+		}
+	});
+}
+
+function simpan_trx_lain(id_trx){
+	$('#popup_load').show();
+
+	var kode_akun = $('#akun_trx'+id_trx).val();
+
+	$.ajax({
+		url : '<?php echo base_url(); ?>transaksi_c/simpan_akun_trx_lain',
+		data : {
+			id_trx:id_trx,
+			kode_akun:kode_akun
+		},
+		type : "POST",
+		dataType : "json",
+		success : function(row){
+			berhasil();
+			$('#popup_load').hide();
+			get_trx_lain(id_trx);
+		}
+	});
+}
 </script>
 
 <div id="popup_load">
@@ -320,7 +431,7 @@ function klik_konsumen(id){
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
-															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->NAMA_AKUN; ?></option>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
 														<?php
 															}
 														?>
@@ -345,7 +456,7 @@ function klik_konsumen(id){
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
-															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->NAMA_AKUN; ?></option>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
 														<?php
 															}
 														?>
@@ -370,7 +481,7 @@ function klik_konsumen(id){
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
-															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->NAMA_AKUN; ?></option>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
 														<?php
 															}
 														?>
@@ -430,7 +541,7 @@ function klik_konsumen(id){
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
-															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->NAMA_AKUN; ?></option>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
 														<?php
 															}
 														?>
@@ -455,7 +566,7 @@ function klik_konsumen(id){
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
-															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->NAMA_AKUN; ?></option>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
 														<?php
 															}
 														?>
@@ -477,15 +588,101 @@ function klik_konsumen(id){
 								</div>
 							</form>
 						</div>
+
 						<div id="tab13" class="tab-pane">
-							<p>
-								 Howdy, I'm in Section 3.
-							</p>
+							<form role="form" class="form-horizontal" method="post">
+								<input type="hidden" name="id_bank" id="id_bank" value="">
+								<div class="form-body">
+									<div class="col-md-6">
+										<table class="table table-hover table-bordered" id="tabel_bank">
+											<thead>
+												<tr class="warning">
+													<th>Nama Kas Bank</th>
+												</tr>
+											</thead>
+											<tbody>
+											<?php
+												foreach ($bank as $key => $value) {
+											?>
+												<tr style="cursor: pointer;" onclick="klik_bank(<?php echo $value->ID; ?>);">
+													<td><?php echo $value->NAMA_BANK; ?>, No Rekening : <?php echo $value->NO_REKENING; ?></td>
+												</tr>
+											<?php
+												}
+											?>
+											</tbody>
+										</table>
+										<div id="tablePagingBank"> </div>
+									</div>
+									<div class="col-md-6">
+										<table class="table">
+											<tr>
+												<td>
+													<label>Akun untuk hutang dagang</label>
+													<div class="input-group">
+														<select class="form-control input-medium select2me" name="akun_transaksi_bank" id="akun_transaksi_bank" data-placeholder="Select...">
+														<?php
+															foreach ($kode_akun as $key => $value) {
+														?>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
+														<?php
+															}
+														?>
+														</select>
+													</div>	
+												</td>
+												<td>Kode Akun</td>
+												<td>Uraian</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="btn blue" type="button" id="btn_simpan1_bank">Simpan</button>
+												</td>
+												<td><b id="kode_akun_transaksi_bank">-</b></td>
+												<td><b id="text_akun_transaksi_bank">-</b></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</form>
 						</div>
+
 						<div id="tab14" class="tab-pane">
-							<p>
-								 Howdy, I'm in Section 4.
-							</p>
+							<form role="form" class="form-horizontal" method="post">
+								<input type="hidden" name="id_bank" id="id_bank" value="">
+								<div class="form-body">
+									<div class="col-md-8">
+										<table class="table table-hover table-bordered">
+											<tbody>
+											<?php
+												foreach ($trx_lain as $val) {
+											?>
+												<tr style="cursor: pointer;" onclick="get_trx_lain(<?php echo $val->ID; ?>);">
+													<td><?php echo $val->KETERANGAN; ?></td>
+													<td><b id="text_akun_trx<?php echo $val->ID; ?>">-</b></td>
+													<td>
+														<select class="form-control input-medium select2me" name="akun_trx<?php echo $val->ID; ?>" id="akun_trx<?php echo $val->ID; ?>" data-placeholder="Select...">
+														<?php
+															foreach ($kode_akun as $key => $value) {
+														?>
+															<option value="<?php echo $value->KODE_AKUN; ?>"><?php echo $value->KODE_AKUN; ?> - <?php echo $value->NAMA_AKUN; ?></option>
+														<?php
+															}
+														?>
+														</select>
+													</td>
+													<td align="center">
+														<button class="btn blue" type="button" onclick="simpan_trx_lain(<?php echo $val->ID; ?>);">Simpan</button>
+													</td>
+												</tr>
+											<?php
+												}
+											?>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>

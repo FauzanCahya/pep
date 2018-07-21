@@ -67,4 +67,48 @@ class Transaksi_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+	function get_bank(){
+		$sql = "SELECT * FROM master_bank ORDER BY ID ASC";
+		return $this->db->query($sql)->result();
+	}
+
+	function get_bank_id($id){
+		$sql = "
+			SELECT
+				a.*,
+				b.NAMA_AKUN
+			FROM master_bank a
+			LEFT JOIN ak_kode_akuntansi b ON b.KODE_AKUN = a.AKUN_TRANSAKSI
+			WHERE a.ID = '$id'
+		";
+		return $this->db->query($sql)->row();
+	}
+
+	function simpan_kode_bank($id_bank,$kode_akun){
+		$sql = "UPDATE master_bank SET AKUN_TRANSAKSI = '$kode_akun' WHERE ID = '$id_bank'";
+		$this->db->query($sql);
+	}
+
+	function get_trx_lain(){
+		$sql = "SELECT * FROM master_trx_lain ORDER BY ID ASC";
+		return $this->db->query($sql)->result();
+	}
+
+	function get_trx_lain_id($id){
+		$sql = "
+			SELECT
+				a.*,
+				b.NAMA_AKUN
+			FROM master_trx_lain a
+			LEFT JOIN ak_kode_akuntansi b ON b.KODE_AKUN = a.AKUN_LAINNYA
+			WHERE a.ID = '$id'
+		";
+		return $this->db->query($sql)->row();
+	}
+
+	function simpan_kode_trx_lain($id_trx,$kode_akun){
+		$sql = "UPDATE master_trx_lain SET AKUN_LAINNYA = '$kode_akun' WHERE ID = '$id_trx'";
+		$this->db->query($sql);
+	}
+
 }

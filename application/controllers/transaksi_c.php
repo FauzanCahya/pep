@@ -26,6 +26,8 @@ class Transaksi_c extends CI_Controller {
 				'lihat_data' => $this->kategori->get_kat_barang(),
 				'kode_akun'	 => $this->kategori->get_kode_akun(),
 				'konsumen'	 => $this->kategori->get_konsumen(),
+				'bank'	 	 => $this->kategori->get_bank(),
+				'trx_lain'	 => $this->kategori->get_trx_lain(),
 				'url_simpan' => base_url().'kategori_barang_c/simpan',
 				'url_hapus'  => base_url().'kategori_barang_c/hapus',
 				'url_ubah'	 => base_url().'kategori_barang_c/ubah_divisi',
@@ -79,6 +81,36 @@ class Transaksi_c extends CI_Controller {
 
 		$this->kategori->simpan_kode_akun_kon($id_konsumen,$field,$kode_akun);
 		
+		echo '1';
+	}
+
+	function get_bank_id(){
+		$id = $this->input->post('id');
+		$data = $this->kategori->get_bank_id($id);
+		echo json_encode($data);
+	}
+
+	function simpan_akun_bank(){
+		$id_bank = $this->input->post('id_bank');
+		$kode_akun = $this->input->post('kode_akun');
+
+		$this->kategori->simpan_kode_bank($id_bank,$kode_akun);
+
+		echo '';
+	}
+
+	function get_trx_lain_id(){
+		$id = $this->input->post('id');
+		$data = $this->kategori->get_trx_lain_id($id);
+		echo json_encode($data);
+	}
+
+	function simpan_akun_trx_lain(){
+		$id_trx = $this->input->post('id_trx');
+		$kode_akun = $this->input->post('kode_akun');
+		
+		$this->kategori->simpan_kode_trx_lain($id_trx,$kode_akun);
+
 		echo '1';
 	}
 
