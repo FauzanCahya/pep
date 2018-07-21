@@ -40,8 +40,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <link href="<?php echo base_url(); ?>assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
+
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/select2/select2.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-select/bootstrap-select.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/jquery-multi-select/css/multi-select.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/clockface/css/clockface.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"/>
@@ -51,7 +54,10 @@ License: You must have a valid license purchased only from themeforest(the above
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
 <link href="<?php echo base_url(); ?>assets/admin/pages/css/tasks.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-toastr/toastr.min.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style-devan.css"/>
 <!-- END PAGE LEVEL STYLES -->
+
 <!-- BEGIN THEME STYLES -->
 <link href="<?php echo base_url(); ?>assets/global/css/components-md.css" id="style_components" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url(); ?>assets/global/css/plugins-md.css" rel="stylesheet" type="text/css"/>
@@ -181,7 +187,10 @@ function MonthToString($month){
 												<a href="<?php echo base_url(); ?>konversi_c">
 												<i class="fa fa-arrows-alt"></i> Master Konversi </a>
 											</li>
-											
+											<li <?php if ($menu2 == 'transaksi') { echo "class = 'active'";}?>>
+												<a href="<?php echo base_url(); ?>transaksi_c">
+												<i class="fa fa-arrows-alt"></i> Master Transaksi </a>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -657,6 +666,113 @@ function MonthToString($month){
 			<ul class="nav navbar-nav pull-right">
 				<!-- BEGIN USER LOGIN DROPDOWN -->
 				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+				<li id="header_notification_bar" class="dropdown dropdown-extended dropdown-notification">
+					<a data-close-others="true" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
+					<i class="icon-bell"></i>
+					<span class="badge badge-default">
+					7 </span>
+					</a>
+					<ul class="dropdown-menu">
+						<li class="external">
+							<h3><span class="bold">12 pending</span> notifications</h3>
+							<a href="extra_profile.html">view all</a>
+						</li>
+						<li>
+							<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul data-handle-color="#637283" style="height: 250px; overflow: hidden; width: auto;" class="dropdown-menu-list scroller" data-initialized="1">
+								<li>
+									<a href="javascript:;">
+									<span class="time">just now</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-success">
+									<i class="fa fa-plus"></i>
+									</span>
+									New user registered. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">3 mins</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-danger">
+									<i class="fa fa-bolt"></i>
+									</span>
+									Server #12 overloaded. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">10 mins</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-warning">
+									<i class="fa fa-bell-o"></i>
+									</span>
+									Server #2 not responding. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">14 hrs</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-info">
+									<i class="fa fa-bullhorn"></i>
+									</span>
+									Application error. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">2 days</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-danger">
+									<i class="fa fa-bolt"></i>
+									</span>
+									Database overloaded 68%. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">3 days</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-danger">
+									<i class="fa fa-bolt"></i>
+									</span>
+									A user IP blocked. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">4 days</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-warning">
+									<i class="fa fa-bell-o"></i>
+									</span>
+									Storage Server #4 not responding dfdfdfd. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">5 days</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-info">
+									<i class="fa fa-bullhorn"></i>
+									</span>
+									System Error. </span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:;">
+									<span class="time">9 days</span>
+									<span class="details">
+									<span class="label label-sm label-icon label-danger">
+									<i class="fa fa-bolt"></i>
+									</span>
+									Storage server failed. </span>
+									</a>
+								</li>
+							</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131) none repeat scroll 0% 0%; width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+						</li>
+					</ul>
+				</li>
 				<li class="dropdown dropdown-user">
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<img alt="" class="img-circle" src="<?php echo base_url(); ?>assets/admin/layout/img/avatar3_small.jpg"/>
@@ -800,8 +916,11 @@ function MonthToString($month){
 <script src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/ui-toastr.js"></script>
 <!-- END CORE PLUGINS -->
+
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
@@ -813,6 +932,7 @@ function MonthToString($month){
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
+
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?php echo base_url(); ?>assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
@@ -822,12 +942,12 @@ function MonthToString($month){
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/components-pickers.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/pages/scripts/components-dropdowns.js"></script>
 <script src="<?php echo base_url(); ?>assets/js-form.js"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/global/plugins/bootstrap-toastr/toastr.min.css"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style-devan.css"/>
+<script src="<?php echo base_url(); ?>js/pesan.js"></script>
+
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script>
-    jQuery(document).ready(function() {    
+jQuery(document).ready(function() {    
     Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	QuickSidebar.init(); // init quick sidebar
@@ -835,8 +955,9 @@ function MonthToString($month){
 	TableEditable.init();
 	UIToastr.init();
 	ComponentsPickers.init();
-    });
-  </script>
+	ComponentsDropdowns.init();
+});
+</script>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
