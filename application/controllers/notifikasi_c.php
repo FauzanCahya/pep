@@ -34,14 +34,10 @@ class notifikasi_c extends CI_Controller {
 
 	function simpan()
 	{
-		// $kode_satuan_1 	 = $this->input->post('kode_satuan_1');
-		// $kode_satuan_2 	 = $this->input->post('kode_satuan_2');
-		// $nilai_1		 = $this->input->post('nilai_1');
-		// $nilai_2 		 = $this->input->post('nilai_2');
-
-		// $this->notifikasi->simpan_data_notifikasi($kode_satuan_1,$kode_satuan_2,$nilai_1,$nilai_2);
-		// $this->session->set_flashdata('sukses','1');
-		// redirect('notifikasi_c');
+		$hari 	 = $this->input->post('hari');
+		$this->notifikasi->simpan_data_notifikasi($hari);
+		$this->session->set_flashdata('sukses','1');
+		redirect('notifikasi_c');
 	}
 
 	function hapus()

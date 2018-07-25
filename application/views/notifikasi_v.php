@@ -149,38 +149,34 @@ function berhasil(){
 					<div class="form-body">
 						<div class="row">
 							<div class="col-md-6">
-								<div class="form-group form-md-line-input">
-									<label class="col-md-6 control-label" for="form_control_1">Setting Hari Saat ini</label>
-									<div class="col-md-6">
-										<input type="text" class="form-control" id="kode_satuan_1" name="kode_satuan_1" >
-										<div class="form-control-focus">
-										</div>
-									</div>
-								</div>
-							</div>
-							
+								<div class="form-group">
+                                    <label class="col-md-6 control-label" >Setting saat ini </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="<?=$lihat_data->hari;?>" readonly="">
+                                        <span class="input-group-addon" id="sizing-addon1">Hari Sebelum Jatuh Tempo</span>
+                                    </div>
+                                </div>
+							</div>							
 							
 						</div>
 						
 						<div class="row">
 							<div class="col-md-6">
-								<div class="form-group form-md-line-input">
-									<label class="col-md-6 control-label" for="form_control_1">Setting Hari Baru</label>
-									<div class="col-md-6">
-										<input type="text" class="form-control" id="kode_satuan_2" name="kode_satuan_2" >
-										<div class="form-control-focus">
-										</div>
-									</div>
-								</div>
-							</div>
-						
+								<div class="form-group">
+                                    <label class="col-md-6 control-label" >Setting Baru </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="" required="" onkeyup="FormatCurrency(this);" name="hari">
+                                        <span class="input-group-addon" id="sizing-addon1">Hari Sebelum Jatuh Tempo</span>
+                                    </div>
+                                </div>
+							</div>							
+							
 						</div>
 					</div>
 					<div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-2 col-md-10">
-								<button type="submit" class="btn blue">Simpan</button>
-								<button type="button" id="batal" class="btn red">Batal Dan Kembali</button>
+								<input name="simpan" type="submit" class="btn blue" value="Simpan">
 							</div>
 						</div>
 					</div>

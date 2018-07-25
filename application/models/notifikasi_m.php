@@ -7,29 +7,18 @@ class Notifikasi_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_notifikasi($kode_satuan_1,$kode_satuan_2,$nilai_1,$nilai_2)
+	function simpan_data_notifikasi($hari)
 	{
-		// $sql = "
-		// 	INSERT INTO master_notifikasi (
-		// 		kode_satuan_1,
-		// 		kode_satuan_2,
-		// 		nilai_1,
-		// 		nilai_2
-		// 	) VALUES (
-		// 		'$kode_satuan_1',
-		// 		'$kode_satuan_2',
-		// 		'$nilai_1',
-		// 		'$nilai_2'
-		// 	)";
-		// $this->db->query($sql);
+		$sql = "UPDATE master_notifikasi SET hari = '$hari' ";
+		$this->db->query($sql);
 	}
 
 	function lihat_data_notifikasi()
 	{
-		// $sql = "
-		// 	SELECT * FROM master_notifikasi ";
+		$sql = "
+			SELECT * FROM master_notifikasi ";
 
-		// return $this->db->query($sql)->result();
+		return $this->db->query($sql)->row();
 	}
 
 	function hapus_notifikasi($id)
