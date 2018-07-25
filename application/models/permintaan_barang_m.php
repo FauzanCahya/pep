@@ -139,7 +139,7 @@ class Permintaan_barang_m extends CI_Model
 
 	function get_produk_detail($id_barang){
         $sql = "
-        SELECT * FROM master_barang WHERE id_barang = $id_barang
+        SELECT m.* , ms.kode_satuan FROM master_barang m , master_satuan ms WHERE m.id_satuan = ms.id_satuan AND m.id_barang = $id_barang
         ";
 
         return $this->db->query($sql)->row();

@@ -199,7 +199,7 @@ class Permintaan_barang_c extends CI_Controller {
 					 $this->permintaan->simpan_data_barang_detail($id_permintaan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key]);
 			}
 
-			$this->cetak($id_permintaan_baru);
+			// $this->cetak($id_permintaan_baru);
 			$this->session->set_flashdata('sukses','1');
 
 			redirect('permintaan_barang_c');
@@ -289,7 +289,7 @@ class Permintaan_barang_c extends CI_Controller {
 		$sql = "
 		SELECT * FROM master_barang WHERE $where 
 		ORDER BY id_barang DESC
-		LIMIT 10
+		LIMIT 5
 		";
 
 		$dt = $this->db->query($sql)->result();

@@ -519,8 +519,10 @@ function limit_kuantitas(id) {
 	var kuantitas = $('#kuantitas_'+id).val();
 	var limitasi = $('#limit_'+id).val();
 
+	var kw = parseInt(kuantitas);
+	var lm = parseInt(limitasi);
 
-	if(kuantitas > limitasi){
+	if(kw > lm){
 		alert('Kuantitas anda melebihi dari jumlah pinjaman');
 		$('#kuantitas_'+id).val(limitasi);
 	}
@@ -773,7 +775,7 @@ function get_transaction(tahun) {
 						<div class="col-md-3" style="margin-top: 15px;">
 								<label class="control-label"><strong style="font-size:14px;">Tanggal Kedatangan</strong></label>
 								<div class="input-group" style="width: 100%; ">
-									<input type="text" rows="1" id="uraian" name="uraian" class="form-control" required></textarea>
+									<input type="date" rows="1" id="uraian" name="tgl_de" class="form-control" required></textarea>
 								</div>
 							</div>
 					</div>	

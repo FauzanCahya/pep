@@ -251,7 +251,7 @@ function get_produk_detail(id, no_form){
 			$('#kuantitas_'+no_form).val('');
 			$('#id_produk_'+no_form).val(result.id_barang);
 			$('#nama_produk_'+no_form).val(result.nama_barang);
-			$('#satuan_'+no_form).val(result.nama_satuan);
+			$('#satuan_'+no_form).val(result.kode_satuan);
 			$('#harga_'+no_form).val(NumberToMoney(result.harga_beli).split('.00').join(''));
 			$('#jumlah_'+no_form).val(NumberToMoney(result.harga_beli*1).split('.00').join(''));
 
