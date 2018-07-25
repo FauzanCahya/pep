@@ -1,4 +1,22 @@
 <script src="<?php echo base_url(); ?>js/jquery-1.11.1.min.js" type="text/javascript"></script>
+<style type="text/css">
+	.terpilih{
+		background: green;
+		color: #FFF;
+	}
+
+	.terpilih:hover{
+		background: green !important;
+		color: #FFF !important;
+		cursor: pointer;
+	}
+</style>
+<div id="popup_load">
+    <div class="window_load">
+        <img src="<?=base_url()?>ico/loading5.gif" height="100" width="125">
+    </div>
+</div>
+
 <div class="row" id="form_kode_akun">
 	<div class="col-md-12">
 		<div class="portlet light bordered">
@@ -51,16 +69,16 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Kelengkapan Dokumen</label>
 							<div class="col-md-3">
-								<input type="checkbox" class="form-control" id="kl_nota" name="kl_nota"> Kwitansi / Invoice / Nota
+								<input type="checkbox" class="form-control" id="kl_nota" name="kl_nota" value="1"> Kwitansi / Invoice / Nota
 								<br>
-								<input type="checkbox" class="form-control" id="kl_faktur" name="kl_faktur"> Faktur Pajak
+								<input type="checkbox" class="form-control" id="kl_faktur" name="kl_faktur" value="1"> Faktur Pajak
 								<br>
-								<input type="checkbox" class="form-control" id="kl_spa" name="kl_spa"> Surat Pesanan Asli / PO / SPK
+								<input type="checkbox" class="form-control" id="kl_spa" name="kl_spa" value="1"> Surat Pesanan Asli / PO / SPK
 							</div>
 							<div class="col-md-3">
-								<input type="checkbox" class="form-control" id="kl_sj" name="kl_sj"> Surat Jalan Asli
+								<input type="checkbox" class="form-control" id="kl_sj" name="kl_sj" value="1"> Surat Jalan Asli
 								<br>
-								<input type="checkbox" class="form-control" id="kl_ba" name="kl_ba"> Berita Acara
+								<input type="checkbox" class="form-control" id="kl_ba" name="kl_ba" value="1"> Berita Acara
 								<br>
 								<input type="checkbox" class="form-control" id="kl_lain" name="kl_lain" onclick="is_lain();"> Lain - lain 
 								<br>
@@ -138,16 +156,16 @@
 						</div>
 						</div>
 
-						<center>
-						<button class="btn green">Tambahkan</button>
-						</center>
-
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Nilai Tagihan</label>
 							<div class="col-md-2">
 								<input type="text" class="form-control text-right" id="nilai" name="nilai" onkeyup="FormatCurrency(this); hitung_bayar();">
 							</div>
 						</div>
+
+						<center>
+						<button class="btn green" type="button" onclick="tambah_terpilih();">Tambahkan</button>
+						</center>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" style="font-weight: bold;">Daftar yang akan dibayar</label>
@@ -163,56 +181,56 @@
                                 </tr>
                             </thead>
                             <tbody id="data_dibayar">
-                            	<tr>
-                            		<td colspan="4" style="text-align: center;"></td>
-                            	</tr>
+
                             </tbody>
                         </table>     
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Total Tagihan</label>
-							<div class="col-md-2">
-								<input type="text" class="form-control text-right text-right" id="total" name="total" readonly>
+                        <div class="row">
+                        	<div class="col-md-6">
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="form_control_1">Tanggal Pengakuan TTT</label>
+									<div class="col-md-2">
+										<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_pengakuan" readonly style="background: #FFF; cursor: pointer;"/>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="form_control_1">Harap Kembali pada Tanggal</label>
+									<div class="col-md-2">
+										<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_hubungi" readonly style="background: #FFF; cursor: pointer;"/>
+									</div>
+								</div>
 							</div>
+                        	<div class="col-md-6">
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="form_control_1">Total Tagihan</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control text-right text-right" id="total" name="total" readonly>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="form_control_1">Biaya Materai</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control text-right" id="nilai_materai" name="nilai_materai" onkeyup="FormatCurrency(this); hitung_bayar();">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="form_control_1">Dibayar</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control text-right text-right" id="dibayar" name="dibayar" readonly>
+									</div>
+								</div>
+							</div>							
 						</div>
-
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Biaya Materai</label>
-							<div class="col-md-2">
-								<input type="text" class="form-control text-right" id="nilai_materai" name="nilai_materai" onkeyup="FormatCurrency(this); hitung_bayar();">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="form_control_1">Dibayar</label>
-							<div class="col-md-2">
-								<input type="text" class="form-control text-right text-right" id="dibayar" name="dibayar" readonly>
-							</div>
-						</div>
-
 
 						
 						<hr>
 					</div>
 
 					<hr>
-
-					<div class="form-group">
-						<label class="col-md-3 control-label" for="form_control_1">Tanggal Pengakuan TTT</label>
-						<div class="col-md-2">
-							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_pengakuan" readonly style="background: #FFF; cursor: pointer;"/>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label class="col-md-3 control-label" for="form_control_1">Harap Menghubungi pada Tanggal</label>
-						<div class="col-md-2">
-							<input class="form-control form-control-inline input-medium date-picker" type="text" value="<?=date('d-m-Y');?>" name="tgl_hubungi" readonly style="background: #FFF; cursor: pointer;"/>
-						</div>
-					</div>
-
-					<hr> 
 					
                     <div class="form-actions">
 						<div class="row">
@@ -230,9 +248,11 @@
 </div>
 
 <input type="hidden" name="total_row" id="total_row" value="2">
+<input type="hidden" name="tmp_pilih" id="tmp_pilih" value="">
 <script charset="utf-8" type="text/javascript">
 
 function get_po_spk(){
+	$('#popup_load').show();
 	var id_supplier = $('#id_supplier').val();
 	$.ajax({
 		url : '<?php echo base_url(); ?>pengakuan_hutang_c/get_po_spk',
@@ -244,18 +264,47 @@ function get_po_spk(){
 			if(result.length > 0){
 	            $.each(result,function(i,res){
 
-	                isine += 	'<tr onclick="pilih('+res.id+');" style="cursor:pointer;">'+
-		                            '<td text-align="center">'+res.tanggal+'</td>'+
-		                            '<td text-align="center">'+res.nama+'</td>'+
-		                            '<td text-align="center">'+res.no_spb+'</td>'+
-		                            '<td text-align="center">Rp '+NumberToMoney(res.total).split('.00').join('')+'</td>'+
+	                isine += 	'<tr class="tr_data_spk" id="data_spk_'+i+'" onclick="pilih_ini('+i+', &quot;'+res.tanggal+'&quot;, &quot;'+res.nama+'&quot;, &quot;'+res.no_spb+'&quot;, &quot;'+res.total+'&quot;);" style="cursor:pointer;">'+
+		                            '<td text-align="center" id="data_spk_tgl_'+i+'">'+res.tanggal+'</td>'+
+		                            '<td text-align="center" id="data_spk_nama_'+i+'">'+res.nama+'</td>'+
+		                            '<td text-align="center" id="data_spk_nospb_'+i+'">'+res.no_spb+'</td>'+
+		                            '<td text-align="right"  id="data_spk_total_'+i+'">Rp '+NumberToMoney(res.total).split('.00').join('')+'</td>'+
 	                        	'</tr>';
 	            });
             }
 
             $('#data_spk').html(isine);
+            $('#popup_load').hide();
+
 		}
 	});
+}
+
+function pilih_ini(id, tgl, nama, no_bukti, total){
+	$('.tr_data_spk').removeClass("terpilih");
+	$('#data_spk_'+id).addClass("terpilih");
+	$('#tmp_pilih').val(id);
+
+	$('#nilai').val(NumberToMoney(total).split('.00').join(''));
+}
+
+function tambah_terpilih(){
+	var id = $('#tmp_pilih').val();
+	var nama = $('#data_spk_nama_'+id).html();
+	var no_bukti = $('#data_spk_nospb_'+id).html();
+	var total = $('#nilai').val().split(' ').join('');
+
+	var isi =	'<tr>'+
+                    '<td text-align="center">'+nama+'</td>'+
+                    '<td text-align="center">'+no_bukti+'</td>'+
+                    '<td text-align="right">Rp '+total+'</td>'+
+                    '<input type="hidden" name="det_no_bukti[]" value="'+no_bukti+'"/>'+
+                    '<input type="hidden" name="det_keterangan[]" value="'+nama+'"/>'+
+                    '<input type="hidden" name="det_total[]" value="'+total.split(',').join('')+'"/>'+
+                    '<input type="hidden" name="det_kurs[]" value="Rp"/>'+
+            	'</tr>';
+    $('#data_dibayar').append(isi);
+    hitung_total();
 }
 
 function is_lain(){
@@ -270,8 +319,24 @@ function hapus(id){
 	$('#tr_'+id).remove();
 }
 
+function hitung_total(){
+	var total = 0;
+    $("input[name='det_total[]']").each(function(idx, elm) {
+		if(elm.value == ""){
+			var tot2 = 0;
+		} else {
+			var tot2 = elm.value;
+		}
+
+    	total += parseFloat(tot2);
+    });
+
+    $('#total').val(NumberToMoney(total).split('.00').join(''));
+    hitung_bayar();
+}
+
 function hitung_bayar(){
-	var a = $('#nilai').val().split(',').join('');
+	var a = $('#total').val().split(',').join('');
 	var b = $('#nilai_materai').val().split(',').join('');
 
 	if(a == ""){
@@ -283,7 +348,7 @@ function hitung_bayar(){
 	}
 
 	var nilai = parseFloat(a) - parseFloat(b);
-	$('#total').val(NumberToMoney(nilai).split('.00').join(''));
+	$('#dibayar').val(NumberToMoney(nilai).split('.00').join(''));
 }
 
 function hitung_debkre(){

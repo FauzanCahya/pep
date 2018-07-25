@@ -662,6 +662,10 @@ function MonthToString($month){
 		</a> -->
 		<!-- END RESPONSIVE MENU TOGGLER -->
 		<!-- BEGIN TOP NAVIGATION MENU -->
+		<?PHP 
+		$sql_jt = "SELECT *, DATEDIFF(DATE_ADD(TGL_JATUH_TEMPO, INTERVAL 90 DAY), CURDATE()) as selisih FROM tb_pengakuan_hutang ";
+		$data_jt = $this->db->query($sql_jt)->result();
+		?>
 		<div class="top-menu">
 			<ul class="nav navbar-nav pull-right">
 				<!-- BEGIN USER LOGIN DROPDOWN -->
@@ -670,105 +674,36 @@ function MonthToString($month){
 					<a data-close-others="true" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
 					<i class="icon-bell"></i>
 					<span class="badge badge-default">
-					7 </span>
+					<?=count($data_jt);?> </span>
 					</a>
 					<ul class="dropdown-menu">
 						<li class="external">
-							<h3><span class="bold">12 pending</span> notifications</h3>
-							<a href="extra_profile.html">view all</a>
+							<h3><span class="bold"><?=count($data_jt);?></span> Tagihan Jatuh Tempo</h3>
+							<a target="_blank" href="<?=base_url();?>pengakuan_hutang_c/cetak_jatuh_tempo">Cetak </a>
 						</li>
 						<li>
 							<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul data-handle-color="#637283" style="height: 250px; overflow: hidden; width: auto;" class="dropdown-menu-list scroller" data-initialized="1">
+								<?PHP foreach ($data_jt as $key => $row) { ?>
 								<li>
 									<a href="javascript:;">
-									<span class="time">just now</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-success">
-									<i class="fa fa-plus"></i>
-									</span>
-									New user registered. </span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">3 mins</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-danger">
-									<i class="fa fa-bolt"></i>
-									</span>
-									Server #12 overloaded. </span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">10 mins</span>
+									<span class="time"><?=$row->selisih;?> hari lagi</span>
 									<span class="details">
 									<span class="label label-sm label-icon label-warning">
 									<i class="fa fa-bell-o"></i>
 									</span>
-									Server #2 not responding. </span>
+									<?=$row->NO_BUKTI;?> </span>
 									</a>
 								</li>
+								<?PHP } ?>
+								<?PHP if(count($data_jt) == 0){ ?>
 								<li>
 									<a href="javascript:;">
-									<span class="time">14 hrs</span>
 									<span class="details">
-									<span class="label label-sm label-icon label-info">
-									<i class="fa fa-bullhorn"></i>
+									Tidak ada tagihan jatuh tempo
 									</span>
-									Application error. </span>
 									</a>
 								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">2 days</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-danger">
-									<i class="fa fa-bolt"></i>
-									</span>
-									Database overloaded 68%. </span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">3 days</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-danger">
-									<i class="fa fa-bolt"></i>
-									</span>
-									A user IP blocked. </span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">4 days</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-warning">
-									<i class="fa fa-bell-o"></i>
-									</span>
-									Storage Server #4 not responding dfdfdfd. </span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">5 days</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-info">
-									<i class="fa fa-bullhorn"></i>
-									</span>
-									System Error. </span>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:;">
-									<span class="time">9 days</span>
-									<span class="details">
-									<span class="label label-sm label-icon label-danger">
-									<i class="fa fa-bolt"></i>
-									</span>
-									Storage server failed. </span>
-									</a>
-								</li>
+								<?PHP } ?>
 							</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131) none repeat scroll 0% 0%; width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div></div>
 						</li>
 					</ul>

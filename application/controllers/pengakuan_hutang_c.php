@@ -31,16 +31,39 @@ class Pengakuan_hutang_c extends CI_Controller {
 		        'NO_NOTA'      => addslashes($this->input->post('no_nota')),
 		        'UNTUK'      => addslashes($this->input->post('untuk')),
 		        'KURS'      => addslashes($this->input->post('kurs')),
-		        'NILAI'      => str_replace(',', '', $this->input->post('nilai')),
 		        'BIAYA_MATERAI'      => str_replace(',', '', $this->input->post('nilai_materai')),
 		        'TOTAL'      => str_replace(',', '', $this->input->post('total')),
-		        'TGL_HUBUNGI'      => addslashes($this->input->post('tgl_hubungi')),
+		        'DIBAYAR'      => str_replace(',', '', $this->input->post('dibayar')),
+		        'TGL_JATUH_TEMPO'      => addslashes($this->input->post('tgl_hubungi')),
 		        'TGL_PENGAKUAN'      => addslashes($this->input->post('tgl_pengakuan')),
 				'USER_INPUT'      => $userinfo->id,
-				'DEPARTEMEN'      => $userinfo->departemen
+				'DEPARTEMEN'      => $userinfo->departemen,
+		        'DOC_KWITANSI'      => addslashes($this->input->post('kl_nota')),
+		        'DOC_FAKTUR'      => addslashes($this->input->post('kl_faktur')),
+		        'DOC_PO'      => addslashes($this->input->post('kl_spa')),
+		        'DOC_SJ'      => addslashes($this->input->post('kl_sj')),
+		        'DOC_BA'      => addslashes($this->input->post('kl_ba')),
+		        'DOC_LAIN-LAIN'      => addslashes($this->input->post('kl_lain_isi'))
 		    );
 
 		    $this->db->insert('tb_pengakuan_hutang',$data);
+
+		    $det_no_bukti = $this->input->post("det_no_bukti");
+		    $det_keterangan = $this->input->post("det_keterangan");
+		    $det_total = $this->input->post("det_total");
+		    $det_kurs   = $this->input->post("det_kurs");
+
+		    foreach ($det_no_bukti as $key => $val) {
+		    	$data_detail = array(
+			        'NO_BUKTI'      => addslashes($this->input->post('no_bukti')),
+			        'NO_DOKUMEN'      => $val,
+			        'KETERANGAN'      => $det_keterangan[$key],
+			        'NILAI'      => str_replace(',', '', $det_total[$key]),
+			        'KURS'      => $det_kurs[$key]
+			    );
+
+			    $this->db->insert('tb_pengakuan_hutang_detail',$data_detail);
+		    }
 
 		    $this->master_model_m->update_nomor("TTT");
 		    $this->session->set_flashdata('sukses','1');
@@ -240,6 +263,19 @@ class Pengakuan_hutang_c extends CI_Controller {
 		);
 		
 		$this->load->view('pdf/report_tanda_terima_tagihan_pdf', $data);
+	}
+
+	function cetak_jatuh_tempo(){
+		$sql_jt = "SELECT *, DATEDIFF(DATE_ADD(TGL_JATUH_TEMPO, INTERVAL 90 DAY), CURDATE()) as selisih FROM tb_pengakuan_hutang ";
+		$data_jt = $this->db->query($sql_jt)->result();
+
+
+		$data =  array(
+			'page' => "pengakuan_hutang_c", 
+			'dt' => $data_jt,
+		);
+		
+		$this->load->view('pdf/report_tagihan_jatuh_tempo_pdf', $data);
 	}
 
 	function get_po_spk(){
