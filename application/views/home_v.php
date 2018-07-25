@@ -211,13 +211,10 @@ function MonthToString($month){
 							<i class="fa fa-bank"></i> Barang </a>
 						</li>
 
-						
 						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>akun_pelanggan_c">
 							<i class="fa fa-users"></i> Pelanggan </a>
 						</li>
-
-						
 
 						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>akun_supplier_c">
