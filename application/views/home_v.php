@@ -191,6 +191,8 @@ function MonthToString($month){
 												<a href="<?php echo base_url(); ?>transaksi_c">
 												<i class="fa fa-arrows-alt"></i> Master Transaksi </a>
 											</li>
+
+
 										</ul>
 									</div>
 								</div>
@@ -220,6 +222,11 @@ function MonthToString($month){
 						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
 							<a href="<?php echo base_url(); ?>akun_supplier_c">
 							<i class="fa fa-users"></i> Supplier </a>
+						</li>
+
+						<li <?php if ($menu2 == 'notif_waktu') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>notifikasi_c">
+							<i class="fa fa-arrows-alt"></i> Waktu Notifikasi </a>
 						</li>
 					</ul>
 				</li>
