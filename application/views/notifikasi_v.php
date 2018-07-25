@@ -129,19 +129,6 @@ function berhasil(){
 					<i class="icon-settings font-green-haze"></i>
 					<span class="caption-subject bold uppercase"> Form Setting Notifikasi </span>
 				</div>
-				<div class="actions">
-					<a class="btn btn-circle btn-icon-only blue" href="javascript:;">
-					<i class="icon-cloud-upload"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only green" href="javascript:;">
-					<i class="icon-wrench"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only red" href="javascript:;">
-					<i class="icon-trash"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
-					</a>
-				</div>
 			</div>
 			
 			<div class="portlet-body form">
