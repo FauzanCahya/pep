@@ -133,7 +133,7 @@ class Laporan_penerimaan_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status != '1'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status = '0'
         ";
 
         return $this->db->query($sql)->result();

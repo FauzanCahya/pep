@@ -83,7 +83,7 @@ class Laporan_penerimaan_c extends CI_Controller {
 
 			
 			$tanggal 	 = $this->input->post('tanggal');
-			$no_po 		 = $this->input->post('no_po');
+			
 			$diterima 	 = $this->input->post('diterima');
 
 			$this->master_model_m->update_nomor('LAPORAN_PENERIMAAN_BARANG');
@@ -97,9 +97,10 @@ class Laporan_penerimaan_c extends CI_Controller {
 			// $harga 		 	 = $this->input->post('harga_awal');
 			// $total 		 	 = $this->input->post('total');
 			$no_opb 	 	 = $this->input->post('no_opb');
+			$no_po 		 	 = $this->input->post('no_po');
 
 			foreach ($nama_produk as $key => $val) {
-				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$no_opb[$key]);
+				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$no_po[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('laporan_penerimaan_c');

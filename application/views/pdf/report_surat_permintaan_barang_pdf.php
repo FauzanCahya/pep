@@ -62,10 +62,10 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <table align="center">
     <tr>
         <td align="center">
-            <h4 style="text-decoration: underline;">
+            <h4 style="text-decoration: underline;margin-bottom: 0px;margin-top: 0px;">
                 SURAT PERMINTAAN BARANG (SPB)
             </h4><br>
-            <h5><?=$dt->no_spb;?></h5>
+            <h5 style="margin-top: 0px;"><?=$dt->no_spb;?></h5>
         </td>
     </tr>
 </table>

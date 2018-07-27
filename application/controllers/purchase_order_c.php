@@ -89,11 +89,11 @@ class Purchase_order_c extends CI_Controller {
 			$tanggal 				= $this->input->post('tanggal');
 			$supplier 				= $this->input->post('nama_supplier');
 			$subtotal_jml 			= $this->input->post('subtotal_text');
-			$pot_po 				= $this->input->post('pot_po');
-			$po_text 				= $this->input->post('po_text');
+			$pot_po 				= $this->input->post('pph_22');
+			$po_text 				= $this->input->post('pph_22_text');
 			$ppn 					= $this->input->post('ppn');
 			$ppn_text 				= $this->input->post('ppn_text');
-			$totla 					= $this->input->post('total_semua');
+			$totla 					= $this->input->post('total_text');
 			$terms 					= $this->input->post('terms');
 			$terms_dua 				= $this->input->post('terms_dua');
 			$prosesi_a 				= $this->input->post('prosesi_a');
@@ -114,7 +114,7 @@ class Purchase_order_c extends CI_Controller {
 			}
 
 			$this->master_model_m->update_nomor('PURCHASE_ORDER');
-			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$dta_terms);
+			$this->purchase->simpan_data_purchase($no_bukti_real,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$dta_terms,$get_nomor);
 
 			$id_purchase_baru   = $this->db->insert_id();
 			$id_produk    		= $this->input->post('id_produk');
@@ -125,10 +125,15 @@ class Purchase_order_c extends CI_Controller {
 			$disc 				= $this->input->post('disc');
 			$total 				= $this->input->post('total');
 			$no_opb 			= $this->input->post('no_opek');
+			$id_opb_d			= $this->input->post('id_peminjaman_detail');
 			
 
 			foreach ($nama_produk as $key => $val) {
 				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$disc[$key],$total[$key],$no_opb[$key]);
+			}
+
+			foreach ($id_opb_d as $key => $opb) {
+				$this->purchase->update_data_opb($opb,$kuantitas[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('purchase_order_c');

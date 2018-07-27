@@ -65,12 +65,13 @@ class Permintaan_barang_c extends CI_Controller {
 
 				$no_bukti_real 		= $get_nomor."/SPB/".$dept_row->nama_divisi."/".$var."/".$tahun_kas;
 
-				$no_spb 	  = $this->input->post('no_spb');
-				$tanggal 	  = $this->input->post('tanggal');
-				$uraian 	  = $this->input->post('uraian');
+				// $no_spb 	  		  = $this->input->post('no_spb');
+				$tanggal 	  		  = $this->input->post('tanggal');
+				$uraian 	  		  = $this->input->post('uraian');
+				$tgl_kedatangan 	  = $this->input->post('tgl_kedatangan');
 
 				$this->master_model_m->update_nomor('PERMINTAAN_BARANG');
-				$this->permintaan->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen);
+				$this->permintaan->simpan_data_barang($no_bukti_real,$tanggal,$uraian,$departemen,$tgl_kedatangan);
 
 				$id_permintaan_baru = $this->db->insert_id();
 				$id_produk 	    	= $this->input->post('produk');

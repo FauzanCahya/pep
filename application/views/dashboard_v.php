@@ -227,9 +227,52 @@ function trace_nomor(){
 				<h4 class="block">Masukkan Nomor</h4>
 				<form role="form">
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-2">
 							<div class="input-group">
-								<input type="text" class="form-control" name="nomor" id="nomor" value="">
+								<input type="text" class="form-control" name="nomor" id="nomor" value="" placeholder="Masukkan nomor">
+							</div>
+						</div>
+
+						<div class="col-md-2">
+							<div class="input-group" style="width: 100%;">
+								<select name="departemen" class="form-control">
+									<option value="Tipe" disabled>----Tipe----</option>
+									<option value="SPB">SPB</option>
+									<option value="OPB">OPB</option>
+									<option value="PO">PO</option>
+									<option value="LPB">LPB</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-2">
+							<div class="input-group" style="width: 100%;">
+								<select name="departemen" class="form-control">
+									<?php 
+
+										$dpt = $this->db->query("SELECT * FROM master_divisi")->result();
+
+										foreach ($dpt as $key => $value) {
+											?>
+												<option value="<?=$value->id_divisi;?>"><?=$value->nama_divisi;?></option>
+											<?php
+										}
+
+									?>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-2">
+							<div class="input-group">
+								<input type="text" class="form-control" name="nomor" id="nomor" value="" placeholder="Masukkan Tahun">
+								
+							</div>
+						</div>
+
+						<div class="col-md-2">
+							<div class="input-group">
+								
 								<span class="input-group-btn">
 									<button type="button" class="btn blue" id="btn_cari">Cari</button>
 								</span>

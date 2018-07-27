@@ -225,6 +225,11 @@ function MonthToString($month){
 							<a href="<?php echo base_url(); ?>notifikasi_c">
 							<i class="fa fa-arrows-alt"></i> Waktu Notifikasi </a>
 						</li>
+
+						<li <?php if ($menu2 == 'manajemen_user') { echo "class = 'active'";}?>>
+							<a href="<?php echo base_url(); ?>manajemen_user_c">
+							<i class="fa fa-users"></i> Manajemen User </a>
+						</li>
 					</ul>
 				</li>
 
@@ -281,17 +286,6 @@ function MonthToString($month){
 								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>retur_pembelian_c">
 									<i class="fa fa-th-list"></i> Retur Barang </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>surat_keluar_c">
-									<i class="fa fa-th-list"></i> Surat Keluar </a>
-								</li>
-								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>surat_penawaran_harga_c">
-									<i class="fa fa-th-list"></i> Surat Penawaran Harga </a>
 								</li>
 
 								

@@ -428,6 +428,7 @@ function simpan_trx_lain(id_trx){
 													<label>Akun untuk penerimaan barang</label>
 													<div class="input-group">
 														<select class="form-control input-medium select2me" name="akun_penerimaan_brg" id="akun_penerimaan_brg" data-placeholder="Select...">
+														<option>-----</option>
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
@@ -453,6 +454,7 @@ function simpan_trx_lain(id_trx){
 													<label>Akun untuk pemakaian barang</label>
 													<div class="input-group">
 														<select class="form-control input-medium select2me" name="akun_pakai_brg" id="akun_pakai_brg" data-placeholder="Select...">
+															<option>-----</option>
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>
@@ -478,6 +480,7 @@ function simpan_trx_lain(id_trx){
 													<label>Akun untuk hutang barang</label>
 													<div class="input-group">
 														<select class="form-control input-medium select2me" name="akun_hutang_brg" id="akun_hutang_brg" data-placeholder="Select...">
+															<option>-----</option>
 														<?php
 															foreach ($kode_akun as $key => $value) {
 														?>

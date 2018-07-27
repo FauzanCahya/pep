@@ -29,22 +29,38 @@
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Tanggal</b></label>
 							<div class="input-group" style="width: 100%;">
-								<input type="text" class="form-control" name="tanggal" id="tanggal" value="<?=date('d-m-Y');?>" readonly required>
-								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span>
+								<!-- <input type="text" class="form-control" name="tanggal" id="tanggal" value="<?=date('d-m-Y');?>" readonly required>
+								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span> -->
+								<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
+									<input readonly type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tanggal" id="tanggal" >
+									<span class="input-group-btn">
+									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+									</span>
+									<div class="form-control-focus">
+									</div>
+								</div>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<input type="text" rows="1" id="uraian" name="uraian" class="form-control" required></textarea>
+								<textarea rows="4" id="uraian" name="uraian" class="form-control" required></textarea>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Tanggal Kedatangan</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<input type="text" rows="1" id="tgl_kedatangan" name="tgl_kedatangan" class="form-control"></textarea>
+								<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
+									<span class="input-group-btn">
+									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+									</span>
+									<input readonly type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tgl_kedatangan" id="tanggal" >
+									
+									<div class="form-control-focus">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -81,7 +97,7 @@
 									</td>
 									<td align="center" style="vertical-align:middle;">
 										<div class="controls">
-											<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_1">
+											<input style="font-size: 13px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_1">
 										</div>
 									</td>
 									<td align="center" style="vertical-align:middle;">
@@ -105,9 +121,9 @@
 										</div>
 									</td> -->
 									<td align="center" style="vertical-align:middle;">
-										<div class="controls">
-											<button style="width: 100%;" onclick="hapus_row_pertama();" type="button" class="btn btn-danger"> Hapus </button>
-										</div>
+										<!-- <div class="controls">
+											<button style="width: 100%;" onclick="hapus_row(1);" type="button" class="btn btn-danger"> Hapus </button>
+										</div> -->
 									</td>
 								</tr>
 							</tbody>
@@ -264,5 +280,54 @@ function get_produk_detail(id, no_form){
 		    $('#popup_koang').hide()
 		}
 	});
+}
+
+function tambah_data(){
+	var jml_tr = $('#jml_tr').val();
+	var i = parseFloat(jml_tr) + 1;
+
+	var isi = 	'<tr id="tr_'+i+'">'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="span12">'+
+							'<div class="control-group">'+
+								'<div class="controls">'+
+									'<div class="input-append" style="width: 100%;">'+
+										'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">'+
+										'<button onclick="show_pop_produk('+i+');" type="button" class="btn" style="width: 30%;">Cari</button>'+
+										'<input type="hidden" id="id_produk_'+i+'" name="produk[]" readonly style="background:#FFF;" value="0">'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'" onkeyup="FormatCurrency(this);">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 13px; text-align:center;" type="text" class="form-control" value="" name="satuan[]" id="satuan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
+						'</div>'+
+					'</td>'+
+				'</tr>';
+
+	$('#data_item').append(isi);
+	$('#jml_tr').val(i);
+
+}
+
+function hapus_row(i){
+	$('#tr_'+i).remove();
 }
 </script>

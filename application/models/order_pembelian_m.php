@@ -7,7 +7,7 @@ class Order_pembelian_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen)
+	function simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen,$no_bukti)
 	{
 		$sql = "
 			INSERT INTO tb_order_pembelian (
@@ -15,13 +15,15 @@ class Order_pembelian_m extends CI_Model
 				tanggal,
 				uraian,
 				status,
-				divisi
+				divisi,
+				no_bukti
 			) VALUES (
 				'$no_bukti_real',
 				'$tanggal',
 				'$uraian',
 				'0',
-				'$departemen'
+				'$departemen',
+				'$no_bukti'
 			)";
 		$this->db->query($sql);
 	}
@@ -208,7 +210,7 @@ class Order_pembelian_m extends CI_Model
 
     function get_transaction_info($id_barang,$tahun){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang' AND pb.tanggal LIKE '%$tahun%'
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang , pbd.sisa_order_pembelian FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_order_pembelian > 0 AND pb.divisi = '$id_barang' AND pb.tanggal LIKE '%$tahun%'
         ";
 
         return $this->db->query($sql)->result();

@@ -481,7 +481,7 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+no_po+'" name="no_op[]" id="no_op_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+no_po+'" name="no_po[]" id="no_op_'+i+'">'+
 							'<input style="font-size: 10px; text-align:center;" type="hidden" class="form-control" value="'+id_produk+'" name="id_produk[]" id="no_op_'+i+'">'+
 						'</div>'+
 					'</td>'+
@@ -516,7 +516,7 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
+							'<button style="width: 100%;" onclick="hapus_row('+i+','+id_peminjaman_detail+');" type="button" class="btn btn-danger"> Hapus </button>'+
 						'</div>'+
 					'</td>'+
 				'</tr>';
@@ -524,8 +524,14 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 
 
 	$('#data_item').append(isi);
+	$('#tr_al_'+id_peminjaman_detail).hide();
 	$('#jml_tr').val(i);
 
+}
+
+function hapus_row(id,id_peminjaman_detail){
+	$('#tr_'+id).remove();
+	$('#tr_al_'+id_peminjaman_detail).show();
 }
 
 function ewek(jml,id){
@@ -552,7 +558,7 @@ function get_transaction(id) {
                 if(result.length > 0){
                     $.each(result,function(i,res){
                     	var sisa = res.kuantitas - res.penerimaan;
-                        isine += '<tr>'+
+                        isine += '<tr id="tr_al_'+res.id_peminjaman_detail+'">'+
                                     '<td style="text-align:center;">'+res.no_po+'</td>'+
                                     '<td style="text-align:center;">'+res.supplier+'</td>'+
                                     '<td style="text-align:center;">'+res.nama_produk+'</td>'+
@@ -610,7 +616,7 @@ function get_transaction(id) {
 							<label class="col-md-2 control-label" for="form_control_1">Tanggal</label>
 							<div class="col-md-4">
 								<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
-									<input type="text" class="form-control" name="tanggal" id="tanggal" >
+									<input type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tanggal" id="tanggal" >
 									<span class="input-group-btn">
 									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 									</span>
@@ -634,22 +640,32 @@ function get_transaction(id) {
 								</select>
 								
 							</div>
-							<div class="col-md-2">
+							<!-- <div class="col-md-2">
 								<select name="filt" class="form-control" onchange="get_transaction(this.value);">
 									<option value="<?php echo date('m'); ?>">Bulan Ini</option>
 									<option value="<?php echo date('Y'); ?>">Tahun Ini</option>
 									<option value="Pencarian">Pencarian</option>
 									
 								</select>
-							</div>
-							<div class="col-md-2">
+							</div> -->
+							<!-- <div class="col-md-2">
 								<input type="text" id="nama_filt" name="" class="form-control">
-							</div>
+							</div> -->
 						</div>
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Diterima Dari</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" id="diterima" name="diterima" >
+								<select name="dept" class="form-control input-large select2me input-sm" onchange="get_supplier(this.value);">
+									<option>Pilih Supplier ......</option>
+									<?php 
+										$dt_supp = $this->db->query("SELECT * FROM master_supplier")->result();
+										foreach ($dt_supp as $key => $dt_value) {
+											?>
+											<option value="<?=$dt_value->id_supplier;?>"><?=$dt_value->nama_supplier;?></option>
+											<?php
+										}
+									?>
+								</select>
 								<div class="form-control-focus">
 								</div>
 							</div>
@@ -666,7 +682,7 @@ function get_transaction(id) {
 					</div>
 				</div>
 
-				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-y: scroll;height: 350px;">
 					<div class="portlet-body flip-scroll">
 						<table class="table table-bordered table-striped table-condensed flip-content">
 							<thead class="flip-content">
@@ -715,8 +731,8 @@ function get_transaction(id) {
 							<tr>
 								<th style="text-align: center; width: 20%;">NO PO</th>
 								<th style="text-align: center; widows: 30%;">Nama</th>
-								<th style="text-align: center;">Sisa</th>
-								<th style="text-align: center;">Qty Pengembalian</th>
+								<th style="text-align: center;">Kuantitas</th>
+								<th style="text-align: center;">Qty Penerimaan</th>
 								<th style="text-align: center;">Aksi</th>
 							</tr>
 						</thead>
@@ -835,7 +851,8 @@ function get_transaction(id) {
 				<thead>
 				<tr>
 					<th style="text-align:center;"> No</th>
-					<th style="text-align:center;"> No PO</th>
+					<th style="text-align:center;"> No LPB</th>
+					<th style="text-align:center;"> Tanggal</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
 				</thead>
@@ -854,6 +871,7 @@ function get_transaction(id) {
 					<?php  } ?>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->no_lpb; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->tanggal; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<!-- <a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-edit"></i> Ubah </a> -->
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_laporan(<?php echo $value->id_laporan?>);"><i class="fa fa-trash-o"></i> Batal </a>

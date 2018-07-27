@@ -7,7 +7,7 @@ class Purchase_order_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_purchase($no_po,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$terms)
+	function simpan_data_purchase($no_po,$tanggal,$supplier,$subtotal_jml,$pot_po,$po_text,$ppn,$ppn_text,$totla,$departemen,$terms,$no_bukti)
 	{
 		$sql = "
 			INSERT INTO tb_purchase_order (
@@ -21,7 +21,9 @@ class Purchase_order_m extends CI_Model
 				ppn_text,
 				total,
 				divisi,
-				terms
+				terms,
+				status,
+				no_bukti
 			) VALUES (
 				'$no_po',
 				'$tanggal',
@@ -33,7 +35,9 @@ class Purchase_order_m extends CI_Model
 				'$ppn_text',
 				'$totla',
 				'$departemen',
-				'$terms'
+				'$terms',
+				'0',
+				'$no_bukti'
 
 			)";
 		$this->db->query($sql);
@@ -70,6 +74,16 @@ class Purchase_order_m extends CI_Model
 				'$no_opb',
 				'0'
 			)";
+		$this->db->query($sql);
+	}
+
+	function update_data_opb($vali,$kuantitas)
+	{
+		$sql = "
+			UPDATE tb_order_pembelian_detail SET 
+				realisasi  	= realisasi + $kuantitas
+			WHERE id  = '$vali'
+		";
 		$this->db->query($sql);
 	}
 
@@ -174,7 +188,7 @@ class Purchase_order_m extends CI_Model
 
 	function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pbd.keterangan, pb.no_opb , pbd.kuantitas , pbd.realisasi , pbd.id_produk FROM tb_order_pembelian pb , tb_order_pembelian_detail pbd WHERE pb.id_order = pbd.id_induk AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pbd.keterangan, pb.no_opb , pbd.kuantitas , pbd.realisasi , pbd.id_produk FROM tb_order_pembelian pb , tb_order_pembelian_detail pbd WHERE pb.id_order = pbd.id_induk AND pbd.realisasi <= pbd.kuantitas AND pb.divisi = '$id_barang'
         ";
 
         return $this->db->query($sql)->result();

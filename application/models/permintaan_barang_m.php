@@ -7,7 +7,7 @@ class Permintaan_barang_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_barang($no_spb,$tanggal,$uraian,$departemen)
+	function simpan_data_barang($no_spb,$tanggal,$uraian,$departemen,$tgl_kedatangan)
 	{
 		$sql = "
 			INSERT INTO tb_permintaan_barang (
@@ -15,13 +15,15 @@ class Permintaan_barang_m extends CI_Model
 				tanggal,
 				uraian,
 				divisi,
-				status
+				status,
+				tanggal_kedatangan
 			) VALUES (
 				'$no_spb',
 				'$tanggal',
 				'$uraian',
 				'$departemen',
-				'0'
+				'0',
+				'$tgl_kedatangan'
 			)";
 		$this->db->query($sql);
 	}

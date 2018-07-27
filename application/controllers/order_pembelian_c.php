@@ -23,6 +23,7 @@ class Order_pembelian_c extends CI_Controller {
 
 			$id_order 	  = $this->input->post('id_order');
 			$uraian 	  = $this->input->post('uraian');
+			$tgl_de 	  = $this->input->post('tgl_de');
 
 			// $this->pengembalian->save_next_nomor('ORDER_PEMBELIAN_BARANG');
 			$this->order->ubah_data_order($id_order,$uraian);
@@ -111,7 +112,7 @@ class Order_pembelian_c extends CI_Controller {
 			$uraian 	  = $this->input->post('uraian');
 
 			$this->master_model_m->update_nomor('ORDER_PEMBELIAN_BARANG');
-			$this->order->simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen);
+			$this->order->simpan_data_order($no_bukti_real,$tanggal,$uraian,$departemen,$get_nomor);
 			
 
 			$id_pengembalian_baru = $this->db->insert_id();

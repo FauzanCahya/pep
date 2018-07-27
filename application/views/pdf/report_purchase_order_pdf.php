@@ -5,34 +5,7 @@ $base_url2 .=  "://".$_SERVER['HTTP_HOST'];
 $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 ?>
 <style>
-.gridth {
-    background: #1793d1;
-    vertical-align: middle;
-    color : #FFF;
-    text-align: center;
-    height: 30px;
-    font-size: 20px;
-}
-.gridtd {
-    background: #FFFFF0;
-    vertical-align: middle;
-    font-size: 14px;
-    height: 30px;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-.grid {
-    background: #FAEBD7;
-    border-collapse: collapse;
-}
 
-.grid td, table th {
-  border: 1px solid black;
-}
-
-.kolom_header{
-    height: 20px;
-}
 
 </style>
 
@@ -62,16 +35,14 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <table align="center">
     <tr>
         <td align="center">
-            <h4 style="text-decoration: underline;">
+            <h4 style="text-decoration: underline;margin-top: 0px;margin-bottom: 0px;">
                 PURCHASE ORDER (PO)
             </h4>
             <label><?=$dt->no_po;?></label>
         </td>
     </tr>
 </table>
-<br>
-<br>
-<div style="width: 100%;padding-top: 10px;padding-bottom: 10px;padding-left:5px;">
+<div style="width: 100%;padding-top: 5px;padding-bottom: 5px;padding-left:5px;">
 	<table style="width: 100%;">
 		<tr>
 			<td style="width: 50%;text-align:left;font-size: 15px;">Kepada :</td>
@@ -81,17 +52,17 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 </div>
 <br>
 <div style="height: 300px;">
-<table style="width: 95%;height: 300px;">
+<table style="width: 100%;max-height: 200px;">
 	
 		<tr>
 			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Nama Barang</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Jumlah</th>
+			<th style="width: 15%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Nama Barang</th>
+			<th style="width: 8%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Jml</th>
 			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Harga</th>
 			<th style="width: 5%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Disc</th>
-			<th style="width: 10%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Total</th>
-			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No OPB</th>
-			<th style="width: 20%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
+			<th style="width: 15%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Total</th>
+			<th style="width: 8%;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">No OPB</th>
+			<th style="width: 30%;word-wrap : break-word;padding: 5px 5px 5px 5px; border-top: 1px solid black; border-bottom: 1px solid black;border-right: none;border-left: none;">Keterangan</th>
 			
 		</tr>
 		<?php
@@ -104,11 +75,11 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<tr>
 			<td><?php echo $i; ?></td>
 			<td><?=$value->nama_produk;?></td>
-			<td><?=$value->kuantitas;?></td>
-			<td><?=$value->harga;?></td>
+			<td style="text-align: right;"><?=number_format($value->kuantitas,0);?></td>
+			<td style="text-align: right;"><?=number_format($value->harga,0);?></td>
 			<td><?=$value->disc;?></td>
-			<td><?=$value->total;?></td>
-			<td><?=$value->no_opb;?></td>
+			<td style="text-align: right;"><?=number_format($value->total,0);?></td>
+			<td style="text-align: center;"><?=$dt->no_bukti;?></td>
 			<td><?=$value->keterangan;?></td>
 			
 		</tr>
@@ -147,7 +118,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 </table>
 <br>
 <label>Terbilang : Tujuh Ratus Ribu Tiga Puluh Enam Ribu Rupiah</label><br>
-<div style="height: 200px;">
+<div style="height: 100px;">
 <table style="width: 100%;border-collapse: collapse;">
 	<tr>
 			<th style="text-align:center;width: 50%;padding: 5px 5px 5px 5px; border: 1px solid black;">Type of Payment</th>
@@ -159,7 +130,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 
 				if($dt->terms == 'Proses'){
 				?>
-					<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;">
+					<td style="height: 80px;border: 1px solid black;padding: 5px 5px 5px 5px;">
 						Pembayaran akan dilakukan secara proses : <br>
 						<?php 
 							$idp = $dt->no_po;
@@ -176,12 +147,12 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 				}
 
 			?>
-			<td style="height: 150px;border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->terms;?></td>
-			<td style="height: 150px;border: 1px solid black;"></td>
+			<td style="height: 80px;border: 1px solid black;padding: 5px 5px 5px 5px;"><?=$dt->terms;?></td>
+			<td style="height: 80px;border: 1px solid black;"></td>
 		</tr>
 </table>
 </div>
-
+<br>
 <table style="width: 100%;">
 	<tr>
 		<td style="width: 25%;text-align: center;">Supplier</td>
@@ -206,6 +177,14 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 <br>
 <label>Tembusan Kepada : 1.Arsip (Supplier)  2. Copy (Arsip Pembelian) 3. Copy (Akuntansi) 4.Copy (Gudang)</label>
 
+<h5 style="margin-top: 10px;margin-bottom: 2px;">NOTE : </h5>
+<h5 style="margin-top: 2px;margin-bottom: 2px;">1. No. PO harap dicantumkan pada Surat Jalan</h5>
+<h5 style="margin-top: 2px;margin-bottom: 2px;">2. PO harap dilamppirkan pada saat penyerahan tagiham setelah ditandatangani di kolom supplier disertai dengan stempel asli perusahaan</h5>
+
+<!-- <script type="text/javascript">
+	// window.print();
+</script> -->
+
 <?PHP
     $width_custom = 14;
     $height_custom = 8.50;
@@ -216,7 +195,7 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
     $width_in_mm = $width_in_inches * 21.4;
     $height_in_mm = $height_in_inches * 19.8;
     $html2pdf = new HTML2PDF('P','A4','en');
-    $html2pdf->pdf->SetTitle('Cetak Purchase Order');
+    $html2pdf->pdf->SetTitle('Laporan Purchase Order ');
     $html2pdf->WriteHTML($content, isset($_GET['vuehtml']));
-    $html2pdf->Output('cetak_purchase_order.pdf');
+    $html2pdf->Output('Laporan_purchase_order.pdf');
 ?>
