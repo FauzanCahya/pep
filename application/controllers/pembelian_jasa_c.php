@@ -123,9 +123,10 @@ class Pembelian_jasa_c extends CI_Controller {
 					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$val,$keterangan[$key],$harga[$key],$disc[$key],$total[$key],$no_opek[$key]);
 			}
 
-			// foreach ($id_peminjaman_detail as $keyi => $vali) {
-			// 	$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
-			// }
+			foreach ($nama as $key => $val) {
+				$this->pengembalian->update_status_opek($id_peminjaman_detail[$key]);
+			}
+
 			$this->session->set_flashdata('sukses','1');
 			redirect('pembelian_jasa_c');
 		

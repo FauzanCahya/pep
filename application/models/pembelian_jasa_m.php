@@ -165,6 +165,16 @@ class Pembelian_jasa_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+	function update_status_opek($tipe)
+	{
+		$sql = "
+			UPDATE tb_order_pekerjaan_detail SET 
+				status  	= '1'
+			WHERE id  = '$tipe'
+		";
+		$this->db->query($sql);
+	}
+
 	function update_selisih_detail($vali,$kuantitas)
 	{
 		$sql = "

@@ -83,25 +83,31 @@ class Laporan_penerimaan_c extends CI_Controller {
 
 			
 			$tanggal 	 = $this->input->post('tanggal');
-			
 			$diterima 	 = $this->input->post('diterima');
 
 			$this->master_model_m->update_nomor('LAPORAN_PENERIMAAN_BARANG');
 			$this->laporan->simpan_data_laporan($no_bukti_real,$tanggal,$no_po,$diterima);
 
-			$id_laporan_baru = $this->db->insert_id();
-			$id_produk 		 = $this->input->post('id_produk');
-			$nama_produk 	 = $this->input->post('nama_produk');
-			$keterangan  	 = $this->input->post('keterangan');
-			$kuantitas 	 	 = $this->input->post('kuantitas');
-			// $harga 		 	 = $this->input->post('harga_awal');
-			// $total 		 	 = $this->input->post('total');
-			$no_opb 	 	 = $this->input->post('no_opb');
-			$no_po 		 	 = $this->input->post('no_po');
+			$id_laporan_baru 		= $this->db->insert_id();
+			$id_produk 		 		= $this->input->post('id_produk');
+			$nama_produk 	 		= $this->input->post('nama_produk');
+			$keterangan  	 		= $this->input->post('keterangan');
+			$kuantitas 	 	 		= $this->input->post('kuantitas');
+			$no_opb 	 	 		= $this->input->post('no_opb');
+			$no_po 		 	 		= $this->input->post('no_po');
+			$id_peminjaman_detail 	= $this->input->post('id_peminjaman_detail');
 
 			foreach ($nama_produk as $key => $val) {
 				$this->laporan->simpan_data_laporan_detail($id_laporan_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$no_po[$key]);
 			}
+
+			foreach ($nama_produk as $a => $row) {
+				$this->laporan->update_penerimaan_po($kuantitas[$a],$id_peminjaman_detail[$a]);
+				$this->laporan->tambah_stok_barang($kuantitas[$a],$id_produk[$a]);
+			}
+
+
+
 			$this->session->set_flashdata('sukses','1');
 			redirect('laporan_penerimaan_c');
 		

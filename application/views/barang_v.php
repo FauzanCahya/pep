@@ -296,8 +296,7 @@ Tambah Data Barang <i class="fa fa-plus"></i>
 					<th style="text-align:center;"> No</th>
 					<th style="text-align:center;"> Kode Barang</th>
 					<th style="text-align:center;"> Nama Barang</th>
-					<th style="text-align:center;"> Harga Jual</th>
-					<th style="text-align:center;"> Harga Beli</th>
+					<th style="text-align:center;"> Stok</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
 				</thead>
@@ -311,8 +310,7 @@ Tambah Data Barang <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->kode_barang; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_barang; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->harga_jual; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->harga_beli; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->stok; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_barang(<?php echo $value->id_barang?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_barang(<?php echo $value->id_barang?>);"><i class="fa fa-trash-o"></i> Hapus </a>

@@ -473,7 +473,7 @@ function acc_format(n, currency) {
 	return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 }
 
-function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
+function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk,penerimaan){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -494,7 +494,12 @@ function add_row(id_peminjaman_detail,nama,sisa,no_po,harga,id_produk){
 					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+sisa+'" name="sisa[]" id="sisa_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+penerimaan+'" name="sisa[]" id="sisa_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+sisa+'" name="penerimaan[]" id="penerimaan_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					// '<td align="center" style="vertical-align:middle;">'+
@@ -535,7 +540,7 @@ function hapus_row(id,id_peminjaman_detail){
 }
 
 function ewek(jml,id){
-	var qty           = $('#sisa_'+id).val();
+	var qty           = $('#penerimaan_'+id).val();
 
 	var besar_lah	= parseInt(qty);
 	var isi_lah		= parseInt(jml);
@@ -566,7 +571,7 @@ function get_transaction(id) {
                                     '<td style="text-align:center;">'+res.penerimaan+'</td>'+
                                     
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+sisa+'&quot;,&quot;'+res.no_po+'&quot;,&quot;'+res.harga+'&quot;,&quot;'+res.id_produk+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+sisa+'&quot;,&quot;'+res.no_po+'&quot;,&quot;'+res.harga+'&quot;,&quot;'+res.id_produk+'&quot;,&quot;'+res.kuantitas+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -732,6 +737,7 @@ function get_transaction(id) {
 								<th style="text-align: center; width: 20%;">NO PO</th>
 								<th style="text-align: center; widows: 30%;">Nama</th>
 								<th style="text-align: center;">Kuantitas</th>
+								<th style="text-align: center;">Sisa</th>
 								<th style="text-align: center;">Qty Penerimaan</th>
 								<th style="text-align: center;">Aksi</th>
 							</tr>

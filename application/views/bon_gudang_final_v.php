@@ -205,7 +205,7 @@ function get_popup_produk(){
                 '                        <th>NO</th>'+
                 '                        <th> Kode Barang </th>'+
                 '                        <th style="white-space:nowrap;"> Nama Barang </th>'+
-                '                        <th style="white-space:nowrap;"> Harga Beli </th>'+
+                '                        <th style="white-space:nowrap;"> Stok </th>'+
                 '                    </tr>'+
                 '                </thead>'+
                 '                <tbody>'+
@@ -247,7 +247,7 @@ function ajax_produk(id_form){
                             '<td text-align="center">'+no+'</td>'+
                             '<td text-align="center">'+res.kode_barang+'</td>'+
                             '<td text-align="left">'+res.nama_barang+'</td>'+
-                            '<td text-align="center">Rp '+NumberToMoney(res.harga_beli).split('.00').join('')+'</td>'+
+                            '<td text-align="center">'+res.stok+'</td>'+
                         '</tr>';
             });
 
@@ -275,6 +275,7 @@ function get_produk_detail(id, no_form){
 			$('#id_produk_'+no_form).val(result.id_barang);
 			$('#nama_produk_'+no_form).val(result.nama_barang);
 			$('#satuan_'+no_form).val(result.nama_satuan);
+			$('#limit_'+no_form).val(result.stok);
 			$('#harga_'+no_form).val(NumberToMoney(result.harga_beli).split('.00').join(''));
 			$('#jumlah_'+no_form).val(NumberToMoney(result.harga_beli*1).split('.00').join(''));
 
@@ -289,6 +290,18 @@ function get_produk_detail(id, no_form){
 	});
 }
 
+function limit_qty(id) {
+	var kuantitas = $('#kuantitas_'+id).val();
+	var limitasi = $('#limit_'+id).val();
+
+	var kw = parseInt(kuantitas);
+	var lm = parseInt(limitasi);
+
+	if(kw > lm){
+		alert('Kuantitas anda melebihi dari jumlah stok gudang');
+		$('#kuantitas_'+id).val(limitasi);
+	}
+}
 function tambah_data(){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
@@ -314,7 +327,8 @@ function tambah_data(){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input onkeyup="limit_qty('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="hidden" class="form-control" value="" name="limit[]" id="limit_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -342,6 +356,10 @@ function tambah_data(){
 	$('#data_item').append(isi);
 	$('#jml_tr').val(i);
 
+}
+
+function hapus_row(id){
+	$('#tr_'+id).remove();
 }
 
 function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
@@ -649,118 +667,6 @@ function get_transaction(id) {
 						</div>
 					</div>
 				</div>
-
-				<div class="col-md-12">
-						<div class="portlet box green">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-gift"></i>Data Refrensi
-								</div>
-								<div class="tools">
-									<a href="javascript:;" class="collapse" data-original-title="" title="">
-									</a>
-									<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title="">
-									</a>
-								</div>
-							</div>
-							<div class="portlet-body">
-								<ul class="nav nav-tabs">
-									<li class="">
-										<a href="#tab_1_1" data-toggle="tab" aria-expanded="true">
-										LPB </a>
-									</li>
-									<li class="active">
-										<a href="#tab_1_2" data-toggle="tab" aria-expanded="false">
-										SPB </a>
-									</li>
-									<li class="">
-										<a href="#tab_1_3" data-toggle="tab" aria-expanded="true">
-										BGS </a>
-									</li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane fade" id="tab_1_1">
-										
-									</div>
-									<div class="tab-pane fade active in" id="tab_1_2">
-										<table class="table table-bordered table-striped table-condensed flip-content">
-											<thead class="flip-content">
-												<tr>
-													<th style="text-align: center;  width: 10%;">Kode Barang</th>
-													<th style="text-align: center;  width: 30%;">Nama Barang</th>
-													<th style="text-align: center; ">Kuantitas</th>
-													<th style="text-align: center; ">Satuan</th>
-													<th style="text-align: center; width: 30%; ">No Reff</th>
-													<th style="text-align: center; ">Aksi</th>
-												</tr>
-											</thead>
-											<tbody id="data_transaction">
-												<tr>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="tab-pane fade" id="tab_1_3">
-										<table class="table table-bordered table-striped table-condensed flip-content">
-											<thead class="flip-content">
-												<tr>
-													<th style="text-align: center;  width: 10%;">Kode Barang</th>
-													<th style="text-align: center;  width: 30%;">Nama Barang</th>
-													<th style="text-align: center; ">Kuantitas</th>
-													<th style="text-align: center; ">Satuan</th>
-													<th style="text-align: center; width: 30%; ">No Reff</th>
-													<th style="text-align: center; ">Aksi</th>
-												</tr>
-											</thead>
-											<tbody id="data_transaction_2">
-												<tr>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-													<td align="center" style="vertical-align:middle;">
-														
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-
-				
 
 				<div class="row">
 					<div class="col-md-12">

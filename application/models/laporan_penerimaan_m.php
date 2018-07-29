@@ -97,6 +97,32 @@ class Laporan_penerimaan_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+	function update_penerimaan_po($kuantitas,$id)
+	{
+
+		$kuantitas 	= str_replace(',', '', $kuantitas);
+
+		$sql = "
+			UPDATE tb_purchase_order_detail SET
+				penerimaan  	  = penerimaan + $kuantitas
+			WHERE id  = '$id'
+		";
+		$this->db->query($sql);
+	}
+
+	function tambah_stok_barang($kuantitas,$id)
+	{
+
+		$kuantitas 	= str_replace(',', '', $kuantitas);
+
+		$sql = "
+			UPDATE master_barang SET
+				stok  	  = stok + $kuantitas
+			WHERE id_barang  = '$id'
+		";
+		$this->db->query($sql);
+	}
+
 	function ubah_data_laporan_detail($id,$id_produk,$nama_produk,$keterangan,$kuantitas,$harga,$total,$no_opb)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
@@ -133,7 +159,7 @@ class Laporan_penerimaan_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status = '0'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier ,(pbd.kuantitas - pbd.penerimaan) as sisain FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status = '0' AND pbd.penerimaan < pbd.kuantitas
         ";
 
         return $this->db->query($sql)->result();

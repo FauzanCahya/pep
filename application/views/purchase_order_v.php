@@ -152,6 +152,11 @@ function ubah_detail(id){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.realisasi+'" name="realisasi[]" id="realisasi_'+no+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
 							'<input onkeyup="hitung_total('+no+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+res.kuantitas+'" name="kuantitas[]" id="kuantitas_'+no+'">'+
 						'</div>'+
 					'</td>'+
@@ -297,7 +302,7 @@ function get_produk_detail(id, no_form){
 
 
 
-function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantitas){
+function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantitas,realisasi){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -313,6 +318,11 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantita
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+keterangan+'" name="keterangan[]" id="keterangan_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+realisasi+'" name="keterangan[]" id="realisasi_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -360,7 +370,7 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantita
 
 function limit_kuantitas(id) {
 	var kuantitas = $('#kuantitas_'+id).val();
-	var limitasi = $('#limit_'+id).val();
+	var limitasi = $('#realisasi_'+id).val();
 
 	var kw = parseInt(kuantitas);
 	var lm = parseInt(limitasi);
@@ -624,7 +634,7 @@ function get_transaction(id) {
                                     '<td style="text-align:center;">'+res.realisasi+'</td>'+
                                     '<td style="text-align:center;">'+res.no_opb+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;,&quot;'+res.id_produk+'&quot;,&quot;'+res.kuantitas+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;,&quot;'+res.id_produk+'&quot;,&quot;'+res.kuantitas+'&quot;,&quot;'+res.kurangi+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -870,7 +880,7 @@ function hapus_proses(i){
 					</div>
 				</div>
 
-				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-y: scroll;height: 300px;">
 					<div class="portlet-body flip-scroll">
 						<table class="table table-bordered table-striped table-condensed flip-content">
 							<thead class="flip-content">
@@ -934,13 +944,14 @@ function hapus_proses(i){
 					</div>
 				</div>
 
-				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;">
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-x: scroll;">
 					<div class="portlet-body flip-scroll">
-						<table class="table table-bordered table-striped table-condensed flip-content">
+						<table class="table table-bordered table-striped table-condensed flip-content" style="">
 							<thead class="flip-content">
 								<tr>
-									<th style="text-align: center;  width: 30%;">Nama</th>
+									<th style="text-align: center;  width: 20%;">Nama</th>
 									<th style="text-align: center; ">Keterangan</th>
+									<th style="text-align: center; ">Sisa</th>
 									<th style="text-align: center; ">Kuantitas</th>
 									<th style="text-align: center; ">Harga</th>
 									<th style="text-align: center; ">Disc</th>

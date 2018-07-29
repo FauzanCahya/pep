@@ -580,7 +580,7 @@ function acc_format(n, currency) {
 												<div class="input-append" style="width: 100%;">
 													<input readonly type="text" id="nama_produk_1" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;">
 													<button onclick="show_pop_produk(1);" type="button" class="btn" style="width: 30%;">Cari</button>
-													<input type="hidden" id="id_produk_1" name="produk[]" readonly style="background:#FFF;" value="0">
+													<input type="text" id="id_produk_1" name="produk[]" readonly style="background:#FFF;" value="0">
 												</div>
 											</div>
 										</div>

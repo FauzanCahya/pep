@@ -137,6 +137,18 @@ class Bon_gudang_final_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+	function update_stok_barang($vali,$kuantitas)
+	{
+		$kuantitas 	= str_replace(',', '', $kuantitas);
+
+		$sql = "
+			UPDATE master_barang SET 
+				stok  	= stok - $kuantitas
+			WHERE id_barang  = '$vali'
+		";
+		$this->db->query($sql);
+	}
+
 	function ubah_data_bon_gudang_final_detail($id,$nama_produk,$keterangan,$kuantitas,$satuan,$harga,$jumlah)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
