@@ -132,6 +132,7 @@ function MonthToString($month){
 					Dashboard <span class="selected"></span>
 					</a>
 				</li>
+				
 				<li class ="mega-menu-dropdown">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
 					Master Data <i class="fa fa-angle-down"></i><span class="selected"></span>
