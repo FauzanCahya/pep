@@ -1,68 +1,43 @@
 <script src="<?php echo base_url(); ?>js/jquery-1.11.1.min.js" type="text/javascript"></script>
+<style type="text/css">
+#view_hak_akses{
+	display: none;
+}
+</style>
 <script type="text/javascript">
-
 $(document).ready(function(){
-
-	$("#kode_kategori").focus();
-
-	$('#hapus').click(function(){
-		$('#popup_hapus').css('display','block');
-		$('#popup_hapus').show();
-	});
-
-	$('#close_hapus').click(function(){
-		$('#popup_hapus').css('display','none');
-		$('#popup_hapus').hide();
-	});
-
-	$('#batal_hapus').click(function(){
-		$('#popup_hapus').css('display','none');
-		$('#popup_hapus').hide();
-	});
-
-	$('#batal_ubah').click(function(){
-		$('#popup_ubah').css('display','none');
-		$('#popup_ubah').hide();
-	});
-
-	$("#tambah_kategori").click(function(){
-		$("#tambah_kategori").fadeOut('slow');
-		$("#table_kategori").fadeOut('slow');
-		$("#form_kategori").fadeIn('slow');
-	});
-
-	$("#batal").click(function(){
-		$("#tambah_kategori").fadeIn('slow');
-		$("#table_kategori").fadeIn('slow');
-		$("#form_kategori").fadeOut('slow');
-	});
+	<?php if($this->session->flashdata('simpan')){ ?>
+	berhasil();
+	<?php } ?>
 });
 
-function loading(){
-	$('#popup_load').css('display','block');
-	$('#popup_load').show();
+function centang_semua(id){
+	var cek = $('input[name="id_menu_lev1[]"]:checked').length;
+	if(cek != 0){
+		$('.cek2'+id).prop('checked','checked');
+	}else{
+		$('.cek2'+id).removeAttr('checked');
+	}
 }
 
-function hapus_toas(){
-	toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "positionClass": "toast-bottom-right",
-      "onclick": null,
-      "showDuration": "5000",
-      "hideDuration": "5000",
-      "timeOut": "5000",
-      "extendedTimeOut": "5000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success("Data Berhasil Dihapus!", "Terhapus");
+function klik_hak_akses(id){
+	$('#view_data').hide();
+	$('#view_hak_akses').show();
+
+	$.ajax({
+		url : '<?php echo base_url(); ?>manajemen_user_c/get_user_id',
+		data : {id:id},
+		type : "POST",
+		dataType : "json",
+		success : function(row){
+			$('#id_user').val(id);
+			$('#nama_lengkap_ha').val(row['nama_user']);
+			$('#username_ha').val(row['username']);
+		}
+	});
 }
 
-function hapus_kategori(id)
-{
+function hapus_kategori(id){
 	$('#popup_hapus').css('display','block');
 	$('#popup_hapus').show();
 
@@ -79,8 +54,7 @@ function hapus_kategori(id)
 	});
 }
 
-function ubah_data_kategori(id)
-{
+function ubah_data_kategori(id){
 		$('#popup_ubah').css('display','block');
 		$('#popup_ubah').show();
 	
@@ -97,25 +71,6 @@ function ubah_data_kategori(id)
 			}
 		});
 }
-
-function berhasil(){
-	toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "positionClass": "toast-bottom-right",
-      "onclick": null,
-      "showDuration": "5000",
-      "hideDuration": "5000",
-      "timeOut": "5000",
-      "extendedTimeOut": "5000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success("Data Berhasil Disimpan!", "Berhasil");
-}
-
 </script>
 
 <div class="row" id="form_kategori" style="display:none; ">
@@ -160,7 +115,6 @@ function berhasil(){
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Password</label>
 							<div class="col-md-8">
@@ -200,23 +154,12 @@ Tambah User <i class="fa fa-plus"></i>
 </br>
 </br>
 
-<div class="row" id="table_kategori" style="display:block;">
+<div class="row" id="view_data">
 	<div class="col-md-12">
-		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box green">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-edit"></i>Table Manajemen User
-				</div>
-				<div class="tools">
-					<a href="javascript:;" class="collapse">
-					</a>
-					<a href="#portlet-config" data-toggle="modal" class="config">
-					</a>
-					<a href="javascript:;" class="reload">
-					</a>
-					<a href="javascript:;" class="remove">
-					</a>
 				</div>		
 			</div>
 			<div class="portlet-body">
@@ -242,7 +185,9 @@ Tambah User <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_departemen; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->level; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs blue" id="ubah" href="" ><i class="fa fa-edit"></i> Kelola Hak Akses </a>
+						<a class="btn default btn-xs blue" href="javascript:void(0);" onclick="klik_hak_akses(<?php echo $value->id;?>);">
+							<i class="fa fa-cog"></i> Kelola Hak Akses 
+						</a>
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_kategori(<?php echo $value->id?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_kategori(<?php echo $value->id?>);"><i class="fa fa-trash-o"></i> Hapus </a>
 					</td>
@@ -254,7 +199,6 @@ Tambah User <i class="fa fa-plus"></i>
 				</table>
 			</div>
 		</div>
-		<!-- END EXAMPLE TABLE PORTLET-->
 	</div>
 </div>
 
@@ -313,6 +257,94 @@ Tambah User <i class="fa fa-plus"></i>
 	</div>
 </div>
 
+<div class="row" id="view_hak_akses">
+	<div class="col-md-12">
+		<div class="portlet box green">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-user"></i>User
+				</div>
+			</div>
+			<div class="portlet-body">
+				<form class="form-horizontal">
+					<div class="form-body">
+						<div class="form-group">
+							<label class="col-md-2 control-label">Nama Lengkap</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="nama_lengkap_ha" value="" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">Username</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="username_ha" value="" readonly>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="portlet box green">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-cog"></i>Pengaturan Hak Akses
+				</div>
+			</div>
+			<div class="portlet-body">
+				<form class="form-horizontal" method="post" action="<?php echo base_url(); ?>manajemen_user_c/simpan">
+					<input type="hidden" name="id_user" id="id_user" value="">
+					<div class="form-body">
+						<div class="row">
+                        <?php
+                        	$menu_lev_1 = $this->model->menu_lev_1();
+                        	foreach ($menu_lev_1 as $key => $value) {
+                        ?>
+                            <div class="col-md-2">
+                                <div class="md-checkbox has-error">
+			                    	<input type="checkbox" id="checkbox<?php echo $value->ID; ?>" class="md-check cek<?php echo $value->ID; ?>" name="id_menu_lev1[]" value="<?php echo $value->ID; ?>" onclick="centang_semua(<?php echo $value->ID; ?>);">
+			                    	<label for="checkbox<?php echo $value->ID; ?>">
+			                    		<span></span>
+			                    		<span class="check"></span>
+			                    		<span class="box"></span><?php echo $value->MENU_LEV; ?>
+			                    	</label>
+			                    </div>
+			                <?php
+			                	$menu_lev_2 = $this->model->menu_lev_2($value->ID);
+			                	foreach ($menu_lev_2 as $val) {
+			                ?>
+			                	<div class="md-checkbox">
+			                    	<input type="checkbox" id="checkbox<?php echo $value->ID; ?>-<?php echo $val->ID; ?>" class="md-check cek2<?php echo $value->ID; ?>" name="id_menu_lev2[]" value="<?php echo $val->ID; ?>">
+			                    	<label for="checkbox<?php echo $value->ID; ?>-<?php echo $val->ID; ?>">
+			                    		<span></span>
+			                    		<span class="check"></span>
+			                    		<span class="box"></span><?php echo $val->MENU_LEV2; ?>
+			                    	</label>
+			                    </div>
+			                <?php
+			                	}
+			                ?>
+                            </div>
+                        <?php
+                        	}
+                        ?>
+                        </div>
+					</div>
+					<hr>
+					<div class="form-actions">
+						<div class="row">
+							<center>
+	                            <button class="btn green" type="submit">Simpan</button>
+							</center>
+						</div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div id="popup_hapus">
 	<div class="window_hapus">
 		<div class="modal-dialog">
@@ -325,7 +357,7 @@ Tambah User <i class="fa fa-plus"></i>
 					<form action="<?php echo $url_hapus; ?>" method="post">
 						<input type="hidden" name="id_hapus" id="id_hapus" value="">
 						<input type="button" class="btn btn-default" data-bb-handler="cancel" value="Batal" id="batal_hapus">
-						<input type="submit" class="btn btn-primary" data-bb-handler="confirm" value="Hapus" id="hapus" onclick="loading();">
+						<input type="submit" class="btn btn-primary" data-bb-handler="confirm" value="Hapus" id="hapus">
 					</form>
 				</div>
 			</div>
