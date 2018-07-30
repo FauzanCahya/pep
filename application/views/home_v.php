@@ -160,7 +160,17 @@ $id_user = $data['id'];
 									<div class="col-md-12">
 										<ul class="mega-menu-submenu">
 										<?php
-											$get_menu2 = $this->model->get_menu_2($id_user, $menu1->ID);
+											$sql2 = "
+												SELECT a.* FROM kepeg_menu_2 a 
+												JOIN (
+													SELECT ID_MENU FROM kepeg_hak_akses
+													WHERE ID_PEGAWAI = '$id_user' AND KET = 'MENU_2'
+												) b ON a.ID = b.ID_MENU
+												WHERE a.ID_MENU_1 = '".$menu1->ID."'
+										        ORDER BY a.URUT ASC
+											";
+											$qry2 = $this->db->query($sql2);
+											$get_menu2 = $qry2->result();
 											foreach ($get_menu2 as $key => $val2) {
 												if($val2->LINK != null || $val2->LINK != ""){
 										?>
@@ -176,7 +186,17 @@ $id_user = $data['id'];
 												<i class="<?php echo $val2->ICON; ?>"></i> <?php echo $val2->NAMA; ?> </a>
 												<ul class="dropdown-menu" style="min-width: 400px;">
 												<?php
-													$get_menu3 = $this->model->get_menu_3($id_user, $val2->ID);
+													$sql3 = "
+														SELECT a.* FROM kepeg_menu_3 a 
+														JOIN (
+															SELECT ID_MENU FROM kepeg_hak_akses
+															WHERE ID_PEGAWAI = '$id_user' AND KET = 'MENU_3'
+														) b ON a.ID = b.ID_MENU
+														WHERE a.ID_MENU_2 = '".$val2->ID."'
+												        ORDER BY a.URUT ASC
+													";
+													$qry3 = $this->db->query($sql3);
+													$get_menu3 = $qry3->result();
 													foreach ($get_menu3 as $key => $val3) {
 												?>
 													<li <?php if ($menu2 == $val3->VIEW) { echo "class = 'active'";}?>>
