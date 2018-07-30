@@ -24,6 +24,7 @@ class Saldo_awal_c extends CI_Controller {
 				'menu' 	   	 => 'master_data',
 				'menu2'		 => 'saldo_awal',
 				'lihat_data' => $this->pelanggan->lihat_data_saldo_awal(),
+				'dt_kode_akun' => $this->pelanggan->lihat_data_kode_akun(),
 				'url_simpan' => base_url().'saldo_awal_c/simpan',
 				'url_hapus'  => base_url().'saldo_awal_c/hapus',
 				'url_ubah'	 => base_url().'saldo_awal_c/ubah_pelanggan',
@@ -34,16 +35,16 @@ class Saldo_awal_c extends CI_Controller {
 
 	function simpan()
 	{
-		$kode_pelanggan 	 = $this->input->post('kode_pelanggan');
-		$nama_pelanggan 	 = $this->input->post('nama_pelanggan');
-		$alamat_pelanggan = $this->input->post('alamat_pelanggan');
-		$telp 			 = $this->input->post('telp');
-		$email			 = $this->input->post('email');
-		$npwp 			 = $this->input->post('npwp');
+		$kode_akun 	 = $this->input->post('kode_akun');
+		$debet 	     = $this->input->post('debet');
+		$debet 	     = str_replace(',', '', $debet);
 
-		$this->pelanggan->simpan_data_pelanggan($kode_pelanggan,$nama_pelanggan,$alamat_pelanggan,$telp,$email,$npwp);
+		$kredit      = $this->input->post('kredit');
+		$kredit 	 = str_replace(',', '', $kredit);
+
+		$this->pelanggan->simpan_data_saldoawal($kode_akun,$debet,$kredit);
 		$this->session->set_flashdata('sukses','1');
-		redirect('pelanggan_c');
+		redirect('saldo_awal_c');
 	}
 
 	function hapus()
@@ -54,10 +55,10 @@ class Saldo_awal_c extends CI_Controller {
 		redirect('pelanggan_c');
 	}
 
-	function data_pelanggan_id()
+	function data_saldo_awal_id()
 	{
 		$id = $this->input->post('id');
-		$data = $this->pelanggan->data_pelanggan_id($id);
+		$data = $this->pelanggan->data_saldo_awal_id($id);
 		echo json_encode($data);
 	}
 

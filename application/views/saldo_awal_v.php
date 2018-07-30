@@ -65,18 +65,8 @@ function hapus_pelanggan(id)
 {
 	$('#popup_hapus').css('display','block');
 	$('#popup_hapus').show();
-
-		$.ajax({
-		url : '<?php echo base_url(); ?>pelanggan_c/data_pelanggan_id',
-		data : {id:id},
-		type : "POST",
-		dataType : "json",
-		async : false,
-		success : function(row){
-			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['nama_pelanggan']+'</b> ini ingin dihapus ?');
-		}
-	});
+	$('#id_hapus').val(id);
+	$('#msg').html('Apakah data ini ingin dihapus ?');
 }
 
 function ubah_data_pelanggan(id)
@@ -85,19 +75,16 @@ function ubah_data_pelanggan(id)
 		$('#popup_ubah').show();
 	
 		$.ajax({
-			url : '<?php echo base_url(); ?>pelanggan_c/data_pelanggan_id',
+			url : '<?php echo base_url(); ?>saldo_awal_c/data_saldo_awal_id',
 			data : {id:id},
 			type : "POST",
 			dataType : "json",
 			async : false,
 			success : function(row){
-				$('#id_pelanggan_modal').val(id);
-				$('#kode_pelanggan_modal').val(row['kode_pelanggan']);
-				$('#nama_pelanggan_modal').val(row['nama_pelanggan']);
-				$('#alamat_pelanggan_modal').val(row['alamat_pelanggan']);
-				$('#telp_modal').val(row['telp']);
-				$('#email_modal').val(row['email']);
-				$('#npwp_modal').val(row['npwp']);
+				$('#id_saldo_awal').val(id);
+				$('#ed_kode_akun').val(row['KODE_AKUN']);
+				$('#ed_debet').val(row['DEBET']);
+				$('#ed_kredit').val(row['KREDIT']);
 			}
 		});
 }
@@ -135,7 +122,7 @@ function berhasil(){
 			<div class="portlet-body form">
 				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
 					<div class="form-body">
-						<div class="form-group form-md-line-input">
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Kode Akun</label>
 							<div class="col-md-3">
 								<select class="form-control input-large select2me input-sm" id="kode_akun" name="kode_akun" data-placeholder="Select...">
@@ -150,18 +137,18 @@ function berhasil(){
 								</select>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Debet</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="debet" name="debet" >
+								<input type="text" class="form-control" id="debet" name="debet" onkeyup="FormatCurrency(this);" required="">
 								<div class="form-control-focus">
 								</div>
 							</div>
 						</div>
-						<div class="form-group form-md-line-input">
+						<div class="form-group">
 							<label class="col-md-2 control-label" for="form_control_1">Kredit</label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="kredit" name="kredit" >
+								<input type="text" class="form-control" id="kredit" name="kredit" onkeyup="FormatCurrency(this);" required="">
 								<div class="form-control-focus">
 								</div>
 							</div>
@@ -261,9 +248,9 @@ Tambah Saldo Awal <i class="fa fa-plus"></i>
 						<div class="portlet-body form">
 					<form role="form" class="form-horizontal" method="post" action="<?php echo $url_ubah;?>" enctype="multipart/form-data">
 						<div class="form-body">
-							<input type="hidden" name="id_pelanggan_modal" id="id_pelanggan_modal">
+							<input type="hidden" name="id_saldo_awal" id="id_saldo_awal">
 
-							<div class="form-group form-md-line-input">
+							<div class="form-group">
 								<label class="col-md-3 control-label" for="form_control_1">Kode Akun</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="ed_kode_akun" id="ed_kode_akun" readonly="" >
@@ -272,7 +259,7 @@ Tambah Saldo Awal <i class="fa fa-plus"></i>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
+							<div class="form-group">
 								<label class="col-md-3 control-label" for="form_control_1">Debet</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="ed_debet" id="ed_debet" >
@@ -281,7 +268,7 @@ Tambah Saldo Awal <i class="fa fa-plus"></i>
 								</div>
 							</div>
 
-							<div class="form-group form-md-line-input">
+							<div class="form-group">
 								<label class="col-md-3 control-label" for="form_control_1">Kredit</label>
 								<div class="col-md-4">
 									<input required type="text" class="form-control" name="ed_kredit" id="ed_kredit" >

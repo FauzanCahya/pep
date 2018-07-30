@@ -7,23 +7,17 @@ class Saldo_awal_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_pelanggan($kode_pelanggan,$nama_pelanggan,$alamat_pelanggan,$telp,$email,$npwp)
+	function simpan_data_saldoawal($kode_akun,$debet,$kredit)
 	{
 		$sql = "
-			INSERT INTO master_pelanggan (
-				kode_pelanggan,
-				nama_pelanggan,
-				alamat_pelanggan,
-				telp,
-				email,
-				npwp
+			INSERT INTO ak_saldo_awal (
+				KODE_AKUN,
+				DEBET,
+				KREDIT
 			) VALUES (
-				'$kode_pelanggan',
-				'$nama_pelanggan',
-				'$alamat_pelanggan',
-				'$telp',
-				'$email',
-				'$npwp'
+				'$kode_akun',
+				'$debet',
+				'$kredit'
 			)";
 		$this->db->query($sql);
 	}
@@ -36,15 +30,23 @@ class Saldo_awal_m extends CI_Model
 		return $this->db->query($sql)->result();
 	}
 
+	function lihat_data_kode_akun(){
+		$sql = "
+			SELECT * FROM ak_kode_akuntansi WHERE KODE_AKUN NOT IN (SELECT KODE_AKUN FROM ak_saldo_awal)
+		";
+
+		return $this->db->query($sql)->result();
+	}
+
 	function hapus_pelanggan($id)
 	{
-		$sql = "DELETE FROM  master_pelanggan WHERE id_pelanggan = '$id' " ;
+		$sql = "DELETE FROM  ak_saldo_awal WHERE ID = '$id' " ;
 		$this->db->query($sql);
 	}
 
-	function data_pelanggan_id($id)
+	function data_saldo_awal_id($id)
 	{
-		$sql = "SELECT * FROM master_pelanggan WHERE id_pelanggan = '$id' ";
+		$sql = "SELECT * FROM ak_saldo_awal WHERE ID = '$id' ";
 		$query = $this->db->query($sql);
 		return $query->row();
 	}
