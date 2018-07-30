@@ -53,7 +53,7 @@ class Retur_pembelian_c extends CI_Controller {
 			$no_opb 	   = $this->input->post('no_opb');
 
 			foreach ($nama_produk as $key => $val) {
-				$this->retur->simpan_data_retur_detail($id_retur_baru,$id_produk,$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
+				$this->retur->simpan_data_retur_detail($id_retur_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$total[$key],$no_opb[$key]);
 			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('retur_pembelian_c');

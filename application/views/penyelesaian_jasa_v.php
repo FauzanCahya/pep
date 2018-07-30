@@ -369,7 +369,7 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek,total,prosentase_a
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="'+prosentase_akhir+'" name="prosentase_akhir[]" id="harga_awal_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" onkeyup="FormatCurrency(this);"  type="text" class="form-control" value="'+prosentase_akhir+'" name="prosentase_akhir[]" id="harga_awal_'+i+'" readonly>'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -379,7 +379,7 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek,total,prosentase_a
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total[]" id="total_disc_'+i+'">'+
+							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="total_disc[]" id="total_disc_'+i+'">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -420,12 +420,12 @@ function harga_disc(id){
 		disc = 0;
 	}
 
-	var total = (parseFloat(harga_awal) - (parseFloat(disc)/100) * parseFloat(harga_awal))  ;
+	var total = ((parseFloat(disc)/100) * parseFloat(harga_awal))  ;
 
 
 	$('#total_disc_'+id).val(acc_format(total, "").split('.00').join('') );
 
-	hitung_total_semua();
+	
 }
 
 function po(disc){
@@ -452,7 +452,7 @@ function po(disc){
 
 function ppn_ici(disc){
 
-	var total_po = $('#total_po').html();
+	var total_po = $('#subtotal_text').val();
 	total_po = total_po.split(',').join('');
 	total_po = total_po.split('Rp. ').join('');
 
@@ -466,20 +466,24 @@ function ppn_ici(disc){
 	var accu = parseFloat(total_po) + total;
 
 	
-	$('#total_ppn').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#total_ppn').html('Rp. '+acc_format(total, "").split('.00').join('') );
 	$('#ppn_text').val(total);
 	
 }
 
 function pph_ici(disc){
 
-	var total_po = $('#total_po').html();
+	var total_po = $('#subtotal_text').val();
 	total_po = total_po.split(',').join('');
 	total_po = total_po.split('Rp. ').join('');
 
 	var total_ppn = $('#total_ppn').html();
 	total_ppn = total_ppn.split(',').join('');
 	total_ppn = total_ppn.split('Rp. ').join('');
+
+	var total_sub_total = $('#subtotal_txt').html();
+	total_sub_total = total_sub_total.split(',').join('');
+	total_sub_total = total_sub_total.split('Rp. ').join('');
 
 
 	if(total_po == ""){
@@ -488,10 +492,11 @@ function pph_ici(disc){
 
 	
 	var total =  (parseFloat(disc)/100) * parseFloat(total_po) ;
-	var accu = parseFloat(total_ppn) - total;
+	var accu = parseFloat(total_ppn) - total + parseFloat(total_sub_total);
 
 	
-	$('#total_pph').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#total_pph').html('Rp. '+acc_format(total, "").split('.00').join('') );
+	$('#totalan_semua').html('Rp. '+acc_format(accu, "").split('.00').join('') );
 	$('#pph_text').val(total);
 	$('#total_semua').val(accu);
 	
@@ -500,7 +505,7 @@ function pph_ici(disc){
 function hitung_total_semua(){
 	var sum = 0;
 	var pajak_prosen = 0
-	$("input[name='total[]']").each(function(idx, elm) {
+	$("input[name='total_disc[]']").each(function(idx, elm) {
 		var tot = elm.value.split(',').join('');
 		if(tot > 0){
     		sum += parseFloat(tot);
@@ -825,7 +830,7 @@ function get_transaction(id) {
 					<div class="col-md-12">
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
-								<h4 class="control-label"> Sub Total :</h4> 
+								<h4 class="control-label"> Total :</h4> 
 							</div>
 						</div>
 
@@ -838,7 +843,7 @@ function get_transaction(id) {
 					</div>
 				</div>
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
 							<h4 class="control-label"> Potongan PO :</h4> 
@@ -855,9 +860,9 @@ function get_transaction(id) {
 								<h4 id="total_po" class="control-label"> Rp. 0.00 </h4> 
 							</div>
 						</div>
-				</div>
+				</div> -->
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
 							<h4 class="control-label"> PPN :</h4> 
@@ -894,7 +899,21 @@ function get_transaction(id) {
 							<h4 id="total_pph" class="control-label"> Rp. 0.00 </h4> 
 						</div>
 					</div>
-				</div>
+				</div> -->
+
+				<!-- <div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> Total :</h4> 
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+							<div style="margin-bottom: 15px;" class="span4">
+								<h4 id="totalan_semua" class="control-label"> Rp. 0.00 </h4> 
+							</div>
+						</div>
+				</div> -->
 
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
 					<div class="col-md-12">

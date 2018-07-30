@@ -447,7 +447,7 @@ function po(disc){
 
 function ppn_ici(disc){
 
-	var total_po = $('#total_po').html();
+	var total_po = $('#subtotal_txt').html();
 	total_po = total_po.split(',').join('');
 	total_po = total_po.split('Rp. ').join('');
 
@@ -461,14 +461,14 @@ function ppn_ici(disc){
 	var accu = parseFloat(total_po) + total;
 
 	
-	$('#total_ppn').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#total_ppn').html('Rp. '+acc_format(total, "").split('.00').join('') );
 	$('#ppn_text').val(total);
 	
 }
 
 function pph_ici(disc){
 
-	var total_po = $('#total_po').html();
+	var total_po = $('#subtotal_txt').html();
 	total_po = total_po.split(',').join('');
 	total_po = total_po.split('Rp. ').join('');
 
@@ -486,10 +486,30 @@ function pph_ici(disc){
 	var accu = parseFloat(total_ppn) - total;
 
 	
-	$('#total_pph').html('Rp. '+acc_format(accu, "").split('.00').join('') );
+	$('#total_pph').html('Rp. '+acc_format(total, "").split('.00').join('') );
 	$('#pph_text').val(total);
 	$('#total_semua').val(accu);
 	
+}
+
+function totalan_semua(){
+
+	var total_subtotal = $('#subtotal_txt').html();
+	total_subtotal = total_subtotal.split(',').join('');
+	total_subtotal = total_subtotal.split('Rp. ').join('');
+
+	var total_ppn = $('#total_ppn').html();
+	total_ppn = total_ppn.split(',').join('');
+	total_ppn = total_ppn.split('Rp. ').join('');
+
+	var total_pph = $('#total_pph').html();
+	total_pph = total_pph.split(',').join('');
+	total_pph = total_pph.split('Rp. ').join('');
+
+	var total = parseFloat(total_subtotal) + parseFloat(total_ppn) - parseFloat(total_pph);
+
+	$('#total_semuane').html('Rp. '+acc_format(total, "").split('.00').join('') );
+	$('#total_semua').val(total);
 }
 
 function hitung_total_semua(){
@@ -682,8 +702,8 @@ function get_transaction(id) {
             $('#prosen_awal').val('100');
             $('#prosen_akhir').val('0');
         } else if(val == "Cash Of Delivery"){
-        	document.getElementById('prosen_awal').readOnly = true;
-        	document.getElementById('prosen_akhir').readOnly = true;
+        	document.getElementById('prosen_awal').readOnly = false;
+        	document.getElementById('prosen_akhir').readOnly = false;
             $('#prosen_awal').val('100');
             $('#prosen_akhir').val('100');
         } else if(val == "Progress"){
@@ -928,24 +948,7 @@ function hapus_proses(i){
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-md-3">
-						<div style="margin-bottom: 15px;" class="span3">
-							<h4 class="control-label"> Potongan PO :</h4> 
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div style="margin-bottom: 15px;" class="span4">
-							<input type="text" id="pot_po" onkeyup="po(this.value);" name="pot_po" class="form-control">
-							<input type="hidden" id="po_text" name="po_text" class="form-control">
-						</div>
-					</div>
-					<div class="col-md-3">
-							<div style="margin-bottom: 15px;" class="span4">
-								<h4 id="total_po" class="control-label"> Rp. 0.00 </h4> 
-							</div>
-						</div>
-				</div>
+				
 
 				<div class="row">
 					<div class="col-md-3">
@@ -955,7 +958,7 @@ function hapus_proses(i){
 					</div>
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
-							<input type="text" id="ppn" onkeyup="ppn_ici(this.value);" name="ppn" class="form-control">
+							<input type="text" id="ppn" onkeyup="ppn_ici(this.value);totalan_semua();" name="ppn" class="form-control">
 							<input type="hidden" id="ppn_text" name="ppn_text" class="form-control">
 						</div>
 					</div>
@@ -969,12 +972,12 @@ function hapus_proses(i){
 				<div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
-							<h4 class="control-label"> PPH :</h4> 
+							<h4 class="control-label"> PPH 22 :</h4> 
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">
-							<input type="text" id="pph" onkeyup="pph_ici(this.value);" name="pph" class="form-control">
+							<input type="text" id="pph" onkeyup="pph_ici(this.value);totalan_semua();" name="pph" class="form-control">
 							<input type="hidden" id="pph_text" name="pph_text" class="form-control">
 							<input type="hidden" id="total_semua" name="total_semua" class="form-control">
 						</div>
@@ -1011,6 +1014,19 @@ function hapus_proses(i){
 							<input type="text" class="form-control cuy" style="display: none;" id="payment" name="terms_dua" placeholder="Minggu">
 						</div>
 					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div style="margin-bottom: 15px;" class="span3">
+							<h4 class="control-label"> Total :</h4> 
+						</div>
+					</div>
+					<div class="col-md-3">
+							<div style="margin-bottom: 15px;" class="span4">
+								<h4 id="total_semuane" class="control-label"> Rp. 0.00 </h4> 
+							</div>
+						</div>
 				</div>
 
 				<div class="row">

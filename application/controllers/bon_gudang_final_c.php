@@ -105,6 +105,7 @@ class Bon_gudang_final_c extends CI_Controller {
 
 			foreach ($nama_produk as $key => $val) {
 					 $this->bon_gudang_final->simpan_data_barang_detail($id_bon_gudang_final_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key],$tgl_pemakaian[$key]);
+					 $this->bon_gudang_final->update_stok_barang($produk[$key],$kuantitas[$key]);
 			}
 
 			foreach ($id_peminjaman_detail as $keyi => $vali) {
