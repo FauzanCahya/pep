@@ -33,6 +33,20 @@ class Manajemen_user_m extends CI_Model
 		return $query->row();
 	}
 
+	function get_divisi($keyword){
+		$where = "1 = 1";
+
+		if($keyword != ""){
+			$where = $where." AND nama_divisi LIKE '%$keyword%'";
+		}else{
+			$where = $where;
+		}
+
+		$sql = "SELECT * FROM master_divisi WHERE $where";
+		$qry = $this->db->query($sql);
+		return $qry->result();
+	}
+
 	function menu_lev_1(){
 		$sql = "SELECT * FROM menu_lev_1 WHERE STATUS  = '1' ORDER BY URUT ASC";
 		$qry = $this->db->query($sql);
@@ -76,11 +90,42 @@ class Manajemen_user_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function ubah($id_user,$id_menu_lev_1){
+	function simpan_user($username,$password,$nama_user,$departemen,$level){
 		$sql = "
-			UPDATE menu_hak_akses SET
-				ID_MENU_LEV_1  = '$id_menu_lev_1'
-			WHERE ID_USER  = '$id_user'
+			INSERT INTO tb_user(
+				username,
+				password,
+				nama_user,
+				departemen,
+				level
+			) VALUES (
+				'$username',
+				'$password',
+				'$nama_user',
+				'$departemen',
+				'$level'
+			)
+		";
+		$this->db->query($sql);
+	}
+
+	function ubah_with_pass($id,$username,$password,$nama_user){
+		$sql = "
+			UPDATE tb_user SET
+				username = '$username',
+				password = '$password',
+				nama_user = '$nama_user'
+			WHERE id  = '$id'
+		";
+		$this->db->query($sql);
+	}
+
+	function ubah_no_pass($id,$username,$nama_user){
+		$sql = "
+			UPDATE tb_user SET
+				username = '$username',
+				nama_user = '$nama_user'
+			WHERE id  = '$id'
 		";
 		$this->db->query($sql);
 	}

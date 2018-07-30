@@ -19,10 +19,10 @@ class Manajemen_user_c extends CI_Controller {
 		$data = array(
 			'title' 	 => 'Master Manajemen User',
 			'page'  	 => 'manajemen_user_v',
-			'sub_menu' 	 => 'master data',
-			'sub_menu1'	 => 'master kategori',
-			'menu' 	   	 => 'master_data',
-			'menu2'		 => 'master kategori',
+			'sub_menu' 	 => 'Setup',
+			'sub_menu1'	 => 'Manajemen User',
+			'menu' 	   	 => 'setup',
+			'menu2'		 => 'manajemen_user',
 			'lihat_data' => $this->model->get_user(),
 			'url_simpan' => base_url().'manajemen_user_c/simpan',
 			'url_hapus'  => base_url().'manajemen_user_c/hapus',
@@ -38,10 +38,10 @@ class Manajemen_user_c extends CI_Controller {
 		$data = array(
 			'title' 	 => 'Hak Akses',
 			'page'  	 => 'hak_akses_v',
-			'sub_menu' 	 => 'Master Data',
+			'sub_menu' 	 => 'Setup',
 			'sub_menu1'	 => 'Hak Akses',
-			'menu' 	   	 => 'master_data',
-			'menu2'		 => 'master kategori',
+			'menu' 	   	 => 'setup',
+			'menu2'		 => 'manajemen_user',
 			'lihat_data' => $this->model->get_user(),
 			'url_simpan' => base_url().'manajemen_user_c/simpan',
 			'url_hapus'  => base_url().'manajemen_user_c/hapus',
@@ -58,6 +58,12 @@ class Manajemen_user_c extends CI_Controller {
 	function get_user_id(){
 		$id = $this->input->post('id');
 		$data = $this->model->get_user_id($id);
+		echo json_encode($data);
+	}
+
+	function get_divisi(){
+		$keyword = $this->input->get('keyword');
+		$data = $this->model->get_divisi($keyword);
 		echo json_encode($data);
 	}
 
@@ -81,6 +87,35 @@ class Manajemen_user_c extends CI_Controller {
 		foreach ($ch_menu3 as $key => $m3) {
 			$this->model->simpan($id_user, $m3, 'MENU_3');
 		}
+
+		$this->session->set_flashdata('simpan','1');
+		redirect('manajemen_user_c');
+	}
+
+	function ubah(){
+		$id = $this->input->post('id_ubah');
+		$username = $this->input->post('username_ubah');
+		$password = $this->input->post('password_ulang_ubah');
+		$nama_user = $this->input->post('nama_lengkap_ubah');
+
+		if($password != ""){
+			$this->model->ubah_with_pass($id,$username,md5($password),$nama_user);
+		}else{
+			$this->model->ubah_no_pass($id,$username,$nama_user);
+		}
+
+		$this->session->set_flashdata('ubah','1');
+		redirect('manajemen_user_c');
+	}
+
+	function simpan_user(){
+		$username = $this->input->post('username');
+		$password = $this->input->post('password_ulang');
+		$nama_user = $this->input->post('nama_lengkap');
+		$departemen = '9';
+		$level = $this->input->post('level');
+
+		$this->model->simpan_user($username,md5($password),$nama_user,$departemen,$level);
 
 		$this->session->set_flashdata('simpan','1');
 		redirect('manajemen_user_c');
