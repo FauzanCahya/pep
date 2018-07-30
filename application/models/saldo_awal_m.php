@@ -51,17 +51,13 @@ class Saldo_awal_m extends CI_Model
 		return $query->row();
 	}
 
-	function ubah_data_pelanggan($id,$kode_pelanggan_modal,$nama_pelanggan_modal,$alamat_pelanggan_modal,$telp_modal,$email_modal,$npwp_modal)
+	function ubah_data_saldo_awal($id_saldo_awal, $ed_debet, $ed_kredit)
 	{
 		$sql = "
-			UPDATE master_pelanggan SET
-				kode_pelanggan 	 = '$kode_pelanggan_modal',
-				nama_pelanggan   = '$nama_pelanggan_modal',
-				alamat_pelanggan = '$alamat_pelanggan_modal',
-				telp  			 = '$telp_modal',
-				email 			 = '$email_modal',
-				npwp  			 = '$npwp_modal'
-			WHERE id_pelanggan = '$id'
+			UPDATE ak_saldo_awal SET
+				DEBET 	 = '$ed_debet',
+				KREDIT   = '$ed_kredit'
+			WHERE ID = '$id_saldo_awal'
 		";
 		$this->db->query($sql);
 	}

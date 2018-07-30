@@ -52,7 +52,7 @@ class Saldo_awal_c extends CI_Controller {
 		$id = $this->input->post('id_hapus');
 		$this->pelanggan->hapus_pelanggan($id);
 		$this->session->set_flashdata('hapus','1');
-		redirect('pelanggan_c');
+		redirect('saldo_awal_c');
 	}
 
 	function data_saldo_awal_id()
@@ -64,17 +64,16 @@ class Saldo_awal_c extends CI_Controller {
 
 	function ubah_pelanggan()
 	{
-		$id 					= $this->input->post('id_pelanggan_modal');
-		$kode_pelanggan_modal  	= $this->input->post('kode_pelanggan_modal');
-		$nama_pelanggan_modal 	= $this->input->post('nama_pelanggan_modal');
-		$alamat_pelanggan_modal  = $this->input->post('alamat_pelanggan_modal');
-		$telp_modal  			= $this->input->post('telp_modal');
-		$email_modal 			= $this->input->post('email_modal');
-		$npwp_modal 			= $this->input->post('npwp_modal');
+		$id_saldo_awal 	= $this->input->post('id_saldo_awal');
+		$ed_debet    	= $this->input->post('ed_debet');
+		$ed_debet 	    = str_replace(',', '', $ed_debet);
+
+		$ed_kredit 	    = $this->input->post('ed_kredit');
+		$ed_kredit 	    = str_replace(',', '', $ed_kredit);
 		
-		$this->pelanggan->ubah_data_pelanggan($id,$kode_pelanggan_modal,$nama_pelanggan_modal,$alamat_pelanggan_modal,$telp_modal,$email_modal,$npwp_modal);
+		$this->pelanggan->ubah_data_saldo_awal($id_saldo_awal, $ed_debet, $ed_kredit);
 		$this->session->set_flashdata('sukses','1');
-		redirect('pelanggan_c');	
+		redirect('saldo_awal_c');	
 		// echo "1";
 	}
 }

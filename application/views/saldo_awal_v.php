@@ -214,8 +214,8 @@ Tambah Saldo Awal <i class="fa fa-plus"></i>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->KODE_AKUN; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->DEBET; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->KREDIT; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo number_format($value->DEBET); ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo number_format($value->KREDIT); ?></td>
 					<td style="text-align:center; vertical-align: middle;">
 						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_pelanggan(<?php echo $value->ID?>);"><i class="fa fa-edit"></i> Ubah </a>
 						<a class="btn default btn-xs red" id="hapus" onclick="hapus_pelanggan(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
