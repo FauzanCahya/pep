@@ -98,16 +98,16 @@ class Penyelesaian_jasa_c extends CI_Controller {
 			$id_peminjaman_detail 		= $this->input->post('id_peminjaman_detail');
 			$prosentase_akhir 			= $this->input->post('prosentase_akhir');
 			$disc 						= $this->input->post('disc');
-			$total 						= $this->input->post('total');
+			$total 						= $this->input->post('total_disc');
 			$nama 						= $this->input->post('nama');
 
 			foreach ($no_opek as $key => $val) {
 					 $this->pengembalian->simpan_data_barang_detail($id_pengembalian_baru,$id_peminjaman_detail[$key],$val,$prosentase_akhir[$key],$disc[$key],$total[$key],$nama[$key]);
 			}
 
-			// foreach ($id_peminjaman_detail as $keyi => $vali) {
-			// 	$this->pengembalian->update_selisih_detail($vali,$kuantitas[$keyi]);
-			// }
+			foreach ($id_peminjaman_detail as $keyi => $vali) {
+				$this->pengembalian->update_prosen_jasa($vali,$disc[$keyi]);
+			}
 			$this->session->set_flashdata('sukses','1');
 			redirect('penyelesaian_jasa_c');
 		

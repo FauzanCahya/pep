@@ -702,8 +702,8 @@ function get_transaction(id) {
             $('#prosen_awal').val('100');
             $('#prosen_akhir').val('0');
         } else if(val == "Cash Of Delivery"){
-        	document.getElementById('prosen_awal').readOnly = true;
-        	document.getElementById('prosen_akhir').readOnly = true;
+        	document.getElementById('prosen_awal').readOnly = false;
+        	document.getElementById('prosen_akhir').readOnly = false;
             $('#prosen_awal').val('100');
             $('#prosen_akhir').val('100');
         } else if(val == "Progress"){

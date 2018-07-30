@@ -61,18 +61,16 @@ class Manajemen_user_m extends CI_Model
 		return $qry->result();
 	}
 
-	function simpan($id_user,$id_menu_lev_1,$id_menu_lev_2){
+	function simpan($id_user,$id_menu,$keterangan){
 		$sql = "
-			INSERT INTO menu_hak_akses(
-				ID_USER,
-				ID_MENU_LEV_1,
-				ID_MENU_LEV_2,
-				STATUS
+			INSERT INTO kepeg_hak_akses(
+				ID_PEGAWAI,
+				ID_MENU,
+				KET
 			) VALUES(
 				'$id_user',
-				'$id_menu_lev_1',
-				'$id_menu_lev_2',
-				'1'
+				'$id_menu',
+				'$keterangan'
 			)
 		";
 		$this->db->query($sql);
@@ -88,8 +86,87 @@ class Manajemen_user_m extends CI_Model
 	}
 
 	function hapus($id_user){
-		$sql = "DELETE FROM  menu_hak_akses WHERE ID_USER = '$id_user' " ;
+		$sql = "DELETE FROM  kepeg_hak_akses WHERE ID_PEGAWAI = '$id_user' " ;
 		$this->db->query($sql);
+	}
+
+	function get_data_menu_1($id_pegawai){
+
+		if($id_pegawai == ""){
+			$sql = "
+				SELECT a.*, 0 AS STS FROM kepeg_menu_1 a
+				ORDER BY a.URUT ASC
+			"; 
+		} else {
+			$sql = "
+			SELECT a.ID, a.NAMA, a.LINK, a.ICON, a.URUT, IFNULL(a.STS, 0) AS STS FROM (
+				SELECT a.ID, a.NAMA, a.LINK, a.ICON, a.URUT, IFNULL(a.STS, 0) AS STS FROM (
+					SELECT a.*, IFNULL(b.ID_MENU, 0) AS STS FROM kepeg_menu_1 a 
+					LEFT JOIN (
+						SELECT ID_MENU FROM kepeg_hak_akses
+						WHERE ID_PEGAWAI = $id_pegawai AND KET = 'MENU_PORTAL'
+					) b ON a.ID = b.ID_MENU
+				) a 				
+			) a
+            ORDER BY a.URUT ASC
+			";
+		}		
+
+		return $this->db->query($sql)->result();
+	}
+
+	function get_data_menu_2($id_menu1, $id_pegawai){
+		
+
+		if($id_pegawai == ""){
+			$sql = "
+				SELECT a.*, 0 AS STS FROM kepeg_menu_2 a WHERE a.ID_MENU_1 = $id_menu1
+				ORDER BY a.URUT ASC
+				";
+		} else {
+			$sql = "
+			SELECT a.ID, a.NAMA, a.LINK, a.ICON, a.URUT, IFNULL(a.STS, 0) AS STS FROM (
+				SELECT a.ID, a.NAMA, a.LINK, a.ICON, a.URUT, IFNULL(a.STS, 0) AS STS FROM (
+					SELECT a.*, IFNULL(b.ID_MENU, 0) AS STS FROM kepeg_menu_2 a 
+					LEFT JOIN (
+						SELECT ID_MENU FROM kepeg_hak_akses
+						WHERE ID_PEGAWAI = $id_pegawai AND KET = 'MENU_2'
+					) b ON a.ID = b.ID_MENU
+					WHERE a.ID_MENU_1 = $id_menu1
+				) a 				
+			) a
+            ORDER BY a.URUT ASC
+			";
+		}
+
+		return $this->db->query($sql)->result();
+	}
+
+	function get_data_menu_3($id_menu2, $id_pegawai){
+		
+
+		if($id_pegawai == ""){
+			$sql = "
+			SELECT a.*, 0 AS STS FROM kepeg_menu_3 a WHERE a.ID_MENU_2 = $id_menu2
+			ORDER BY a.URUT ASC
+			";
+		} else {
+			$sql = "
+			SELECT a.ID, a.NAMA, a.LINK, a.ICON, a.URUT, IFNULL(a.STS, 0) AS STS FROM (
+				SELECT a.ID, a.NAMA, a.LINK, a.ICON, a.URUT, IFNULL(a.STS, 0) AS STS FROM (
+					SELECT a.*, IFNULL(b.ID_MENU, 0) AS STS FROM kepeg_menu_3 a 
+					LEFT JOIN (
+						SELECT ID_MENU FROM kepeg_hak_akses
+						WHERE ID_PEGAWAI = $id_pegawai AND KET = 'MENU_3'
+					) b ON a.ID = b.ID_MENU
+					WHERE a.ID_MENU_2 = $id_menu2
+				) a 				
+			) a
+            ORDER BY a.URUT ASC
+			";
+		}
+
+		return $this->db->query($sql)->result();
 	}
 
 }

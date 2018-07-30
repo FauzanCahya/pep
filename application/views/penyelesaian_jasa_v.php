@@ -830,7 +830,7 @@ function get_transaction(id) {
 					<div class="col-md-12">
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span3">
-								<h4 class="control-label"> Sub Total :</h4> 
+								<h4 class="control-label"> Total :</h4> 
 							</div>
 						</div>
 
@@ -862,7 +862,7 @@ function get_transaction(id) {
 						</div>
 				</div> -->
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
 							<h4 class="control-label"> PPN :</h4> 
@@ -899,9 +899,9 @@ function get_transaction(id) {
 							<h4 id="total_pph" class="control-label"> Rp. 0.00 </h4> 
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
 							<h4 class="control-label"> Total :</h4> 
@@ -913,7 +913,7 @@ function get_transaction(id) {
 								<h4 id="totalan_semua" class="control-label"> Rp. 0.00 </h4> 
 							</div>
 						</div>
-				</div>
+				</div> -->
 
 				<div class="row" style="padding-top: 35px; padding-bottom: 15px;">
 					<div class="col-md-12">
