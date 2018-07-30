@@ -943,6 +943,16 @@ function hapus_proses(i){
 						</div>
 					</div>
 				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="col-md-2 control-label" for="form_control_1">GAR</label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" name="gar">	
+						</div>
+						
+					</div>
+				</div>
 
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-x: scroll;">
 					<div class="portlet-body flip-scroll">
