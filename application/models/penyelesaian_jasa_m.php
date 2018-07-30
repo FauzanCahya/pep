@@ -136,11 +136,11 @@ class Penyelesaian_jasa_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function update_selisih_detail($vali,$kuantitas)
+	function update_prosen_jasa($vali,$prosen)
 	{
 		$sql = "
-			UPDATE tb_peminjaman_barang_detail SET 
-				sisa_jumlah  	= sisa_jumlah - $kuantitas
+			UPDATE tb_pembelian_jasa_detail SET 
+				prosentase_akhir  	=  prosentase_akhir + $prosen
 			WHERE id  = '$vali'
 		";
 		$this->db->query($sql);
