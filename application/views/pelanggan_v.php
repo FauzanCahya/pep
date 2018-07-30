@@ -66,7 +66,7 @@ function hapus_pelanggan(id)
 	$('#popup_hapus').css('display','block');
 	$('#popup_hapus').show();
 
-		$.ajax({
+	$.ajax({
 		url : '<?php echo base_url(); ?>pelanggan_c/data_pelanggan_id',
 		data : {id:id},
 		type : "POST",
