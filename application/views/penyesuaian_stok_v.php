@@ -288,7 +288,7 @@ function berhasil(){
 						<div class="row">
 							<div class="col-md-offset-2 col-md-10">
 								<button type="submit" class="btn blue">Simpan</button>
-								<button type="button" id="batal" class="btn red">Batal Dan Kembali</button>
+								<a href="<?=base_url();?>penyesuaian_stok_c" class="btn red">Batal</a>
 							</div>
 						</div>
 					</div>
