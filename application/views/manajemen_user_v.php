@@ -9,33 +9,12 @@ $(document).ready(function(){
 	<?php if($this->session->flashdata('simpan')){ ?>
 	berhasil();
 	<?php } ?>
-});
 
-function centang_semua(id){
-	var cek = $('input[name="id_menu_lev1[]"]:checked').length;
-	if(cek != 0){
-		$('.cek2'+id).prop('checked','checked');
-	}else{
-		$('.cek2'+id).removeAttr('checked');
-	}
-}
-
-function klik_hak_akses(id){
-	$('#view_data').hide();
-	$('#view_hak_akses').show();
-
-	$.ajax({
-		url : '<?php echo base_url(); ?>manajemen_user_c/get_user_id',
-		data : {id:id},
-		type : "POST",
-		dataType : "json",
-		success : function(row){
-			$('#id_user').val(id);
-			$('#nama_lengkap_ha').val(row['nama_user']);
-			$('#username_ha').val(row['username']);
-		}
+	$('#btn_batal_ha').click(function(){
+		$('#view_hak_akses').hide();
+		$('#view_data').show();
 	});
-}
+});
 
 function hapus_kategori(id){
 	$('#popup_hapus').css('display','block');
@@ -81,19 +60,6 @@ function ubah_data_kategori(id){
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
 					<span class="caption-subject bold uppercase"> Form Kategori </span>
-				</div>
-				<div class="actions">
-					<a class="btn btn-circle btn-icon-only blue" href="javascript:;">
-					<i class="icon-cloud-upload"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only green" href="javascript:;">
-					<i class="icon-wrench"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only red" href="javascript:;">
-					<i class="icon-trash"></i>
-					</a>
-					<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title="">
-					</a>
 				</div>
 			</div>
 			<div class="portlet-body form">
@@ -185,11 +151,15 @@ Tambah User <i class="fa fa-plus"></i>
 					<td style="text-align:center; vertical-align:"><?php echo $value->nama_departemen; ?></td>
 					<td style="text-align:center; vertical-align:"><?php echo $value->level; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs blue" href="javascript:void(0);" onclick="klik_hak_akses(<?php echo $value->id;?>);">
+						<a class="btn default btn-xs blue" href="<?php echo base_url(); ?>manajemen_user_c/hak_akses/<?php echo $value->id;?>">
 							<i class="fa fa-cog"></i> Kelola Hak Akses 
 						</a>
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_kategori(<?php echo $value->id?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_kategori(<?php echo $value->id?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_kategori(<?php echo $value->id?>);">
+							<i class="fa fa-edit"></i> Ubah
+						</a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_kategori(<?php echo $value->id?>);">
+							<i class="fa fa-trash-o"></i> Hapus
+						</a>
 					</td>
 				</tr>
 					<?php 
@@ -257,94 +227,6 @@ Tambah User <i class="fa fa-plus"></i>
 	</div>
 </div>
 
-<div class="row" id="view_hak_akses">
-	<div class="col-md-12">
-		<div class="portlet box green">
-			<div class="portlet-title">
-				<div class="caption">
-					<i class="fa fa-user"></i>User
-				</div>
-			</div>
-			<div class="portlet-body">
-				<form class="form-horizontal">
-					<div class="form-body">
-						<div class="form-group">
-							<label class="col-md-2 control-label">Nama Lengkap</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" id="nama_lengkap_ha" value="" readonly>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-2 control-label">Username</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" id="username_ha" value="" readonly>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<div class="portlet box green">
-			<div class="portlet-title">
-				<div class="caption">
-					<i class="fa fa-cog"></i>Pengaturan Hak Akses
-				</div>
-			</div>
-			<div class="portlet-body">
-				<form class="form-horizontal" method="post" action="<?php echo base_url(); ?>manajemen_user_c/simpan">
-					<input type="hidden" name="id_user" id="id_user" value="">
-					<div class="form-body">
-						<div class="row">
-                        <?php
-                        	$menu_lev_1 = $this->model->menu_lev_1();
-                        	foreach ($menu_lev_1 as $key => $value) {
-                        ?>
-                            <div class="col-md-2">
-                                <div class="md-checkbox has-error">
-			                    	<input type="checkbox" id="checkbox<?php echo $value->ID; ?>" class="md-check cek<?php echo $value->ID; ?>" name="id_menu_lev1[]" value="<?php echo $value->ID; ?>" onclick="centang_semua(<?php echo $value->ID; ?>);">
-			                    	<label for="checkbox<?php echo $value->ID; ?>">
-			                    		<span></span>
-			                    		<span class="check"></span>
-			                    		<span class="box"></span><?php echo $value->MENU_LEV; ?>
-			                    	</label>
-			                    </div>
-			                <?php
-			                	$menu_lev_2 = $this->model->menu_lev_2($value->ID);
-			                	foreach ($menu_lev_2 as $val) {
-			                ?>
-			                	<div class="md-checkbox">
-			                    	<input type="checkbox" id="checkbox<?php echo $value->ID; ?>-<?php echo $val->ID; ?>" class="md-check cek2<?php echo $value->ID; ?>" name="id_menu_lev2[]" value="<?php echo $val->ID; ?>">
-			                    	<label for="checkbox<?php echo $value->ID; ?>-<?php echo $val->ID; ?>">
-			                    		<span></span>
-			                    		<span class="check"></span>
-			                    		<span class="box"></span><?php echo $val->MENU_LEV2; ?>
-			                    	</label>
-			                    </div>
-			                <?php
-			                	}
-			                ?>
-                            </div>
-                        <?php
-                        	}
-                        ?>
-                        </div>
-					</div>
-					<hr>
-					<div class="form-actions">
-						<div class="row">
-							<center>
-	                            <button class="btn green" type="submit">Simpan</button>
-							</center>
-						</div>
-                    </div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-
 <div id="popup_hapus">
 	<div class="window_hapus">
 		<div class="modal-dialog">
@@ -364,19 +246,3 @@ Tambah User <i class="fa fa-plus"></i>
 		</div>
 	</div>
 </div>
-
-<script>
-$(document).ready(function(){
-	<?php
-		if($this->session->flashdata('sukses')){
-	?>
-		berhasil();
-	<?php 
-		}elseif($this->session->flashdata('hapus')){
-	?>
-		hapus_toas();
-	<?php
-		}
-	?>
-});
-</script>

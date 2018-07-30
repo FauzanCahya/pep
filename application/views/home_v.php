@@ -107,6 +107,9 @@ function MonthToString($month){
     }
     return $string;
 }
+
+$data = $this->session->userdata('sign_in');
+$id_user = $data['id'];
 ?>
 <!-- BEGIN HEADER -->
 <div class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
@@ -132,68 +135,63 @@ function MonthToString($month){
 					Dashboard <span class="selected"></span>
 					</a>
 				</li>
-				
-				<li class ="mega-menu-dropdown">
+				<?PHP
+					$sql = "
+						SELECT a.* FROM kepeg_menu_1 a 
+						JOIN (
+							SELECT ID_MENU FROM kepeg_hak_akses
+							WHERE ID_PEGAWAI = '$id_user' AND KET = 'MENU_PORTAL'
+						) b ON a.ID = b.ID_MENU
+				        ORDER BY a.URUT ASC
+					";
+					$qry = $this->db->query($sql);
+	                $get_menu1 = $qry->result();
+	                foreach ($get_menu1 as $key => $menu1) {
+	                	if($menu1->LINK == null || $menu1->LINK == ""){
+	            ?>
+	            <li class ="mega-menu-dropdown">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
-					Master Data <i class="fa fa-angle-down"></i><span class="selected"></span>
+					<?php echo $menu1->NAMA; ?> <i class="fa fa-angle-down"></i><span class="selected"></span>
 					</a>
 					<ul class="dropdown-menu" style="min-width: 400px;">
 						<li>
-							<!-- Content container to add padding -->
 							<div class="mega-menu-content">
 								<div class="row">
 									<div class="col-md-12">
 										<ul class="mega-menu-submenu">
-											<li <?php if ($menu2 == 'grub_kode_akun') { echo "class = 'active'";} ?> >
-												<a href="<?php echo base_url(); ?>grub_kode_akuntansi_c">
-												<i class="fa fa-bank"></i> Master Grup Kode Akun </a>
-											</li>	
-											<li <?php if ($menu2 == 'kode_akuntansi') { echo "class = 'active'";} ?> >
-												<a href="<?php echo base_url(); ?>kode_akuntansi_c">
-												<i class="fa fa-bank"></i> Master Kode Akuntansi </a>
+										<?php
+											$get_menu2 = $this->model->get_menu_2($id_user, $menu1->ID);
+											foreach ($get_menu2 as $key => $val2) {
+												if($val2->LINK != null || $val2->LINK != ""){
+										?>
+											<li <?php if ($menu2 == $val2->VIEW) { echo "class = 'active'";} ?> >
+												<a href="<?php echo base_url().$val2->LINK; ?>">
+												<i class="<?php echo $val2->ICON; ?>"></i> <?php echo $val2->NAMA; ?> </a>
 											</li>
-											<li <?php if ($menu2 == 'departemen') { echo "class = 'active'";} ?> >
-												<a href="<?php echo base_url(); ?>m_departemen_c">
-												<i class="fa fa-bank"></i> Master Departemen </a>
+										<?php
+												}else{
+										?>
+											<li class="dropdown-submenu">
+												<a href="javascript:;">
+												<i class="<?php echo $val2->ICON; ?>"></i> <?php echo $val2->NAMA; ?> </a>
+												<ul class="dropdown-menu" style="min-width: 400px;">
+												<?php
+													$get_menu3 = $this->model->get_menu_3($id_user, $val2->ID);
+													foreach ($get_menu3 as $key => $val3) {
+												?>
+													<li <?php if ($menu2 == $val3->VIEW) { echo "class = 'active'";}?>>
+														<a href="<?php echo base_url().$val3->LINK; ?>">
+														<i class="<?php echo $val3->ICON; ?>"></i> <?php echo $val3->NAMA; ?> </a>
+													</li>
+												<?php
+													}
+												?>
+												</ul>
 											</li>
-											<li <?php if ($menu2 == 'divisi') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>divisi_c">
-												<i class="fa fa-building"></i> Master Divisi </a>
-											</li>
-											<li <?php if ($menu2 == 'pegawai') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>pegawai_c">
-												<i class="fa fa-user"></i> Master Pegawai </a>
-											</li>
-											<li <?php if ($menu2 == 'kategori_barang') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>kategori_barang_c">
-												<i class="fa fa-tasks"></i> Master Kategori Barang </a>
-											</li>
-											<li <?php if ($menu2 == 'satuan') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>satuan_c">
-												<i class="fa fa-th-list"></i> Master Satuan </a>
-											</li>
-											<li <?php if ($menu2 == 'barang') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>barang_c">
-												<i class="fa fa-hdd-o"></i> Master Barang </a>
-											</li>
-											<li <?php if ($menu2 == 'supplier') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>supplier_c">
-												<i class="fa fa-group"></i> Master Supplier </a>
-											</li>
-											<li <?php if ($menu2 == 'pelanggan') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>pelanggan_c">
-												<i class="fa fa-paw"></i> Master Pelanggan </a>
-											</li>
-											<li <?php if ($menu2 == 'konversi') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>konversi_c">
-												<i class="fa fa-arrows-alt"></i> Master Konversi </a>
-											</li>
-											<li <?php if ($menu2 == 'transaksi') { echo "class = 'active'";}?>>
-												<a href="<?php echo base_url(); ?>transaksi_c">
-												<i class="fa fa-arrows-alt"></i> Master Transaksi </a>
-											</li>
-
-
+										<?php
+												}
+											}
+										?>
 										</ul>
 									</div>
 								</div>
@@ -201,419 +199,20 @@ function MonthToString($month){
 						</li>
 					</ul>
 				</li>
-
-				<li class ="mega-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
-					Setup  <i class="fa fa-angle-down"></i><span class="selected"></span>
+	            <?php
+	                	}else{
+	            ?>
+	            <li class ="classic-menu-dropdown">
+					<a href="<?php echo base_url().$menu1->LINK; ?>">
+					<?php echo $menu1->NAMA; ?> <span class="selected"></span>
 					</a>
-					<ul class="dropdown-menu" style="min-width: 400px;">
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>akun_barang_c">
-							<i class="fa fa-bank"></i> Barang </a>
-						</li>
-
-						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>akun_pelanggan_c">
-							<i class="fa fa-users"></i> Pelanggan </a>
-						</li>
-
-						<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>akun_supplier_c">
-							<i class="fa fa-users"></i> Supplier </a>
-						</li>
-
-						<li <?php if ($menu2 == 'notif_waktu') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>notifikasi_c">
-							<i class="fa fa-arrows-alt"></i> Waktu Notifikasi </a>
-						</li>
-
-						<li <?php if ($menu2 == 'manajemen_user') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>manajemen_user_c">
-							<i class="fa fa-users"></i> Manajemen User </a>
-						</li>
-					</ul>
 				</li>
+	            <?php
+	            		}
+	                }
+                ?>
 
-				<li class ="classic-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
-					Flow Sistem<i class="fa fa-angle-down"></i><span class="selected"></span>
-					</a>
-					<ul class="dropdown-menu pull-left" style="min-width: 400px;">
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Flow Sistem Barang </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>permintaan_barang_c">
-									<i class="fa fa-bank"></i> Permintaan Barang (SPB) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>peminjaman_barang_c">
-									<i class="fa fa-archive"></i> Peminjaman Tools (SP1) </a>
-								</li>
-								<li <?php if ($menu2 == 'pengembalian_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengembalian_barang_c">
-									<i class="fa fa-cube"></i> Pengembalian Tools (SP2) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>bon_gudang_c">
-									<i class="fa fa-archive"></i> Pengambilan Barang Sementara (BGS) </a>
-								</li>
-								<li <?php if ($menu2 == 'pengembalian_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>bon_gudang_final_c">
-									<i class="fa fa-cube"></i> Pengambilan Barang Final (BPB) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'order_pembelian') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>order_pembelian_c">
-									<i class="fa fa-building"></i> Order Pembelian Barang (OPB) </a>
-								</li>
-								<li <?php if ($menu2 == 'purchase_order') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>purchase_order_c">
-									<i class="fa fa-user"></i> Purchase Order (PO) </a>
-								</li>
-								<li <?php if ($menu2 == 'laporan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>laporan_penerimaan_c">
-									<i class="fa fa-tasks"></i> Laporan Penerimaan Barang (LPB) </a>
-								</li>
-								<li <?php if ($menu2 == 'retur_pembelian') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>retur_pembelian_c">
-									<i class="fa fa-th-list"></i> Retur Barang </a>
-								</li>
-
-								
-							</ul>
-						</li>
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Flow Sistem Jasa </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>order_pekerjaan_c">
-									<i class="fa fa-bank"></i> Permintaan Jasa (SPJ) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pembelian_jasa_c">
-									<i class="fa fa-archive"></i> Proses Pembelian Jasa (SPK) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>penyelesaian_jasa_c">
-									<i class="fa fa-archive"></i> Penyelesaian Jasa (LPJ) </a>
-								</li>
-
-							</ul>
-						</li>
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Flow Sistem Hutang/Piutang </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'pengakuan_hutang') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengakuan_hutang_c">
-									<i class="fa fa-bank"></i> Pengakuan Hutang (TTT) </a>
-								</li>
-								<li <?php if ($menu2 == 'perintah_membayar') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>perintah_membayar_c">
-									<i class="fa fa-bank"></i> Perintah Membayar </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'penerima_giro') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>penerima_giro_c">
-									<i class="fa fa-archive"></i> Penerima Giro </a>
-								</li>
-								<!-- <li <?php if ($menu2 == 'pengeluaran_giro') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengeluaran_giro_c">
-									<i class="fa fa-cube"></i> Pengeluaran Giro </a>
-								</li> -->
-								<li <?php if ($menu2 == 'set_tanggal_giro') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>set_tanggal_giro_c">
-									<i class="fa fa-cube"></i> Set Tanggal Giro Cair </a>
-								</li>
-								<li <?php if ($menu2 == 'pengambilan_giro') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengambilan_giro_c">
-									<i class="fa fa-cube"></i> Pengambilan Giro </a>
-								</li>
-
-								<li <?php if ($menu2 == 'pengeluaran_giro') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengeluaran_giro_c">
-									<i class="fa fa-cube"></i> Pengeluaran Giro </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'pemasukan_kas') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pemasukan_kas_c">
-									<i class="fa fa-archive"></i> Pemasukan Kas (BKM) </a>
-								</li>
-								<li <?php if ($menu2 == 'pengeluaran_kas') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengeluaran_kas_c">
-									<i class="fa fa-cube"></i> Pengeluaran Kas (BKK) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'pemasukan_bank') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pemasukan_bank_c">
-									<i class="fa fa-building"></i> Pemasukan Bank (BBM) </a>
-								</li>
-								<li <?php if ($menu2 == 'pengeluaran_bank') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengeluaran_bank_c">
-									<i class="fa fa-building"></i> Pengeluaran Bank (BBK) </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'perintah_membayar_nota') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>perintah_membayar_nota_c">
-									<i class="fa fa-th-list"></i> Perintah Membayar Nota </a>
-								</li>
-								<li <?php if ($menu2 == 'pengeluaran_kas_nota') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>pengeluaran_kas_nota_c">
-									<i class="fa fa-th-list"></i> Pengeluaran Kas Nota </a>
-								</li>
-							</ul>
-
-						</li>
-						
-					</ul>
-				</li>
-
-				<li class ="mega-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
-					Gudang  <i class="fa fa-angle-down"></i><span class="selected"></span>
-					</a>
-					<ul class="dropdown-menu" style="min-width: 400px;">
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>kartu_stok_c">
-							<i class="fa fa-bank"></i> Kartu Stok </a>
-						</li>
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>akunting_penerimaan_barang_c">
-							<i class="fa fa-bank"></i> Laporan Penerimaan Barang </a>
-						</li>
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>gudang_peminjaman_barang_c">
-							<i class="fa fa-bank"></i> Laporan Peminjaman Barang </a>
-						</li>
-
-						<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>laporan_pemakaian_barang_c">
-							<i class="fa fa-bank"></i> Laporan Pemakaian Barang </a>
-						</li>
-						<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>laporan_bgf_c">
-							<i class="fa fa-bank"></i> Laporan BGF </a>
-						</li> -->
-						<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>laporan_list_barang_c">
-							<i class="fa fa-bank"></i> Laporan List Barang </a>
-						</li> -->
-
-						<!-- <li><img src="<?=base_url()?>assets/Untitled-1.png"></li> -->
-
-						<!-- <li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-							<a href="<?php echo base_url(); ?>penyusaian_stok_c">
-							<i class="fa fa-archive"></i> Penyesuaian Stok </a>
-						</li> -->
-					</ul>
-				</li>
-
-				<li class ="classic-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">
-					Akunting Sistem<i class="fa fa-angle-down"></i><span class="selected"></span>
-					</a>
-					<ul class="dropdown-menu pull-left" style="min-width: 400px;">
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Umum </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>umum_penyelesaian_jasa_c">
-									<i class="fa fa-bank"></i> Laporan Penyelesaian Jasa </a>
-								</li>
-
-								<!-- <li <?php if ($menu2 == 'peminjaman_tools') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>laporan_produksi_c">
-									<i class="fa fa-archive"></i> Laporan Produksi </a>
-								</li> -->
-
-							</ul>
-						</li>
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Pembelian </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_barang_indent_c">
-									<i class="fa fa-bank"></i> Laporan Barang Indent </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_opb_c">
-									<i class="fa fa-bank"></i> Laporan OPB </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_pembelian_barang_c">
-									<i class="fa fa-bank"></i> Laporan Pembelian Barang </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_jasa_indent_c">
-									<i class="fa fa-bank"></i> Laporan Jasa Indent </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_order_pekerjaan_c">
-									<i class="fa fa-bank"></i> Laporan OPEK </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_pembelian_jasa_c">
-									<i class="fa fa-bank"></i> Laporan Pembelian Jasa </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a target="_blank" href="<?php echo base_url(); ?>lap_pembelian_jasa_c/cetak_supplier/">
-									<i class="fa fa-bank"></i> Laporan List Supplier </a>
-								</li>
-
-								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_list_hutang_c">
-									<i class="fa fa-bank"></i> Laporan List Hutang </a>
-								</li> -->
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_pemakaian_barang_c">
-									<i class="fa fa-bank"></i> Laporan Pemakaian Barang </a>
-								</li>
-							</ul>
-
-						</li>
-
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Keuangan </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_keuangan_c">
-									<i class="fa fa-bank"></i> Laporan Keuangan </a>
-								</li>
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_giro_keluar_c">
-									<i class="fa fa-bank"></i> Laporan Giro Keluar </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_bank_harian_c">
-									<i class="fa fa-bank"></i> Laporan Bank Harian </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_kas_harian_c">
-									<i class="fa fa-bank"></i> Laporan Kas Harian </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_mutasi_harian_c">
-									<i class="fa fa-bank"></i> Laporan Mutasi Harian </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_cash_flow_c">
-									<i class="fa fa-bank"></i> Laporan Cash Flow </a>
-								</li>
-
-							</ul>
-
-						</li>
-
-						<li class="dropdown-submenu">
-							<a href="javascript:;">
-							<i class="fa fa-envelope-o"></i> Akunting </a>
-							<ul class="dropdown-menu" style="min-width: 400px;">
-								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_kartu_stok_c">
-									<i class="fa fa-bank"></i> Laporan Kartu Stok </a>
-								</li> -->
-								
-								<!-- <li><img src="<?=base_url()?>assets/Untitled-1.png"></li> -->
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>jurnal_umum_c">
-									<i class="fa fa-bank"></i> Jurnal Umum </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>jurnal_sementara_c">
-									<i class="fa fa-bank"></i> Jurnal Sementara </a>
-								</li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>jurnal_final_c">
-									<i class="fa fa-bank"></i> Jurnal Final </a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_akuntansi_c">
-									<i class="fa fa-bank"></i> Laporan Akuntansi </a>
-								</li>
-
-								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>penyesuaian_stok_c">
-									<i class="fa fa-bank"></i> Penyesuaian Stok </a>
-								</li> -->
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_gudang_master_c">
-									<i class="fa fa-bank"></i> Laporan Gudang Master</a>
-								</li>
-
-								<li><img src="<?=base_url()?>assets/Untitled-1.png"></li>
-
-								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_pemakaian_barang_c">
-									<i class="fa fa-bank"></i> Laporan Pemakaian Barang</a>
-								</li> -->
-
-								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_penerimaan_barang_c">
-									<i class="fa fa-bank"></i> Laporan Penerimaan Barang</a>
-								</li> -->
-
-
-								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
-									<a href="<?php echo base_url(); ?>lap_list_akun_c">
-									<i class="fa fa-bank"></i> Laporan List Akun</a>
-								</li>
-
-							</ul>
-
-						</li>
-						
-						
-						
-					</ul>
-				</li>
+				
 
 				<!-- <li class ="mega-menu-dropdown">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-hover="megamenu-dropdown" data-close-others="true">

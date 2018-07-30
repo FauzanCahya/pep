@@ -32,6 +32,29 @@ class Manajemen_user_c extends CI_Controller {
 		$this->load->view('home_v',$data);
 	}
 
+	function hak_akses($id_user){
+		$dt_pegawai 	= $this->model->get_user_id($id_user);
+
+		$data = array(
+			'title' 	 => 'Hak Akses',
+			'page'  	 => 'hak_akses_v',
+			'sub_menu' 	 => 'Master Data',
+			'sub_menu1'	 => 'Hak Akses',
+			'menu' 	   	 => 'master_data',
+			'menu2'		 => 'master kategori',
+			'lihat_data' => $this->model->get_user(),
+			'url_simpan' => base_url().'manajemen_user_c/simpan',
+			'url_hapus'  => base_url().'manajemen_user_c/hapus',
+			'url_ubah'	 => base_url().'manajemen_user_c/ubah_divisi',
+			'id_user'	 => $id_user,
+			'get_menu_1' => $this->model->get_data_menu_1($id_user),
+			'dt_pegawai' => $dt_pegawai,
+			'id_pegawai' => $id_user,
+		);
+
+		$this->load->view('home_v',$data);
+	}
+
 	function get_user_id(){
 		$id = $this->input->post('id');
 		$data = $this->model->get_user_id($id);
@@ -40,18 +63,23 @@ class Manajemen_user_c extends CI_Controller {
 
 	function simpan()
 	{
-		$id_user = $this->input->post('id_user');
-		$id_menu_lev_1 = $this->input->post('id_menu_lev1');
-		$id_menu_lev_2 = $this->input->post('id_menu_lev2');
-		$count = count($id_menu_lev_2);
+		$id_user = $this->input->post('id_pegawai2');
+		$menu_portal     = $this->input->post('menu_portal');
+		$ch_menu2        = $this->input->post('ch_menu2');
+		$ch_menu3        = $this->input->post('ch_menu3');
 
 		$this->model->hapus($id_user);
 
-		for($i=0; $i<$count; $i++){
-			print_r($id_menu_lev_1[$i]);
-			die();
-			$this->model->simpan($id_user,$id_menu_lev_1[$i],$id_menu_lev_2[$i]);
-			// $this->model->ubah($id_user,$id_menu_lev_1[$i]);
+		foreach ($menu_portal as $key => $m_portal) {
+			$this->model->simpan($id_user, $m_portal, 'MENU_PORTAL');
+		}
+
+		foreach ($ch_menu2 as $key => $m2) {
+			$this->model->simpan($id_user, $m2, 'MENU_2');
+		}
+
+		foreach ($ch_menu3 as $key => $m3) {
+			$this->model->simpan($id_user, $m3, 'MENU_3');
 		}
 
 		$this->session->set_flashdata('simpan','1');

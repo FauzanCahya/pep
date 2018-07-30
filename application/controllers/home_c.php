@@ -5,6 +5,7 @@ class Home_c extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		// $this->load->model('home_m','model');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -16,16 +17,17 @@ class Home_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title'    	=> 'Home',
-				'sub_menu' 	=> '',
-				'sub_menu1'	=> '',
-				'menu' 	   	=> '',
-				'menu2'		=> '',
-				'page'		=> '',
-			);
+			'title'    	=> 'Home',
+			'sub_menu' 	=> '',
+			'sub_menu1'	=> '',
+			'menu' 	   	=> '',
+			'menu2'		=> '',
+			'page'		=> '',
+		);
 
 		$this->load->view('home_v',$data);
 	}
+
 }
 
 /* End of file welcome.php */
