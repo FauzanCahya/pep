@@ -192,8 +192,10 @@ function MonthToString($month){
 												<a href="<?php echo base_url(); ?>transaksi_c">
 												<i class="fa fa-arrows-alt"></i> Master Transaksi </a>
 											</li>
-
-
+											<li <?php if ($menu2 == 'saldo_awal') { echo "class = 'active'";}?>>
+												<a href="<?php echo base_url(); ?>saldo_awal_c">
+												<i class="fa fa-arrows-alt"></i> Master Saldo Awal </a>
+											</li>
 										</ul>
 									</div>
 								</div>
