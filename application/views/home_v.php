@@ -580,10 +580,10 @@ function MonthToString($month){
 									<i class="fa fa-bank"></i> Laporan Akuntansi </a>
 								</li>
 
-								<!-- <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
+							    <li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>penyesuaian_stok_c">
 									<i class="fa fa-bank"></i> Penyesuaian Stok </a>
-								</li> -->
+								</li>
 
 								<li <?php if ($menu2 == 'permintaan') { echo "class = 'active'";}?>>
 									<a href="<?php echo base_url(); ?>lap_gudang_master_c">
