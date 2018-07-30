@@ -67,6 +67,12 @@ class Manajemen_user_c extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	function get_divisi_id(){
+		$id = $this->input->post('id');
+		$data = $this->model->get_divisi_id($id);
+		echo json_encode($data);
+	}
+
 	function simpan()
 	{
 		$id_user = $this->input->post('id_pegawai2');
@@ -74,18 +80,18 @@ class Manajemen_user_c extends CI_Controller {
 		$ch_menu2        = $this->input->post('ch_menu2');
 		$ch_menu3        = $this->input->post('ch_menu3');
 
-		$this->model->hapus($id_user);
+		$this->model->hapus_hak_akses($id_user);
 
 		foreach ($menu_portal as $key => $m_portal) {
-			$this->model->simpan($id_user, $m_portal, 'MENU_PORTAL');
+			$this->model->simpan_hak_akses($id_user, $m_portal, 'MENU_PORTAL');
 		}
 
 		foreach ($ch_menu2 as $key => $m2) {
-			$this->model->simpan($id_user, $m2, 'MENU_2');
+			$this->model->simpan_hak_akses($id_user, $m2, 'MENU_2');
 		}
 
 		foreach ($ch_menu3 as $key => $m3) {
-			$this->model->simpan($id_user, $m3, 'MENU_3');
+			$this->model->simpan_hak_akses($id_user, $m3, 'MENU_3');
 		}
 
 		$this->session->set_flashdata('simpan','1');
@@ -108,17 +114,39 @@ class Manajemen_user_c extends CI_Controller {
 		redirect('manajemen_user_c');
 	}
 
+	function hapus(){
+		$id_hapus = $this->input->post('id_hapus');
+		$sql = "SELECT COUNT(*) AS TOTAL FROM kepeg_hak_akses WHERE ID_PEGAWAI = '$id_hapus'";
+		$qry = $this->db->query($sql);
+		$total = $qry->row()->TOTAL;
+
+		if($total != 0){
+			$this->model->hapus_hak_akses($id_hapus);
+		}
+
+		$this->model->hapus($id_hapus);
+
+		$this->session->set_flashdata('hapus','1');
+		redirect('manajemen_user_c');
+	}
+
 	function simpan_user(){
 		$username = $this->input->post('username');
 		$password = $this->input->post('password_ulang');
 		$nama_user = $this->input->post('nama_lengkap');
-		$departemen = '9';
+		$departemen = $this->input->post('id_divisi');
 		$level = $this->input->post('level');
 
 		$this->model->simpan_user($username,md5($password),$nama_user,$departemen,$level);
 
 		$this->session->set_flashdata('simpan','1');
 		redirect('manajemen_user_c');
+	}
+
+	function cek_username(){
+		$username = $this->input->post('username');
+		$data = $this->model->cek_username($username);
+		echo json_encode($data);
 	}
 
 }
