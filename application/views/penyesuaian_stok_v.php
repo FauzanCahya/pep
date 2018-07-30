@@ -1,126 +1,4 @@
 <script src="<?php echo base_url(); ?>js/jquery-1.11.1.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-	$("#kode_pelanggan").focus();
-
-	$('#hapus').click(function(){
-		$('#popup_hapus').css('display','block');
-		$('#popup_hapus').show();
-	});
-
-	$('#close_hapus').click(function(){
-		$('#popup_hapus').css('display','none');
-		$('#popup_hapus').hide();
-	});
-
-	$('#batal_hapus').click(function(){
-		$('#popup_hapus').css('display','none');
-		$('#popup_hapus').hide();
-	});
-
-	$('#batal_ubah').click(function(){
-		$('#popup_ubah').css('display','none');
-		$('#popup_ubah').hide();
-	});
-
-	$("#tambah_pelanggan").click(function(){
-		$("#tambah_pelanggan").fadeOut('slow');
-		$("#table_pelanggan").fadeOut('slow');
-		$("#form_pelanggan").fadeIn('slow');
-	});
-
-	$("#batal").click(function(){
-		$("#tambah_pelanggan").fadeIn('slow');
-		$("#table_pelanggan").fadeIn('slow');
-		$("#form_pelanggan").fadeOut('slow');
-	});
-});
-
-function loading(){
-	$('#popup_load').css('display','block');
-	$('#popup_load').show();
-}
-
-function hapus_toas(){
-	toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "positionClass": "toast-bottom-right",
-      "onclick": null,
-      "showDuration": "5000",
-      "hideDuration": "5000",
-      "timeOut": "5000",
-      "extendedTimeOut": "5000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success("Data Berhasil Dihapus!", "Terhapus");
-}
-
-function hapus_pelanggan(id)
-{
-	$('#popup_hapus').css('display','block');
-	$('#popup_hapus').show();
-
-		$.ajax({
-		url : '<?php echo base_url(); ?>pelanggan_c/data_pelanggan_id',
-		data : {id:id},
-		type : "POST",
-		dataType : "json",
-		async : false,
-		success : function(row){
-			$('#id_hapus').val(id);
-			$('#msg').html('Apakah <b>'+row['nama_pelanggan']+'</b> ini ingin dihapus ?');
-		}
-	});
-}
-
-function ubah_data_pelanggan(id)
-{
-		$('#popup_ubah').css('display','block');
-		$('#popup_ubah').show();
-	
-		$.ajax({
-			url : '<?php echo base_url(); ?>pelanggan_c/data_pelanggan_id',
-			data : {id:id},
-			type : "POST",
-			dataType : "json",
-			async : false,
-			success : function(row){
-				$('#id_pelanggan_modal').val(id);
-				$('#kode_pelanggan_modal').val(row['kode_pelanggan']);
-				$('#nama_pelanggan_modal').val(row['nama_pelanggan']);
-				$('#alamat_pelanggan_modal').val(row['alamat_pelanggan']);
-				$('#telp_modal').val(row['telp']);
-				$('#email_modal').val(row['email']);
-				$('#npwp_modal').val(row['npwp']);
-			}
-		});
-}
-
-function berhasil(){
-	toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "positionClass": "toast-bottom-right",
-      "onclick": null,
-      "showDuration": "5000",
-      "hideDuration": "5000",
-      "timeOut": "5000",
-      "extendedTimeOut": "5000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-    toastr.success("Data Berhasil Disimpan!", "Berhasil");
-}
-
-</script>
 
 <div class="row" id="form_pelanggan">
 	<div class="col-md-12">
@@ -133,7 +11,7 @@ function berhasil(){
 				</div>
 			</div>
 			<div class="portlet-body form">
-				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
+				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>" onsubmit="return cek_balance();">
 					<div class="form-body">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -298,7 +176,7 @@ function berhasil(){
 		<!-- END SAMPLE FORM PORTLET-->
 	</div>
 </div>
-
+<input type="hidden" name="total_row" id="total_row" value="2">
 <script>
 $(document).ready(function(){
 	<?php
@@ -313,6 +191,21 @@ $(document).ready(function(){
 		}
 	?>
 });
+	
+	function cek_balance(){
+		var d = $('#total_debet_val').val();
+		var k = $('#total_kredit_val').val();
+
+		var a = false;
+		if(parseFloat(d) != parseFloat(k)){
+			alert("Debet dan Kredit tidak balance !!");
+			a = false;
+		} else {
+			a = true;
+		}
+
+		return a;
+	}
 
 	function get_barang_detail(){
 		var id = $('#id_barang').val();
@@ -443,7 +336,7 @@ $(document).ready(function(){
 							'</div>'+
 	                    '</td>'+
 	                    '<td style="text-align:center;">'+
-	                    	'<button class="btn btn-danger" type="button" onclick="hapus('+i+');">Hapus</button>'+
+	                    	'<button class="btn btn-danger" type="button" onclick="hapus_opename_akuntansi('+i+');">Hapus</button>'+
 	                    '</td>'+
 	                '</tr>';
 
@@ -453,7 +346,7 @@ $(document).ready(function(){
 		$('#total_row').val(i);
 	}
 
-	function hapus(id){
+	function hapus_opename_akuntansi(id){
 		$('#tr_'+id).remove();
 	}
 
