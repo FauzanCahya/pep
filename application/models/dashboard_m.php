@@ -11,37 +11,33 @@ class Dashboard_m extends CI_Model
 		$where = "1 = 1";
 
 		if($sie != ""){
-			$where = $where." AND no_spb LIKE '%$sie%'";
+			$where = $where." AND SPB.no_spb LIKE '%$sie%'";
 		}else{
 			$where = $where;
 		}
 
 		if($tahun != ""){
-			$where = $where." AND SUBSTR(tanggal,7) = '$tahun'";
+			$where = $where." AND SUBSTR(SPB.tanggal,7) = '$tahun'";
 		}else{
 			$where = $where;
 		}
 
 		$sql = "
 			SELECT 
-				*,
-				SUBSTR(tanggal,7) AS tahun
-			FROM tb_permintaan_barang 
+				SPB.*,
+				SUBSTR(SPB.tanggal,7) AS tahun,
+				SPB_DET.nama_produk
+			FROM tb_permintaan_barang SPB
+			LEFT JOIN tb_permintaan_barang_detail SPB_DET ON SPB_DET.id_induk = SPB.id_permintaan
 			WHERE $where
-			AND no_spb LIKE '%$nomor%'
+			AND SPB.no_spb LIKE '%$nomor%'
 		";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
 
-	function tampil_no_spb_di_opb($nomor,$sie,$tahun){
+	function tampil_no_spb_di_opb($no_spb,$sie,$tahun){
 		$where = "1 = 1";
-
-		if($sie != ""){
-			$where = $where." AND a.no_spb LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
 
 		if($tahun != ""){
 			$where = $where." AND SUBSTR(b.tanggal,7) = '$tahun'";
@@ -53,26 +49,22 @@ class Dashboard_m extends CI_Model
 			SELECT 
 				a.id,
 				a.no_spb,
+				a.nama_produk,
 				b.no_opb,
 				b.tanggal,
 				b.uraian
 			FROM tb_order_pembelian_detail a
 			LEFT JOIN tb_order_pembelian b ON b.id_order = a.id_induk
 			WHERE $where
-			AND a.no_spb LIKE '%$nomor%'
+			AND a.no_spb = '$no_spb'
+			ORDER BY b.id_order ASC
 		";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
 
-	function tampil_no_opb_di_po($nomor,$sie,$tahun){
+	function tampil_no_opb_di_po($no_opb,$sie,$tahun){
 		$where = "1 = 1";
-
-		if($sie != ""){
-			$where = $where." AND a.no_opb LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
 
 		if($tahun != ""){
 			$where = $where." AND SUBSTR(b.tanggal,7) = '$tahun'";
@@ -88,20 +80,15 @@ class Dashboard_m extends CI_Model
 			FROM tb_purchase_order_detail a
 			LEFT JOIN tb_purchase_order b ON b.id_purchase = a.id_induk
 			WHERE $where
-			AND a.no_opb LIKE '%$nomor%'
+			AND a.no_opb = '$no_opb'
+			ORDER BY a.id ASC
 		";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
 
-	function tampil_no_lpb($nomor,$sie,$tahun){
+	function tampil_no_lpb($no_po,$sie,$tahun){
 		$where = "1 = 1";
-
-		if($sie != ""){
-			$where = $where." AND a.no_po LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
 
 		if($tahun != ""){
 			$where = $where." AND SUBSTR(b.tanggal,7) = '$tahun'";
@@ -117,7 +104,7 @@ class Dashboard_m extends CI_Model
 			FROM tb_laporan_penerimaan_detail a
 			LEFT JOIN tb_laporan_penerimaan b ON b.id_laporan = a.id_induk
 			WHERE $where
-			AND a.no_po = '$nomor'
+			AND a.no_po = '$no_po'
 		";
 		$query = $this->db->query($sql);
 		return $query->result();
@@ -144,9 +131,10 @@ class Dashboard_m extends CI_Model
 				a.no_spb,
 				b.no_opb,
 				b.tanggal,
-				b.uraian
-			FROM tb_order_pembelian_detail a
-			LEFT JOIN tb_order_pembelian b ON b.id_order = a.id_induk
+				b.uraian,
+				a.nama_produk
+			FROM tb_order_pembelian b
+			LEFT JOIN tb_order_pembelian_detail a ON b.id_order = a.id_induk
 			WHERE $where
 			AND b.no_opb LIKE '%$nomor%'
 			GROUP BY a.id
@@ -157,12 +145,6 @@ class Dashboard_m extends CI_Model
 
 	function tampil_spb_dr_first_opb($no_opb,$sie,$tahun){
 		$where = "1 = 1";
-
-		if($sie != ""){
-			$where = $where." AND b.no_opb LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
 
 		if($tahun != ""){
 			$where = $where." AND SUBSTR(b.tanggal,7) = '$tahun'";
@@ -176,7 +158,8 @@ class Dashboard_m extends CI_Model
 				a.no_spb,
 				b.no_opb,
 				b.tanggal,
-				b.uraian
+				b.uraian,
+				a.nama_produk
 			FROM tb_order_pembelian_detail a
 			LEFT JOIN tb_order_pembelian b ON b.id_order = a.id_induk
 			WHERE $where
@@ -218,12 +201,6 @@ class Dashboard_m extends CI_Model
 	function tampil_no_lpb_dr_po($no_po,$sie,$tahun){
 		$where = "1 = 1";
 
-		if($sie != ""){
-			$where = $where." AND a.no_po LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
-
 		if($tahun != ""){
 			$where = $where." AND SUBSTR(b.tanggal,7) = '$tahun'";
 		}else{
@@ -244,14 +221,8 @@ class Dashboard_m extends CI_Model
 		return $query->result();
 	}
 
-	function tampil_no_opb_by_po($no_po,$sie,$tahun){
+	function tampil_no_opb_by_po($no_opb,$sie,$tahun){
 		$where = "1 = 1";
-
-		if($sie != ""){
-			$where = $where." AND PO.no_po LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
 
 		if($tahun != ""){
 			$where = $where." AND SUBSTR(OPB.tanggal,7) = '$tahun'";
@@ -262,41 +233,33 @@ class Dashboard_m extends CI_Model
 		$sql = "
 			SELECT
 				OPB.*,
-				OPB_DET.keterangan,
-				PO.no_po
+				OPB_DET.nama_produk,
+				OPB_DET.no_spb
 			FROM tb_order_pembelian OPB
 			LEFT JOIN tb_order_pembelian_detail OPB_DET ON OPB_DET.id_induk = OPB.id_order
-			LEFT JOIN tb_purchase_order_detail PO_DET ON PO_DET.no_opb = OPB.no_opb
-			LEFT JOIN tb_purchase_order PO ON PO.id_purchase = PO_DET.id_induk
 			WHERE $where
-			AND PO.no_po = '$no_po'
+			AND OPB.no_opb = '$no_opb'
 		";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
 
-	function tampil_no_spb_by_opb($no_opb,$sie,$tahun){
+	function tampil_no_spb_by_opb($no_spb,$sie,$tahun){
 		$where = "1 = 1";
 
-		if($sie != ""){
-			$where = $where." AND OPB.no_opb LIKE '%$sie%'";
-		}else{
-			$where = $where;
-		}
-
 		if($tahun != ""){
-			$where = $where." AND SUBSTR(OPB.tanggal,7) = '$tahun'";
+			$where = $where." AND SUBSTR(SPB.tanggal,7) = '$tahun'";
 		}else{
 			$where = $where;
 		}
 
 		$sql = "
 			SELECT
-				OPB.*,
-				OPB_DET.no_spb
-			FROM tb_order_pembelian OPB
-			LEFT JOIN tb_order_pembelian_detail OPB_DET ON OPB_DET.id_induk = OPB.id_order
-			WHERE OPB.no_opb = '$no_opb'
+				SPB.*,
+				SPB_DET.nama_produk
+			FROM tb_permintaan_barang SPB
+			LEFT JOIN tb_permintaan_barang_detail SPB_DET ON SPB_DET.id_induk = SPB.id_permintaan
+			WHERE SPB.no_spb = '$no_spb'
 		";
 		$query = $this->db->query($sql);
 		return $query->result();
@@ -320,7 +283,8 @@ class Dashboard_m extends CI_Model
 		$sql = "
 			SELECT
 				LPB.*,
-				LPB_DET.no_po
+				LPB_DET.no_po,
+				LPB_DET.nama_produk
 			FROM tb_laporan_penerimaan LPB
 			LEFT JOIN tb_laporan_penerimaan_detail LPB_DET ON LPB_DET.id_induk = LPB.id_laporan
 			WHERE $where

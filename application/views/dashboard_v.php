@@ -17,6 +17,8 @@ $(document).ready(function(){
 });
 
 function no_spb_first(){
+	$('#tabel_data tbody').html("");
+
 	var nomor = $('#nomor').val();
 	var sie = $('#sie').val();
 	var tahun = $('#tahun').val();
@@ -43,7 +45,7 @@ function no_spb_first(){
 								'<td style="text-align:center;">'+no+'</td>'+
 								'<td>'+spb[i].no_spb+'</td>'+
 								'<td>'+spb[i].tanggal+'</td>'+
-								'<td>'+spb[i].uraian+'</td>'+
+								'<td>'+spb[i].nama_produk+'</td>'+
 								'<td>Permintaan Barang (SPB)</td>'+
 							'</tr>';
 
@@ -61,18 +63,17 @@ function no_spb_first(){
 
 							if(opb.length != 0){
 								for(var j=0; j<opb.length; j++){
-									// no++;
+									no++;
 									var no_opb = opb[j].no_opb
-									// console.log(no_opb);
 
 									$tr2 += '<tr>'+
-												'<td style="text-align:center;">&nbsp;</td>'+
+												'<td style="text-align:center;">'+no+'</td>'+
 												'<td>'+opb[j].no_opb+'</td>'+
 												'<td>'+opb[j].tanggal+'</td>'+
-												'<td>'+opb[j].uraian+'</td>'+
+												'<td>'+opb[j].nama_produk+'</td>'+
 												'<td>Order Pembelian Barang (OPB)</td>'+
 											'</tr>';
-
+									
 									$.ajax({
 										url : '<?php echo base_url(); ?>dashboard_c/cek_no_opb_di_po',
 										data : {
@@ -83,18 +84,18 @@ function no_spb_first(){
 										type : "POST",
 										dataType : "json",
 										success : function(po){
-											$tr = '';
+											$tr3 = '';
 
 											if(po.length != 0){
 												for(var k=0; k<po.length; k++){
-													// no++;
+													no++;
 													var no_po = po[k].no_po;
 
-													$tr += '<tr>'+
-																'<td style="text-align:center;">&nbsp;</td>'+
+													$tr3 += '<tr>'+
+																'<td style="text-align:center;">'+no+'</td>'+
 																'<td>'+po[k].no_po+'</td>'+
 																'<td>'+po[k].tanggal+'</td>'+
-																'<td>'+po[k].keterangan+'</td>'+
+																'<td>'+po[k].nama_produk+'</td>'+
 																'<td>Purchase Order (PO)</td>'+
 															'</tr>';
 
@@ -112,13 +113,13 @@ function no_spb_first(){
 
 															if(lpb.length != 0){
 																for(var l=0; l<lpb.length; l++){
-																	// no++;
+																	no++;
 
 																	$tr4 += '<tr>'+
-																		'<td style="text-align:center;">&nbsp;</td>'+
+																		'<td style="text-align:center;">'+no+'</td>'+
 																		'<td>'+lpb[l].no_lpb+'</td>'+
 																		'<td>'+lpb[l].tanggal+'</td>'+
-																		'<td>'+lpb[l].keterangan+'</td>'+
+																		'<td>'+lpb[l].nama_produk+'</td>'+
 																		'<td>Laporan Penerimaan Barang (LPB)</td>'+
 																	'</tr>';
 																}
@@ -126,18 +127,18 @@ function no_spb_first(){
 																$('#tabel_data tbody').append($tr4);
 
 															}else{
-																$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-																$('#tabel_data tbody').append($tr);
+																// $tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
+																// $('#tabel_data tbody').append($tr);
 															}
 														}
 													});
+
 												}
 
-												$('#tabel_data tbody').append($tr);
-
+												$('#tabel_data tbody').append($tr3);
 											}else{
-												$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-												$('#tabel_data tbody').append($tr);
+												// $tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
+												// $('#tabel_data tbody').append($tr);
 											}
 										}
 									});
@@ -146,8 +147,8 @@ function no_spb_first(){
 								$('#tabel_data tbody').append($tr2);
 								
 							}else{
-								$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-								$('#tabel_data tbody').append($tr);
+								// $tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
+								// $('#tabel_data tbody').append($tr);
 							}
 						}
 					});
@@ -157,7 +158,7 @@ function no_spb_first(){
 				$('#tabel_data tbody').html($tr);
 
 			}else{
-				$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
+				$tr = '<tr><td colspan="5">Data Tidak Ada</td></tr>';
 				$('#tabel_data tbody').append($tr);
 			}
 		}
@@ -165,6 +166,8 @@ function no_spb_first(){
 }
 
 function no_opb_first(){
+	$('#tabel_data tbody').html("");
+
 	var nomor = $('#nomor').val();
 	var sie = $('#sie').val();
 	var tahun = $('#tahun').val();
@@ -192,7 +195,7 @@ function no_opb_first(){
 								'<td style="text-align:center;">'+no+'</td>'+
 								'<td>'+opb[j].no_opb+'</td>'+
 								'<td>'+opb[j].tanggal+'</td>'+
-								'<td>'+opb[j].uraian+'</td>'+
+								'<td>'+opb[j].nama_produk+'</td>'+
 								'<td>Order Pembelian Barang (OPB)</td>'+
 							'</tr>';
 
@@ -211,13 +214,13 @@ function no_opb_first(){
 							if(spb.length != 0){
 								for(var k=0; k<spb.length; k++){
 									no++;
-									var no_opb = nomor;
+									var no_opb = spb[k].no_opb;
 
 									$tr2 += '<tr>'+
 												'<td style="text-align:center;">'+no+'</td>'+
 												'<td>'+spb[k].no_spb+'</td>'+
 												'<td>'+spb[k].tanggal+'</td>'+
-												'<td>'+spb[k].uraian+'</td>'+
+												'<td>'+spb[k].nama_produk+'</td>'+
 												'<td>Permintaan Barang (SPB)</td>'+
 											'</tr>';
 
@@ -231,18 +234,18 @@ function no_opb_first(){
 										type : "POST",
 										dataType : "json",
 										success : function(po){
-											$tr = '';
+											$tr3 = '';
 
 											if(po.length != 0){
 												for(var l=0; l<po.length; l++){
 													no++;
 													var no_po = po[l].no_po;
 
-													$tr += '<tr>'+
+													$tr3 += '<tr>'+
 																'<td style="text-align:center;">'+no+'</td>'+
 																'<td>'+po[l].no_po+'</td>'+
 																'<td>'+po[l].tanggal+'</td>'+
-																'<td>'+po[l].keterangan+'</td>'+
+																'<td>'+po[l].nama_produk+'</td>'+
 																'<td>Purchase Order (PO)</td>'+
 															'</tr>';
 
@@ -266,7 +269,7 @@ function no_opb_first(){
 																		'<td style="text-align:center;">'+no+'</td>'+
 																		'<td>'+lpb[m].no_lpb+'</td>'+
 																		'<td>'+lpb[m].tanggal+'</td>'+
-																		'<td>'+lpb[m].keterangan+'</td>'+
+																		'<td>'+lpb[m].nama_produk+'</td>'+
 																		'<td>Laporan Penerimaan Barang (LPB)</td>'+
 																	'</tr>';
 																}
@@ -274,18 +277,15 @@ function no_opb_first(){
 																$('#tabel_data tbody').append($tr4);
 
 															}else{
-																$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-																$('#tabel_data tbody').append($tr);
+																
 															}
 														}
 													});
 												}
 
-												$('#tabel_data tbody').append($tr);
-
+												$('#tabel_data tbody').append($tr3);
 											}else{
-												$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-												$('#tabel_data tbody').append($tr);
+
 											}
 										}
 									});
@@ -293,8 +293,7 @@ function no_opb_first(){
 
 								$('#tabel_data tbody').append($tr2);
 							}else{
-								$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-								$('#tabel_data tbody').append($tr);
+
 							}
 						}
 					});
@@ -311,6 +310,8 @@ function no_opb_first(){
 }
 
 function no_po_first(){
+	$('#tabel_data tbody').html("");
+
 	var nomor = $('#nomor').val();
 	var sie = $('#sie').val();
 	var tahun = $('#tahun').val();
@@ -332,12 +333,13 @@ function no_po_first(){
 				for(var k=0; k<po.length; k++){
 					no++;
 					var no_po = po[k].no_po;
+					var no_opb = po[k].no_opb;
 
 					$tr += '<tr>'+
 								'<td style="text-align:center;">'+no+'</td>'+
 								'<td>'+po[k].no_po+'</td>'+
 								'<td>'+po[k].tanggal+'</td>'+
-								'<td>'+po[k].keterangan+'</td>'+
+								'<td>'+po[k].nama_produk+'</td>'+
 								'<td>Purchase Order (PO)</td>'+
 							'</tr>';
 
@@ -351,13 +353,13 @@ function no_po_first(){
 						type : "POST",
 						dataType : "json",
 						success : function(lpb){
-							$tr4 = '';
+							$tr2 = '';
 
 							if(lpb.length != 0){
 								for(var l=0; l<lpb.length; l++){
 									no++;
 
-									$tr4 += '<tr>'+
+									$tr2 += '<tr>'+
 										'<td style="text-align:center;">'+no+'</td>'+
 										'<td>'+lpb[l].no_lpb+'</td>'+
 										'<td>'+lpb[l].tanggal+'</td>'+
@@ -368,75 +370,73 @@ function no_po_first(){
 									$.ajax({
 										url : '<?php echo base_url(); ?>dashboard_c/cek_no_opb_by_po',
 										data : {
-											no_po:no_po,
+											no_opb:no_opb,
 											sie:sie,
 											tahun:tahun
 										},
 										type : "POST",
 										dataType : "json",
 										success : function(opb){
-											$tr5 = '';
+											$tr3 = '';
 
 											if(opb.length != 0){
 												for(var m=0; m<opb.length; m++){
-													var no_opb = opb[m].no_opb;
+													var no_spb = opb[m].no_spb;
 
-													$tr5 += '<tr>'+
+													$tr3 += '<tr>'+
 																'<td style="text-align:center;">'+no+'</td>'+
 																'<td>'+opb[m].no_opb+'</td>'+
 																'<td>'+opb[m].tanggal+'</td>'+
-																'<td>'+opb[m].keterangan+'</td>'+
+																'<td>'+opb[m].nama_produk+'</td>'+
 																'<td>Order Pembelian Barang (OPB)</td>'+
 															'</tr>';
 
 													$.ajax({
 														url : '<?php echo base_url(); ?>dashboard_c/cek_no_spb_by_opb2',
 														data : {
-															no_opb:no_opb,
+															no_spb:no_spb,
 															sie:sie,
 															tahun:tahun
 														},
 														type : "POST",
 														dataType : "json",
 														success : function(spb){
-															$tr6 = '';
+															$tr4 = '';
 
 															if(spb.length != 0){
 																for(var n=0; n<spb.length; n++){
 																	no++;
 
-																	$tr6 += '<tr>'+
-																		'<td style="text-align:center;">'+no+'</td>'+
-																		'<td>'+spb[n].no_spb+'</td>'+
-																		'<td>'+spb[n].tanggal+'</td>'+
-																		'<td>'+spb[n].keterangan+'</td>'+
-																		'<td>Permintaan Barang (SPB)</td>'+
-																	'</tr>';
+																	$tr4 += '<tr>'+
+																				'<td style="text-align:center;">'+no+'</td>'+
+																				'<td>'+spb[n].no_spb+'</td>'+
+																				'<td>'+spb[n].tanggal+'</td>'+
+																				'<td>'+spb[n].nama_produk+'</td>'+
+																				'<td>Permintaan Barang (SPB)</td>'+
+																			'</tr>';
 																}
 
-																$('#tabel_data tbody').append($tr6);
+																$('#tabel_data tbody').append($tr4);
 															}else{
-																$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-																$('#tabel_data tbody').append($tr);
+																
 															}
 														}
 													});
+
 												}
 
-												$('#tabel_data tbody').append($tr5);
+												$('#tabel_data tbody').append($tr3);
 											}else{
-												$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-												$('#tabel_data tbody').append($tr);
+
 											}
 										}
 									});
+
 								}
 
-								$('#tabel_data tbody').append($tr4);
-
+								$('#tabel_data tbody').append($tr2);
 							}else{
-								$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-								$('#tabel_data tbody').append($tr);
+
 							}
 						}
 					});
@@ -453,6 +453,8 @@ function no_po_first(){
 }
 
 function no_lpb_first(){
+	$('#tabel_data tbody').html("");
+
 	var nomor = $('#nomor').val();
 	var sie = $('#sie').val();
 	var tahun = $('#tahun').val();
@@ -479,7 +481,7 @@ function no_lpb_first(){
 								'<td style="text-align:center;">'+no+'</td>'+
 								'<td>'+lpb[l].no_lpb+'</td>'+
 								'<td>'+lpb[l].tanggal+'</td>'+
-								'<td>'+lpb[l].keterangan+'</td>'+
+								'<td>'+lpb[l].nama_produk+'</td>'+
 								'<td>Laporan Penerimaan Barang (LPB)</td>'+
 							'</tr>';
 
@@ -504,7 +506,7 @@ function no_lpb_first(){
 												'<td style="text-align:center;">'+no+'</td>'+
 												'<td>'+po[m].no_po+'</td>'+
 												'<td>'+po[m].tanggal+'</td>'+
-												'<td>'+po[m].keterangan+'</td>'+
+												'<td>'+po[m].nama_produk+'</td>'+
 												'<td>Purchase Order (PO)</td>'+
 											'</tr>';
 
@@ -529,7 +531,7 @@ function no_lpb_first(){
 															'<td style="text-align:center;">'+no+'</td>'+
 															'<td>'+opb[n].no_opb+'</td>'+
 															'<td>'+opb[n].tanggal+'</td>'+
-															'<td>'+opb[n].keterangan+'</td>'+
+															'<td>'+opb[n].nama_produk+'</td>'+
 															'<td>Order Pembelian Barang (OPB)</td>'+
 														'</tr>';
 
@@ -553,15 +555,14 @@ function no_lpb_first(){
 																				'<td style="text-align:center;">'+no+'</td>'+
 																				'<td>'+spb[o].no_spb+'</td>'+
 																				'<td>'+spb[o].tanggal+'</td>'+
-																				'<td>'+spb[o].keterangan+'</td>'+
+																				'<td>'+spb[o].nama_produk+'</td>'+
 																				'<td>Permintaan Barang (SPB)</td>'+
 																			'</tr>';
 																}
 
 																$('#tabel_data tbody').append($tr7);
 															}else{
-																$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-																$('#tabel_data tbody').append($tr);
+																
 															}
 														}
 													});
@@ -569,8 +570,7 @@ function no_lpb_first(){
 
 												$('#tabel_data tbody').append($tr6);
 											}else{
-												$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-												$('#tabel_data tbody').append($tr);
+												
 											}
 										}
 									});
@@ -578,8 +578,7 @@ function no_lpb_first(){
 
 								$('#tabel_data tbody').append($tr5);
 							}else{
-								$tr = '<tr class="warning"><td colspan="5">&nbsp;</td></tr>';
-								$('#tabel_data tbody').append($tr);
+								
 							}
 						}
 					});
@@ -779,7 +778,7 @@ function no_lpb_first(){
 								<th>NO</th>
 								<th>NOMOR DOKUMEN</th>
 								<th>TANGGAL</th>
-								<th>URAIAN</th>
+								<th>BARANG</th>
 								<th>KETERANGAN</th>
 							</tr>
 						</thead>

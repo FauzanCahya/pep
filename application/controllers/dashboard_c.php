@@ -39,11 +39,11 @@ class Dashboard_c extends CI_Controller {
 	}
 
 	function cek_no_spb_di_opb(){
-		$nomor = $this->input->post('nomor');
+		$no_spb = $this->input->post('no_spb');
 		$sie = $this->input->post('sie');
 		$tahun = $this->input->post('tahun');
 
-		$data2 = $this->model->tampil_no_spb_di_opb($nomor,$sie,$tahun);
+		$data2 = $this->model->tampil_no_spb_di_opb($no_spb,$sie,$tahun);
 
 		echo json_encode($data2);
 	}
@@ -109,21 +109,21 @@ class Dashboard_c extends CI_Controller {
 	}
 
 	function cek_no_opb_by_po(){
-		$no_po = $this->input->post('no_po');
+		$no_opb = $this->input->post('no_opb');
 		$sie = $this->input->post('sie');
 		$tahun = $this->input->post('tahun');
 
-		$data = $this->model->tampil_no_opb_by_po($no_po,$sie,$tahun);
+		$data = $this->model->tampil_no_opb_by_po($no_opb,$sie,$tahun);
 
 		echo json_encode($data);
 	}
 
 	function cek_no_spb_by_opb2(){
-		$no_opb = $this->input->post('no_opb');
+		$no_spb = $this->input->post('no_spb');
 		$sie = $this->input->post('sie');
 		$tahun = $this->input->post('tahun');
 
-		$data = $this->model->tampil_no_spb_by_opb($no_opb,$sie,$tahun);
+		$data = $this->model->tampil_no_spb_by_opb($no_spb,$sie,$tahun);
 
 		echo json_encode($data);
 	}
