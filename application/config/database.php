@@ -48,13 +48,13 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '118.98.64.43';
-$db['default']['username'] = 'fauzan';
-$db['default']['password'] = 'kalenderhokben';  
+// $db['default']['hostname'] = '118.98.64.43';
+// $db['default']['username'] = 'fauzan';
+// $db['default']['password'] = 'kalenderhokben';  
 
-// $db['default']['hostname'] = 'localhost';
-// $db['default']['username'] = 'root';
-// $db['default']['password'] = '';  
+$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = 'root';
+$db['default']['password'] = '';  
 
 $db['default']['database'] = 'pep';
 $db['default']['dbdriver'] = 'mysqli';

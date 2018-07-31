@@ -7,7 +7,7 @@ class Laporan_penerimaan_m extends CI_Model
 		  $this->load->database();
 	}
 
-	function simpan_data_laporan($no_lpb,$tanggal,$no_po,$diterima)
+	function simpan_data_laporan($no_lpb,$tanggal,$no_po,$diterima,$divisi)
 	{
 		$sql = "
 			INSERT INTO tb_laporan_penerimaan (
@@ -15,13 +15,15 @@ class Laporan_penerimaan_m extends CI_Model
 				tanggal,
 				no_po,
 				diterima,
-				status
+				status,
+				divisi
 			) VALUES (
 				'$no_lpb',
 				'$tanggal',
 				'$no_po',
 				'$diterima',
-				'0'
+				'0',
+				'$divisi'
 			)";
 		$this->db->query($sql);
 	}
@@ -39,14 +41,16 @@ class Laporan_penerimaan_m extends CI_Model
 				nama_produk,
 				keterangan,
 				kuantitas,
-				no_po
+				no_po,
+				pengambilan
 			)	VALUES (
 				'$id_laporan_baru',
 				'$id_produk',
 				'$nama_produk',
 				'$keterangan',
 				'$kuantitas',
-				'$no_opb'
+				'$no_opb',
+				'0'
 		)";
 		$this->db->query($sql);
 	}
@@ -160,6 +164,14 @@ class Laporan_penerimaan_m extends CI_Model
     function get_transaction_info($id_barang){
         $sql = "
         SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier ,(pbd.kuantitas - pbd.penerimaan) as sisain FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status = '0' AND pbd.penerimaan < pbd.kuantitas
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_transaction_info_search($no_po,$id_barang){
+        $sql = "
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pb.no_po , pbd.kuantitas , pbd.penerimaan , pbd.harga , pbd.id_produk , pb.supplier ,(pbd.kuantitas - pbd.penerimaan) as sisain FROM tb_purchase_order pb , tb_purchase_order_detail pbd WHERE pb.id_purchase = pbd.id_induk AND pb.divisi = '$id_barang' AND pb.status = '0' AND pbd.penerimaan < pbd.kuantitas AND pb.no_po LIKE '%$no_po%'
         ";
 
         return $this->db->query($sql)->result();

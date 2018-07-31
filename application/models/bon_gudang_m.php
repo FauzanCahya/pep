@@ -117,6 +117,28 @@ class Bon_gudang_m extends CI_Model
 		$this->db->query($sql);
 	}
 
+	function update_harga($jml,$rata,$harga,$kode_barang)
+	{
+		$sql = "
+			UPDATE master_barang SET 
+				harga_rata_rata  	= '$rata',
+				saldo_akhir 	= '$harga',
+				qty_akhir  	= '$jml'
+			WHERE kode_barang  = '$kode_barang'
+		";
+		$this->db->query($sql);
+	}
+
+	function update_harga_titik($jml,$kode_barang)
+	{
+		$sql = "
+			UPDATE master_barang SET 
+				stok 	= '$jml'
+			WHERE kode_barang  = '$kode_barang'
+		";
+		$this->db->query($sql);
+	}
+
 	function save_next_nomor($tipe)
 	{
 		$sql = "

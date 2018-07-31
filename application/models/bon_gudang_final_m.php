@@ -28,7 +28,7 @@ class Bon_gudang_final_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function simpan_data_barang_detail($id_bon_gudang_final_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan,$reff_no,$tgl_pemakaian)
+	function simpan_data_barang_detail($id_bon_gudang_final_baru,$id_produk, $nama_produk,$keterangan,$kuantitas,$satuan,$reff_no,$tgl_pemakaian,$harga_rata_rata)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
 		$harga 		= str_replace(',', '', $harga);
@@ -44,7 +44,8 @@ class Bon_gudang_final_m extends CI_Model
 				satuan,
 				reff_no,
 				tgl_pemakaian,
-				sisa_jumlah
+				sisa_jumlah,
+				harga_rata
 			) VALUES (
 				'$id_bon_gudang_final_baru',
 				'$id_produk',
@@ -54,7 +55,8 @@ class Bon_gudang_final_m extends CI_Model
 				'$satuan',
 				'$reff_no',
 				'$tgl_pemakaian',
-				'$kuantitas'
+				'$kuantitas',
+				'$harga_rata_rata'
 			)";
 		$this->db->query($sql);
 	}
@@ -130,20 +132,23 @@ class Bon_gudang_final_m extends CI_Model
 	function update_selisih_detail($vali,$kuantitas)
 	{
 		$sql = "
-			UPDATE tb_peminjaman_barang_detail SET 
-				sisa_jumlah  	= sisa_jumlah - $kuantitas
+			UPDATE tb_laporan_penerimaan_detail SET 
+				pengambilan  	= pengambilan + $kuantitas
 			WHERE id  = '$vali'
 		";
 		$this->db->query($sql);
 	}
 
-	function update_stok_barang($vali,$kuantitas)
+	function update_stok_barang($vali,$kuantitas,$harga_rata,$saldo_akhir,$qty_akhir)
 	{
 		$kuantitas 	= str_replace(',', '', $kuantitas);
 
 		$sql = "
 			UPDATE master_barang SET 
-				stok  	= stok - $kuantitas
+				stok  	= stok - $kuantitas,
+				harga_rata_rata = '$harga_rata' ,
+				saldo_akhir = '$saldo_akhir',
+				qty_akhir = '$qty_akhir'
 			WHERE id_barang  = '$vali'
 		";
 		$this->db->query($sql);
@@ -178,15 +183,23 @@ class Bon_gudang_final_m extends CI_Model
 
     function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang' 
         ";
 
         return $this->db->query($sql)->result();
     }
 
-    function get_transaction_info_bgs($id_barang){
+    function get_transaction_info_lpb($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_bon FROM master_barang mb , tb_bon_gudang pb , tb_bon_gudang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_bon_gudang = pbd.id_induk AND pbd.sisa_jumlah > 0 AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , mb.kode_barang , pbd.kuantitas, pb.no_lpb , mb.harga_rata_rata , mb.saldo_akhir , mb.qty_akhir FROM master_barang mb , tb_laporan_penerimaan pb , tb_laporan_penerimaan_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_laporan = pbd.id_induk AND pbd.pengambilan < pbd.kuantitas  AND pb.divisi = '$id_barang' ORDER BY pbd.id DESC
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_transaction_info_lpb_search($id_barang,$nama){
+        $sql = "
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , mb.kode_barang , pbd.kuantitas, pb.no_lpb FROM master_barang mb , tb_laporan_penerimaan pb , tb_laporan_penerimaan_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_laporan = pbd.id_induk AND pbd.kuantitas > 0 AND pb.divisi = '$id_barang' AND pb.no_lpb LIKE '%$nama%'
         ";
 
         return $this->db->query($sql)->result();

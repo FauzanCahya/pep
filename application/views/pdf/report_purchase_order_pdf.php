@@ -97,17 +97,18 @@ $base_url2 .=  str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT
 		<td></td>
 		<td style="float: right;">Rp. <?php echo number_format($dt->sub_total,2);?></td>
 	</tr>
+	
 	<tr>
 		<td>bila syarat tersebut tidak terpenuhi</td>
-		<td>Discount</td>
-		<td><?=$dt->dc_po;?>%</td>
-		<td style="float: right;">Rp. <?php echo number_format($dt->po_text,2);?></td>
-	</tr>
-	<tr>
-		<td></td>
 		<td>PPN</td>
 		<td><?=$dt->dc_ppn;?>%</td>
 		<td style="float: right;">Rp. <?php echo number_format($dt->ppn_text,2);?></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>PPH</td>
+		<td><?=$dt->dc_po;?>%</td>
+		<td style="float: right;">Rp. <?php echo number_format($dt->po_text,2);?></td>
 	</tr>
 	<tr>
 		<td></td>

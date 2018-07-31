@@ -43,7 +43,7 @@ class Purchase_order_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function simpan_data_purchase_detail($id_purchase_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$harga,$disc,$total,$no_opb)
+	function simpan_data_purchase_detail($id_purchase_baru,$id_produk,$nama_produk,$keterangan,$kuantitas,$harga,$disc,$total,$no_opb,$harga_rata)
 	{
 
 		$kuantitas 	= str_replace(',', '', $kuantitas);
@@ -61,7 +61,8 @@ class Purchase_order_m extends CI_Model
 				disc,
 				total,
 				no_opb,
-				penerimaan
+				penerimaan,
+				harga_rata
 			) VALUES (
 				'$id_purchase_baru',
 				'$id_produk',
@@ -72,7 +73,8 @@ class Purchase_order_m extends CI_Model
 				'$disc',
 				'$total',
 				'$no_opb',
-				'0'
+				'0',
+				'$harga_rata'
 			)";
 		$this->db->query($sql);
 	}
@@ -83,6 +85,18 @@ class Purchase_order_m extends CI_Model
 			UPDATE tb_order_pembelian_detail SET 
 				realisasi  	= realisasi + $kuantitas
 			WHERE id  = '$vali'
+		";
+		$this->db->query($sql);
+	}
+
+	function update_harga_barang($id_produk,$harga_rata,$saldo_akhir,$qty_akhir)
+	{
+		$sql = "
+			UPDATE master_barang SET 
+				harga_rata_rata  	= '$harga_rata',
+				saldo_akhir 		= '$saldo_akhir',
+				qty_akhir			= '$qty_akhir'
+			WHERE id_barang  = '$id_produk'
 		";
 		$this->db->query($sql);
 	}
@@ -188,7 +202,15 @@ class Purchase_order_m extends CI_Model
 
 	function get_transaction_info($id_barang){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pbd.keterangan, pb.no_opb , pbd.kuantitas , pbd.realisasi , (pbd.kuantitas - pbd.realisasi) as kurangi , pbd.id_produk FROM tb_order_pembelian pb , tb_order_pembelian_detail pbd WHERE pb.id_order = pbd.id_induk AND pbd.realisasi <= pbd.kuantitas AND pb.divisi = '$id_barang'
+        SELECT pbd.id as id_peminjaman_detail, pbd.nama_produk , pbd.keterangan, pb.no_opb , pbd.kuantitas , pbd.realisasi , (pbd.kuantitas - pbd.realisasi) as kurangi , pbd.id_produk , mb.harga_rata_rata , mb.saldo_akhir , mb.qty_akhir FROM tb_order_pembelian pb , tb_order_pembelian_detail pbd , master_barang mb WHERE pbd.id_produk = mb.id_barang AND pb.id_order = pbd.id_induk AND pbd.realisasi < pbd.kuantitas AND pb.divisi = '$id_barang' ORDER BY pbd.id DESC
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_transaction_info_search($no_opb,$id_barang ){
+        $sql = "
+        SELECT pbd.id as id_peminasjaman_detail, pbd.nama_produk , pbd.keterangan, pb.no_opb , pbd.kuantitas , pbd.realisasi , (pbd.kuantitas - pbd.realisasi) as kurangi , pbd.id_produk FROM tb_order_pembelian pb , tb_order_pembelian_detail pbd WHERE pb.id_order = pbd.id_induk AND pbd.realisasi <= pbd.kuantitas AND pb.divisi = '$id_barang' AND pb.no_opb LIKE '%$no_opb%' ORDER BY pbd.id DESC
         ";
 
         return $this->db->query($sql)->result();

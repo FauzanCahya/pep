@@ -84,9 +84,10 @@ class Laporan_penerimaan_c extends CI_Controller {
 			
 			$tanggal 	 = $this->input->post('tanggal');
 			$diterima 	 = $this->input->post('diterima');
+			$dept 	     = $this->input->post('dept');
 
 			$this->master_model_m->update_nomor('LAPORAN_PENERIMAAN_BARANG');
-			$this->laporan->simpan_data_laporan($no_bukti_real,$tanggal,$no_po,$diterima);
+			$this->laporan->simpan_data_laporan($no_bukti_real,$tanggal,$no_po,$diterima,$dept);
 
 			$id_laporan_baru 		= $this->db->insert_id();
 			$id_produk 		 		= $this->input->post('id_produk');
@@ -186,6 +187,14 @@ class Laporan_penerimaan_c extends CI_Controller {
 	function get_transaction_info(){
 		$id = $this->input->post('id');
 		$dt = $this->laporan->get_transaction_info($id);
+
+		echo json_encode($dt);
+	}
+
+	function get_transaction_info_search(){
+		$nama = $this->input->post('nama');
+		$dept = $this->input->post('dept');
+		$dt = $this->laporan->get_transaction_info_search($nama,$dept);
 
 		echo json_encode($dt);
 	}

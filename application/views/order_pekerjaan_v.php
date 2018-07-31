@@ -481,7 +481,7 @@ function berhasil(){
 						</div>
 
 						<div class="col-md-6">
-							<label class="control-label"><b style="font-size:14px;">Refrensi</b></label>
+							<label class="control-label"><b style="font-size:14px;">Keterangan</b></label>
 							<div class="input-group" style="width: 100%; ">
 								<textarea rows="3" id="uraian" name="uraian" class="form-control" required></textarea>
 							</div>

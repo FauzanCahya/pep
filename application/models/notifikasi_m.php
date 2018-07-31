@@ -9,14 +9,14 @@ class Notifikasi_m extends CI_Model
 
 	function simpan_data_notifikasi($hari)
 	{
-		$sql = "UPDATE master_notifikasi SET hari = '$hari' ";
+		$sql = "UPDATE master_notifikasi SET hari = '$hari' WHERE type = 'jatuh_tempo' ";
 		$this->db->query($sql);
 	}
 
 	function lihat_data_notifikasi()
 	{
 		$sql = "
-			SELECT * FROM master_notifikasi ";
+			SELECT * FROM master_notifikasi WHERE type = 'jatuh_tempo'";
 
 		return $this->db->query($sql)->row();
 	}

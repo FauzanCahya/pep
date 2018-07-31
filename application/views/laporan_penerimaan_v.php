@@ -553,9 +553,44 @@ function ewek(jml,id){
 
 function get_transaction(id) {
 	
+
         $.ajax({
             url : '<?php echo base_url(); ?>laporan_penerimaan_c/get_transaction_info',
             data : {id:id},
+            type : "POST",
+            dataType : "json",
+            success : function(result){   
+                var isine = "";
+                if(result.length > 0){
+                    $.each(result,function(i,res){
+                    	var sisa = res.kuantitas - res.penerimaan;
+                        isine += '<tr id="tr_al_'+res.id_peminjaman_detail+'">'+
+                                    '<td style="text-align:center;">'+res.no_po+'</td>'+
+                                    '<td style="text-align:center;">'+res.supplier+'</td>'+
+                                    '<td style="text-align:center;">'+res.nama_produk+'</td>'+
+                                    '<td style="text-align:center;">'+res.kuantitas+'</td>'+
+                                    '<td style="text-align:center;">'+res.penerimaan+'</td>'+
+                                    
+                                    '<td>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+sisa+'&quot;,&quot;'+res.no_po+'&quot;,&quot;'+res.harga+'&quot;,&quot;'+res.id_produk+'&quot;,&quot;'+res.kuantitas+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    '</td>'+
+                                '</tr>';
+                    });
+                } else {
+                    isine = "<tr><td colspan='6' style='text-align:center;'> There are no transaction for this data </td></tr>";
+                }
+
+                $('#data_transaction').html(isine);
+            }
+        });
+    }
+
+function get_transaction_departemen_search(nama) {
+	var dept 		= $('#dept').val();
+
+        $.ajax({
+            url : '<?php echo base_url(); ?>laporan_penerimaan_c/get_transaction_info_search',
+            data : {nama:nama,dept:dept},
             type : "POST",
             dataType : "json",
             success : function(result){   
@@ -620,8 +655,8 @@ function get_transaction(id) {
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Tanggal</label>
 							<div class="col-md-4">
-								<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
-									<input type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tanggal" id="tanggal" >
+								<div class="input-group date" data-date-format="dd-mm-yyyy">
+									<input type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tanggal" id="tanggal" readonly>
 									<span class="input-group-btn">
 									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
 									</span>
@@ -633,7 +668,7 @@ function get_transaction(id) {
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Departemen</label>
 							<div class="col-md-4">
-								<select name="dept" class="form-control" onchange="get_transaction(this.value);">
+								<select name="dept" id="dept" class="form-control" onchange="get_transaction(this.value);">
 									<option>Pilih Departemen ......</option>
 									<?php 
 										foreach ($dt_dept as $key => $dt_value) {
@@ -660,7 +695,7 @@ function get_transaction(id) {
 						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Diterima Dari</label>
 							<div class="col-md-4">
-								<select name="dept" class="form-control input-large select2me input-sm" onchange="get_supplier(this.value);">
+								<select name="supplier" class="form-control input-large select2me input-sm" onchange="get_supplier(this.value);">
 									<option>Pilih Supplier ......</option>
 									<?php 
 										$dt_supp = $this->db->query("SELECT * FROM master_supplier")->result();
@@ -682,6 +717,18 @@ function get_transaction(id) {
 								<input type="text" class="form-control" id="surat_jalan" name="surat_jalan" >
 								<div class="form-control-focus">
 								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Pencarian PO</b></label>
+							<div class="input-group" style="width: 100%;">
+								<input type="text" class="form-control" name="pencarian" id="pencarian" onkeyup="get_transaction_departemen_search(this.value);">
+								
 							</div>
 						</div>
 					</div>

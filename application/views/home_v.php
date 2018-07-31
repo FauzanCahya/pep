@@ -279,7 +279,7 @@ $id_user = $data['id'];
 		<!-- END RESPONSIVE MENU TOGGLER -->
 		<!-- BEGIN TOP NAVIGATION MENU -->
 		<?PHP 
-		$sql_jt = "SELECT *, DATEDIFF(DATE_ADD(TGL_JATUH_TEMPO, INTERVAL 90 DAY), CURDATE()) as selisih FROM tb_pengakuan_hutang ";
+		$sql_jt = "SELECT *, DATEDIFF(DATE_ADD(TGL_JATUH_TEMPO, INTERVAL 12 DAY), CURDATE()) as selisih FROM tb_pengakuan_hutang ";
 		$data_jt = $this->db->query($sql_jt)->result();
 		?>
 		<div class="top-menu">

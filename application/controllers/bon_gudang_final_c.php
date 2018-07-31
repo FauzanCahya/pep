@@ -97,15 +97,27 @@ class Bon_gudang_final_c extends CI_Controller {
 			$nama_produk 	    			= $this->input->post('nama_produk');
 			$produk    						= $this->input->post('produk');
 			$keterangan     				= $this->input->post('keterangan');
-			$kuantitas      				= $this->input->post('kuantitas');
-			$satuan 	    				= $this->input->post('satuan');
+			$kuantitas      				= $this->input->post('permintaan');
 			$reff_no 		    			= $this->input->post('reff_no');
-			$tgl_pemakaian 		    		= $this->input->post('tgl_pemakaian');
 			$id_peminjaman_detail 		    = $this->input->post('id_peminjaman_detail');
 
+			$harga_rata_rata 		    = $this->input->post('harga_rata_rata');
+			$saldo_akhir 		   		= $this->input->post('saldo_akhir');
+			$qty_akhir 		    		= $this->input->post('qty_akhir');
+
 			foreach ($nama_produk as $key => $val) {
-					 $this->bon_gudang_final->simpan_data_barang_detail($id_bon_gudang_final_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key],$tgl_pemakaian[$key]);
-					 $this->bon_gudang_final->update_stok_barang($produk[$key],$kuantitas[$key]);
+
+					$li = $qty_akhir[$key] - $kuantitas[$key];
+					$lii = $saldo_akhir[$key] - ($harga_rata_rata[$key] * $kuantitas[$key] );
+					if($li == '0'){
+						$cui = $lii / 1;
+					}else{
+						$cui = $lii / $li;
+					}
+					
+
+					 $this->bon_gudang_final->simpan_data_barang_detail($id_bon_gudang_final_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key],$tgl_pemakaian[$key],$harga_rata_rata[$key]);
+					 $this->bon_gudang_final->update_stok_barang($produk[$key],$kuantitas[$key],$cui,$lii,$li);
 			}
 
 			foreach ($id_peminjaman_detail as $keyi => $vali) {
@@ -147,6 +159,8 @@ class Bon_gudang_final_c extends CI_Controller {
 			$satuan 	    	= $this->input->post('satuan');
 			$reff_no 		    = $this->input->post('reff_no');
 			$id_peminjaman_detail 		    = $this->input->post('id_peminjaman_detail');
+
+			
 
 			foreach ($nama_produk as $key => $val) {
 					 $this->bon_gudang_final->simpan_data_barang_detail($id_bon_gudang_final_baru,$produk[$key],$val,$keterangan[$key],$kuantitas[$key],$satuan[$key],$reff_no[$key]);
@@ -216,9 +230,17 @@ class Bon_gudang_final_c extends CI_Controller {
 		echo json_encode($dt);
 	}
 
-	function get_transaction_info_bgs(){
+	function get_transaction_info_lpb(){
 		$id = $this->input->post('id');
-		$dt = $this->bon_gudang_final->get_transaction_info_bgs($id);
+		$dt = $this->bon_gudang_final->get_transaction_info_lpb($id);
+
+		echo json_encode($dt);
+	}
+
+	function get_transaction_info_lpb_search(){
+		$nama = $this->input->post('nama');
+		$dept = $this->input->post('dept');
+		$dt = $this->bon_gudang_final->get_transaction_info_lpb_search($dept,$nama);
 
 		echo json_encode($dt);
 	}

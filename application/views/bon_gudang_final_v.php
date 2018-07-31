@@ -148,6 +148,7 @@ function ubah_detail(id){
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+res.keterangan+'" name="keterangan[]" id="keterangan_'+no+'">'+
+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -322,7 +323,8 @@ function tambah_data(){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+							// '<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+							'<textarea name="keterangan[]" id="keterangan_'+i+'" rows="5" class="form-control"></textarea>'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -362,19 +364,27 @@ function hapus_row(id){
 	$('#tr_'+id).remove();
 }
 
-function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
+function add_row(id_peminjaman_detail,kode_barang,nama_produk,kuantitas,no_spb,harga_rata_rata,saldo_akhir,qty_akhir){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
 	var isi = 	'<tr id="tr_'+i+'">'+
 					'<td align="center" style="vertical-align:middle;">'+
+						'<div class="controls">'+
+							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+no_spb+'" name="reff_no[]" id="ref_no_'+i+'">'+
+						'</div>'+
+					'</td>'+
+					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="span12">'+
 							'<div class="control-group">'+
 								'<div class="controls">'+
 									'<div class="input-append" style="width: 100%;">'+
-										'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 60%; font-size: 13px; float: left;" value="'+nama_produk+'">'+
+										'<input readonly type="text" id="nama_produk_'+i+'" class="form-control"  name="nama_produk[]" required style="background:#FFF; width: 100%; font-size: 13px; float: left;" value="'+nama_produk+'">'+
 										'<input type="hidden" id="id_produk_'+i+'" value="'+kode_barang+'" name="produk[]" readonly style="background:#FFF;" value="0">'+
 										'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
+										'<input type="hidden" id="harga_rata_rata_'+i+'" value="'+harga_rata_rata+'" name="harga_rata_rata[]" readonly style="background:#FFF;" value="0">'+
+										'<input type="hidden" id="saldo_akhir_'+i+'" value="'+saldo_akhir+'" name="saldo_akhir[]" readonly style="background:#FFF;" value="0">'+
+										'<input type="hidden" id="qty_akhir_'+i+'" value="'+qty_akhir+'" name="qty_akhir[]" readonly style="background:#FFF;" value="0">'+
 									'</div>'+
 								'</div>'+
 							'</div>'+
@@ -382,29 +392,32 @@ function add_row(id_peminjaman_detail,kode_barang,nama_produk,satuan,no_spb){
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+							// '<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="" name="keterangan[]" id="keterangan_'+i+'">'+
+							'<textarea name="keterangan[]" id="keterangan_'+i+'" rows="5" class="form-control"></textarea>'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="kuantitas[]" id="kuantitas_'+i+'">'+
+							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+kuantitas+'" name="kuantitas[]" id="kuantitas_'+i+'" readonly>'+
 						'</div>'+
 					'</td>'+
+
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+satuan+'" name="satuan[]" id="satuan_'+i+'">'+
+							'<input onkeyup="hitung_total('+i+');" style="font-size: 10px; text-align:center;" type="text" class="form-control" value="" name="permintaan[]" id="permintaan_'+i+'">'+
 						'</div>'+
 					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:center;" type="date" class="form-control" value="" name="tgl_pemakaian[]" id="tgl_pemakaian_'+i+'">'+
-						'</div>'+
-					'</td>'+
-					'<td align="center" style="vertical-align:middle;">'+
-						'<div class="controls">'+
-							'<input style="font-size: 10px; text-align:right;" type="text" class="form-control" value="'+no_spb+'" name="reff_no[]" id="ref_no_'+i+'">'+
-						'</div>'+
-					'</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:center;" type="text" class="form-control" value="'+satuan+'" name="satuan[]" id="satuan_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
+					// '<td align="center" style="vertical-align:middle;">'+
+					// 	'<div class="controls">'+
+					// 		'<input style="font-size: 10px; text-align:center;" type="date" class="form-control" value="" name="tgl_pemakaian[]" id="tgl_pemakaian_'+i+'">'+
+					// 	'</div>'+
+					// '</td>'+
+					
 					'<td align="center" style="vertical-align:middle;">'+
 						'<div class="controls">'+
 							'<button style="width: 100%;" onclick="hapus_row('+i+');" type="button" class="btn btn-danger"> Hapus </button>'+
@@ -547,7 +560,7 @@ function get_transaction(id) {
 
         
         $.ajax({
-            url : '<?php echo base_url(); ?>bon_gudang_final_c/get_transaction_info',
+            url : '<?php echo base_url(); ?>bon_gudang_final_c/get_transaction_info_lpb',
             data : {id:id},
             type : "POST",
             dataType : "json",
@@ -557,13 +570,12 @@ function get_transaction(id) {
                     $.each(result,function(i,res){
 
                         isine += '<tr>'+
+                        			'<td style="text-align:center;">'+res.no_lpb+'</td>'+
                                     '<td style="text-align:center;">'+res.kode_barang+'</td>'+
                                     '<td style="text-align:center;">'+res.nama_barang+'</td>'+
-                                    '<td style="text-align:center;">'+res.sisa_jumlah+'</td>'+
-                                    '<td style="text-align:center;">'+res.satuan+'</td>'+
-                                    '<td style="text-align:center;">'+res.no_spb+'</td>'+
+                                    '<td style="text-align:center;">'+res.kuantitas+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.satuan+'&quot;,&quot;'+res.no_spb+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.kuantitas+'&quot;,&quot;'+res.no_lpb+'&quot;,&quot;'+res.harga_rata_rata+'&quot;,&quot;'+res.saldo_akhir+'&quot;,&quot;'+res.qty_akhir+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -574,10 +586,15 @@ function get_transaction(id) {
                 $('#data_transaction').html(isine);
             }
         });
+    }
 
+function get_transaction_departemen_search(nama) {
+
+	var dept 		= $('#dept').val();
+         
         $.ajax({
-            url : '<?php echo base_url(); ?>bon_gudang_final_c/get_transaction_info_bgs',
-            data : {id:id},
+            url : '<?php echo base_url(); ?>bon_gudang_final_c/get_transaction_info_lpb_search',
+            data : {nama:nama,dept:dept},
             type : "POST",
             dataType : "json",
             success : function(result){   
@@ -586,13 +603,12 @@ function get_transaction(id) {
                     $.each(result,function(i,res){
 
                         isine += '<tr>'+
+                        			'<td style="text-align:center;">'+res.no_lpb+'</td>'+
                                     '<td style="text-align:center;">'+res.kode_barang+'</td>'+
                                     '<td style="text-align:center;">'+res.nama_barang+'</td>'+
-                                    '<td style="text-align:center;">'+res.sisa_jumlah+'</td>'+
-                                    '<td style="text-align:center;">'+res.satuan+'</td>'+
-                                    '<td style="text-align:center;">'+res.no_bon+'</td>'+
+                                    '<td style="text-align:center;">'+res.kuantitas+'</td>'+
                                     '<td>'+
-                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.satuan+'&quot;,&quot;'+res.no_bon+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.kuantitas+'&quot;,&quot;'+res.no_lpb+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
                     });
@@ -600,7 +616,7 @@ function get_transaction(id) {
                     isine = "<tr><td colspan='6' style='text-align:center;'> There are no transaction for this data </td></tr>";
                 }
 
-                $('#data_transaction_2').html(isine);
+                $('#data_transaction').html(isine);
             }
         });
     }
@@ -638,7 +654,7 @@ function get_transaction(id) {
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Departemen</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<select name="dept" class="form-control" onchange="get_transaction(this.value);">
+								<select name="dept" id="dept" class="form-control" onchange="get_transaction(this.value);">
 									<option>Pilih Departemen ......</option>
 									<?php 
 										foreach ($dt_dept as $key => $dt_value) {
@@ -662,9 +678,58 @@ function get_transaction(id) {
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<textarea  rows="3" id="uraian" name="uraian" class="form-control" required></textarea>
+								<textarea  rows="3" id="uraian" name="uraian" class="form-control" ></textarea>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Pencarian LPB</b></label>
+							<div class="input-group" style="width: 100%;">
+								<input type="text" class="form-control" name="pencarian" id="pencarian" onkeyup="get_transaction_departemen_search(this.value);">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-y: scroll;height: 300px;">
+					<div class="portlet-body flip-scroll">
+						<table class="table table-bordered table-striped table-condensed flip-content" >
+							<thead class="flip-content">
+								<tr>
+									<th style="text-align: center; width: 30%; ">No Reff</th>
+									<th style="text-align: center;  width: 10%;">Kode Barang</th>
+									<th style="text-align: center;  width: 30%;">Nama Barang</th>
+									<th style="text-align: center; ">Kuantitas</th>
+									<th style="text-align: center; ">Aksi</th>
+								</tr>
+							</thead>
+							<tbody id="data_transaction">
+								<tr>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+									<td align="center" style="vertical-align:middle;">
+										
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						
 					</div>
 				</div>
 
@@ -680,12 +745,11 @@ function get_transaction(id) {
 						<table class="table table-bordered table-striped table-condensed flip-content">
 							<thead class="flip-content">
 								<tr>
+									<th style="text-align: center; width: 20%; ">Reff No</th>
 									<th style="text-align: center;  width: 20%;">Produk / Item</th>
-									<th style="text-align: center;  widows: 30%;">Keterangan</th>
-									<th style="text-align: center; ">Kuantitas</th>
-									<th style="text-align: center; ">Satuan</th>
-									<th style="text-align: center; ">Tgl Pemakaian</th>
-									<th style="text-align: center; ">Reff No</th>
+									<th style="text-align: center;  width: 30%;">Keterangan</th>
+									<th style="text-align: center; width: 10%;">Kuantitas</th>
+									<th style="text-align: center; width: 10%;">Permintaan</th>
 									<th style="text-align: center; ">Aksi</th>
 								</tr>
 							</thead>

@@ -165,6 +165,18 @@ class Bon_gudang_c extends CI_Controller {
 		redirect('bon_gudang_c');
 	}
 
+	function update_harga(){
+		$sql = $this->db->query("SELECT * FROM master_barang")->result();
+
+
+
+		foreach ($sql as $key => $value) {
+
+			$this->bon_gudang->update_harga_titik($value->qty_akhir,$value->kode_barang);
+		}
+		
+	}
+
 	function data_bon_gudang_id()
 	{
 		$id = $this->input->post('id');

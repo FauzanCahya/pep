@@ -478,6 +478,40 @@ function get_transaction_departemen(id) {
         });
     }
 
+function get_transaction_departemen_search(nama) {
+	var tahun 		= $('#tahuni').val();
+	var departemen  = $('#dept_ser').val();
+        
+        $.ajax({
+            url : '<?php echo base_url(); ?>order_pembelian_c/get_transaction_info_search',
+            data : {nama:nama,tahun:tahun,departemen:departemen},
+            type : "POST",
+            dataType : "json",
+            success : function(result){   
+                var isine = "";
+                if(result.length > 0){
+                    $.each(result,function(i,res){
+
+                        isine += '<tr id="tr_awal_'+res.id_peminjaman_detail+'">'+
+                                    '<td style="text-align:center;">'+res.kode_barang+'</td>'+
+                                    '<td style="text-align:center;">'+res.nama_barang+'</td>'+
+                                    '<td style="text-align:center;">'+res.sisa_order_pembelian+'</td>'+
+                                    '<td style="text-align:center;">'+res.satuan+'</td>'+
+                                    '<td style="text-align:center;">'+res.no_spb+'</td>'+
+                                    '<td>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.id_barang+'&quot;,&quot;'+res.nama_barang+'&quot;,&quot;'+res.satuan+'&quot;,&quot;'+res.no_spb+'&quot;,&quot;'+res.sisa_order_pembelian+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    '</td>'+
+                                '</tr>';
+                    });
+                } else {
+                    isine = "<tr><td colspan='6' style='text-align:center;'> There are no transaction for this data </td></tr>";
+                }
+
+                $('#data_transaction').html(isine);
+            }
+        });
+    }
+
 
 
 </script>
@@ -544,7 +578,7 @@ function get_transaction_departemen(id) {
 							<div class="input-group" style="width: 100%;">
 								<!-- <input type="text" class="form-control" name="tanggal" id="tanggal" value="<?=date('d-m-Y');?>" readonly required>
 								<span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-calendar"></i></button></span> -->
-								<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
+								<div class="input-group date" data-date-format="dd-mm-yyyy">
 									<input readonly type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tanggal" id="tanggal" >
 									<span class="input-group-btn">
 									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -555,44 +589,46 @@ function get_transaction_departemen(id) {
 							</div>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-3" style="">
+								<label class="control-label"><strong style="font-size:14px;">Tanggal Kedatangan</strong></label>
+								<div class="input-group" style="width: 100%; ">
+									<!-- <input type="date" rows="1" id="uraian" name="tgl_de" class="form-control" required></textarea> -->
+									<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
+									<span class="input-group-btn">
+									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+									</span>
+									<input readonly type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tgl_de" id="tanggal" >
+									
+									<div class="form-control-focus">
+									</div>
+								</div>
+								</div>
+						</div>
+
+						<div class="col-md-3" style="margin-top: 10px;">
 							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
 							<div class="input-group" style="width: 100%; ">
 								<textarea rows="5" id="uraian" name="uraian" class="form-control" required></textarea>
 							</div>
 						</div>
-						<div class="col-md-3" style="margin-top: 15px;">
-								<label class="control-label"><strong style="font-size:14px;">Tanggal Kedatangan</strong></label>
-								<div class="input-group" style="width: 100%; ">
-									<!-- <input type="date" rows="1" id="uraian" name="tgl_de" class="form-control" required></textarea> -->
-									<div class="input-group date date-picker" data-date-format="dd-mm-yyyy">
-									<input readonly type="text" class="form-control" value="<?=date('d-m-Y');?>" name="tgl_de" id="tanggal" >
-									<span class="input-group-btn">
-									<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-									</span>
-									<div class="form-control-focus">
-									</div>
-								</div>
-								</div>
-
-
-							</div>
+						
 					</div>	
 
-					<!-- <div class="row" style="padding-top: 15px; padding-bottom: 15px;">
-						<div class="col-md-12">
-							<div class="col-md-3">
-								<label class="control-label"><strong style="font-size:14px;">Tanggal Kedatangan</strong></label>
-								<div class="input-group" style="width: 100%; ">
-									<input type="text" rows="1" id="uraian" name="uraian" class="form-control" required></textarea>
-								</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-3">
+							<label class="control-label"><strong style="font-size:14px;">Search No SPB</strong></label>
+							<div class="input-group" style="width: 100%; ">
+								<input type="text" onkeyup="get_transaction_departemen_search(this.value);" class="form-control" name="pencarian" id="pencarian">
 							</div>
 						</div>
-					</div> -->
+					</div>
 				</div>
-
 				<div class="row" style="padding-top: 15px; padding-bottom: 15px; margin-left:18px; margin-right:18px;overflow-y: scroll;height: 300px;">
+
 					<div class="portlet-body flip-scroll">
+
 						<table class="table table-bordered table-striped table-condensed flip-content" >
 							<thead class="flip-content">
 								<tr>

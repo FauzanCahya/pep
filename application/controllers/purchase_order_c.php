@@ -126,10 +126,28 @@ class Purchase_order_c extends CI_Controller {
 			$total 				= $this->input->post('total');
 			$no_opb 			= $this->input->post('no_opek');
 			$id_opb_d			= $this->input->post('id_peminjaman_detail');
+
+			$harga_rata_rata 		= $this->input->post('harga_rata_rata');
+			$saldo_akhir 			= $this->input->post('saldo_akhir');
+			$qty_akhir 				= $this->input->post('qty_akhir');
 			
 
 			foreach ($nama_produk as $key => $val) {
-				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$disc[$key],$total[$key],$no_opb[$key]);
+
+				// $harga 		= str_replace(',', '', $harga[$key]);
+				$total 		= str_replace(',', '', $total[$key]);
+
+				$li  = $qty_akhir[$key] + $kuantitas[$key];
+				$lii = $saldo_akhir[$key] + ($total - ($pot_po * $total) + ($ppn * $total));
+				$titi = $lii / $li;
+
+				$total_disc = $total - ($pot_po * $total) + ($ppn * $total);
+
+
+
+				$this->purchase->simpan_data_purchase_detail($id_purchase_baru,$id_produk[$key],$val,$keterangan[$key],$kuantitas[$key],$harga[$key],$disc[$key],$total_disc,$no_opb[$key],$titi);
+
+				$this->purchase->update_harga_barang($id_produk[$key],$titi,$lii,$li);
 			}
 
 			foreach ($id_opb_d as $key => $opb) {
@@ -210,6 +228,14 @@ class Purchase_order_c extends CI_Controller {
 	function get_transaction_info(){
 		$id = $this->input->post('id');
 		$dt = $this->purchase->get_transaction_info($id);
+
+		echo json_encode($dt);
+	}
+
+	function get_transaction_info_search(){
+		$nama = $this->input->post('nama');
+		$dept = $this->input->post('dept');
+		$dt = $this->purchase->get_transaction_info_search($nama,$dept);
 
 		echo json_encode($dt);
 	}

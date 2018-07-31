@@ -210,7 +210,15 @@ class Order_pembelian_m extends CI_Model
 
     function get_transaction_info($id_barang,$tahun){
         $sql = "
-        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang , pbd.sisa_order_pembelian FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_order_pembelian > 0 AND pb.divisi = '$id_barang' AND pb.tanggal LIKE '%$tahun%'
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang , pbd.sisa_order_pembelian FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_order_pembelian > 0 AND pb.divisi = '$id_barang' AND pb.tanggal LIKE '%$tahun%' ORDER BY pbd.id DESC
+        ";
+
+        return $this->db->query($sql)->result();
+    }
+
+    function get_transaction_info_search($id_barang,$tahun,$nama){
+        $sql = "
+        SELECT pbd.id as id_peminjaman_detail,mb.id_barang , mb.nama_barang , pbd.sisa_jumlah , pbd.satuan , pb.no_spb , mb.kode_barang , pbd.sisa_order_pembelian FROM master_barang mb , tb_permintaan_barang pb , tb_permintaan_barang_detail pbd WHERE mb.id_barang = pbd.id_produk AND pb.id_permintaan = pbd.id_induk AND pbd.sisa_order_pembelian > 0 AND pb.divisi = '$id_barang' AND pb.tanggal LIKE '%$tahun%' AND pb.no_spb LIKE '%$nama%'
         ";
 
         return $this->db->query($sql)->result();

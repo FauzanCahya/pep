@@ -175,7 +175,7 @@
 </form>
 
 <script type="text/javascript">
-	function show_pop_produk(no){
+function show_pop_produk(no){
 	$('#popup_koang').remove();
 	get_popup_produk();
     ajax_produk(no);
@@ -219,6 +219,7 @@ function get_popup_produk(){
 }
 
 function ajax_produk(id_form){
+	// alert(id_form);
     var keyword = $('#search_koang_pro').val();
     $.ajax({
         url : '<?php echo base_url(); ?>permintaan_barang_c/get_produk_popup',
@@ -264,10 +265,11 @@ function get_produk_detail(id, no_form){
 		type : "GET",
 		dataType : "json",
 		success : function(result){
+
 			$('#kuantitas_'+no_form).val('');
 			$('#id_produk_'+no_form).val(result.id_barang);
 			$('#nama_produk_'+no_form).val(result.nama_barang);
-			$('#satuan_'+no_form).val(result.kode_satuan);
+			$('#satuan_'+no_form).val(result.nama_satuan);
 			$('#harga_'+no_form).val(NumberToMoney(result.harga_beli).split('.00').join(''));
 			$('#jumlah_'+no_form).val(NumberToMoney(result.harga_beli*1).split('.00').join(''));
 

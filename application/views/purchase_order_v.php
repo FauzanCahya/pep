@@ -302,7 +302,7 @@ function get_produk_detail(id, no_form){
 
 
 
-function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantitas,realisasi){
+function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantitas,realisasi,harga_rata_rata,saldo_akhir,qty_akhir){
 	var jml_tr = $('#jml_tr').val();
 	var i = parseFloat(jml_tr) + 1;
 
@@ -313,6 +313,9 @@ function add_row(id_peminjaman_detail,nama,keterangan,no_opek,id_produk,kuantita
 							'<input style="font-size: 10px; text-align:left;" type="text" class="form-control" value="'+nama+'" name="nama_produk[]" id="keterangan_'+i+'">'+
 							'<input type="hidden" id="id_produk_'+i+'" value="'+id_peminjaman_detail+'" name="id_peminjaman_detail[]" readonly style="background:#FFF;" value="0">'+
 							'<input type="hidden" id="id_produk_'+i+'" value="'+id_produk+'" name="id_produk[]" readonly style="background:#FFF;" value="0">'+
+							'<input type="hidden" id="harga_rata_rata_'+i+'" value="'+harga_rata_rata+'" name="harga_rata_rata[]" readonly style="background:#FFF;" value="0">'+
+							'<input type="hidden" id="saldo_akhir_'+i+'" value="'+saldo_akhir+'" name="saldo_akhir[]" readonly style="background:#FFF;" value="0">'+
+							'<input type="hidden" id="qty_akhir_'+i+'" value="'+qty_akhir+'" name="qty_akhir[]" readonly style="background:#FFF;" value="0">'+
 						'</div>'+
 					'</td>'+
 					'<td align="center" style="vertical-align:middle;">'+
@@ -634,6 +637,39 @@ function get_transaction(id) {
                                     '<td style="text-align:center;">'+res.realisasi+'</td>'+
                                     '<td style="text-align:center;">'+res.no_opb+'</td>'+
                                     '<td>'+
+                                    	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;,&quot;'+res.id_produk+'&quot;,&quot;'+res.kuantitas+'&quot;,&quot;'+res.kurangi+'&quot;,&quot;'+res.harga_rata_rata+'&quot;,&quot;'+res.saldo_akhir+'&quot;,&quot;'+res.qty_akhir+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
+                                    '</td>'+
+                                '</tr>';
+                    });
+                } else {
+                    isine = "<tr><td colspan='6' style='text-align:center;'> There are no transaction for this data </td></tr>";
+                }
+
+                $('#data_transaction').html(isine);
+            }
+        });
+    }
+
+    function get_transaction_departemen_search(nama) {
+    	var dept 		= $('#dept').val();
+		
+        $.ajax({
+            url : '<?php echo base_url(); ?>purchase_order_c/get_transaction_info_search',
+            data : {nama:nama,dept:dept},
+            type : "POST",
+            dataType : "json",
+            success : function(result){   
+                var isine = "";
+                if(result.length > 0){
+                    $.each(result,function(i,res){
+
+                        isine += '<tr id="tr_awal_'+res.id_peminjaman_detail+'">'+
+                                    '<td style="text-align:center;">'+res.nama_produk+'</td>'+
+                                    '<td style="text-align:center;">'+res.keterangan+'</td>'+
+                                    '<td style="text-align:center;">'+res.kuantitas+'</td>'+
+                                    '<td style="text-align:center;">'+res.realisasi+'</td>'+
+                                    '<td style="text-align:center;">'+res.no_opb+'</td>'+
+                                    '<td>'+
                                     	'<button style="width: 100%;" onclick="add_row(&quot;'+res.id_peminjaman_detail+'&quot;,&quot;'+res.nama_produk+'&quot;,&quot;'+res.keterangan+'&quot;,&quot;'+res.no_opb+'&quot;,&quot;'+res.id_produk+'&quot;,&quot;'+res.kuantitas+'&quot;,&quot;'+res.kurangi+'&quot;);" type="button" class="btn btn-success"> Tambah </button>'+
                                     '</td>'+
                                 '</tr>';
@@ -814,7 +850,7 @@ function hapus_proses(i){
 						<div class="col-md-4">
 							<label class="control-label"><b style="font-size:14px;">Departemen</b></label>
 							<div class="input-group" style="width: 100%; ">
-								<select name="dept" class="form-control" onchange="get_transaction(this.value);">
+								<select name="dept" id="dept" class="form-control" onchange="get_transaction(this.value);">
 									<option>Pilih Departemen ......</option>
 									<?php 
 										foreach ($dt_dept as $key => $dt_value) {
@@ -836,7 +872,7 @@ function hapus_proses(i){
 						</div>
 
 						<div class="col-md-4">
-							<label class="control-label"><b style="font-size:14px;">Uraian</b></label>
+							<label class="control-label"><b style="font-size:14px;">Note</b></label>
 							<div class="input-group" style="width: 100%; ">
 								<textarea  rows="3" id="uraian" name="uraian" class="form-control" ></textarea>
 							</div>
@@ -874,6 +910,18 @@ function hapus_proses(i){
 							<label class="control-label"><b style="font-size:14px;">Alamat</b></label>
 							<div class="input-group" style="width: 100%;">
 								<input type="text" class="form-control" name="alamat_supplier" id="alamat_supplier">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-4">
+							<label class="control-label"><b style="font-size:14px;">Pencarian OPB</b></label>
+							<div class="input-group" style="width: 100%;">
+								<input type="text" class="form-control" name="pencarian" id="pencarian" onkeyup="get_transaction_departemen_search(this.value);">
 								
 							</div>
 						</div>
@@ -998,7 +1046,9 @@ function hapus_proses(i){
 								<h4 class="control-label"> DPP :</h4> 
 							</div>
 						</div>
-
+						<div class="col-md-1">
+							
+						</div>
 						<div class="col-md-3">
 							<div style="margin-bottom: 15px;" class="span4">
 								<table>
@@ -1040,10 +1090,10 @@ function hapus_proses(i){
 				<div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
-							<h4 class="control-label"> PPN :</h4> 
+							<h4 class="control-label"> PPN (%) :</h4> 
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-1">
 						<div style="margin-bottom: 15px;" class="span4">
 							<input type="text" id="ppn" onkeyup="ppn_ici(this.value);hitung_total();" name="ppn" class="form-control" value="0">
 							<input type="hidden" id="ppn_text" name="ppn_text" class="form-control">
@@ -1065,10 +1115,10 @@ function hapus_proses(i){
 				<div class="row">
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span3">
-							<h4 class="control-label"> PPH 22 :</h4> 
+							<h4 class="control-label"> PPH 22 (%) :</h4> 
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-1">
 						<div style="margin-bottom: 15px;" class="span4">
 							<input type="text" id="pph_22" onkeyup="pph_22_ici(this.value);hitung_total();" name="pph_22" value="0" class="form-control">
 							<input type="hidden" id="pph_22_text" name="pph_22_text" class="form-control">
@@ -1092,6 +1142,9 @@ function hapus_proses(i){
 						<div style="margin-bottom: 15px;" class="span3">
 							<h4 class="control-label"> TOTAL :</h4> 
 						</div>
+					</div>
+					<div class="col-md-1">
+						
 					</div>
 					<div class="col-md-3">
 						<div style="margin-bottom: 15px;" class="span4">

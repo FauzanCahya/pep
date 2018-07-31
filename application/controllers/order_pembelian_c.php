@@ -264,6 +264,15 @@ class Order_pembelian_c extends CI_Controller {
 		echo json_encode($dt);
 	}
 
+	function get_transaction_info_search(){
+		$nama = $this->input->post('nama');
+		$tahun = $this->input->post('tahun');
+		$departemen = $this->input->post('departemen');
+		$dt = $this->order->get_transaction_info_search($departemen,$tahun,$nama);
+
+		echo json_encode($dt);
+	}
+
 	function get_spb_popup()
 	{
 		$where = "1=1";
