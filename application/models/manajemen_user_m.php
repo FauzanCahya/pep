@@ -15,6 +15,7 @@ class Manajemen_user_m extends CI_Model
 			FROM tb_user tb, 
 			master_divisi md 
 			WHERE tb.departemen = md.id_divisi
+			ORDER BY tb.id DESC
 		";
 
 		return $this->db->query($sql)->result();
@@ -47,47 +48,16 @@ class Manajemen_user_m extends CI_Model
 		return $qry->result();
 	}
 
-	function menu_lev_1(){
-		$sql = "SELECT * FROM menu_lev_1 WHERE STATUS  = '1' ORDER BY URUT ASC";
-		$qry = $this->db->query($sql);
-		return $qry->result();
-	}
-
-	function menu_lev_1_id($id){
-		$sql = "SELECT * FROM menu_lev_1 WHERE ID = '$id' AND STATUS  = '1' ORDER BY URUT ASC";
+	function get_divisi_id($id){
+		$sql = "SELECT * FROM master_divisi WHERE id_divisi = '$id'";
 		$qry = $this->db->query($sql);
 		return $qry->row();
 	}
 
-	function menu_lev_2($id_menu_lev_1){
-		$sql = "
-			SELECT 
-				ID,
-				MASTER_DATA,
-				MENU_LEV AS MENU_LEV2,
-				LINK AS LINK_LEV2
-			FROM menu_lev_2 
-			WHERE ID_MENU_LEV_1 = '$id_menu_lev_1'
-			AND STATUS = '1'
-			ORDER BY URUT ASC
-		";
+	function cek_username($username){
+		$sql = "SELECT COUNT(*) AS TOTAL FROM tb_user WHERE username = '$username'";
 		$qry = $this->db->query($sql);
-		return $qry->result();
-	}
-
-	function simpan($id_user,$id_menu,$keterangan){
-		$sql = "
-			INSERT INTO kepeg_hak_akses(
-				ID_PEGAWAI,
-				ID_MENU,
-				KET
-			) VALUES(
-				'$id_user',
-				'$id_menu',
-				'$keterangan'
-			)
-		";
-		$this->db->query($sql);
+		return $qry->row();
 	}
 
 	function simpan_user($username,$password,$nama_user,$departemen,$level){
@@ -130,8 +100,8 @@ class Manajemen_user_m extends CI_Model
 		$this->db->query($sql);
 	}
 
-	function hapus($id_user){
-		$sql = "DELETE FROM  kepeg_hak_akses WHERE ID_PEGAWAI = '$id_user' " ;
+	function hapus($id){
+		$sql = "DELETE FROM tb_user WHERE id = '$id'";
 		$this->db->query($sql);
 	}
 
@@ -212,6 +182,26 @@ class Manajemen_user_m extends CI_Model
 		}
 
 		return $this->db->query($sql)->result();
+	}
+
+	function simpan_hak_akses($id_user,$id_menu,$keterangan){
+		$sql = "
+			INSERT INTO kepeg_hak_akses(
+				ID_PEGAWAI,
+				ID_MENU,
+				KET
+			) VALUES(
+				'$id_user',
+				'$id_menu',
+				'$keterangan'
+			)
+		";
+		$this->db->query($sql);
+	}
+
+	function hapus_hak_akses($id_user){
+		$sql = "DELETE FROM  kepeg_hak_akses WHERE ID_PEGAWAI = '$id_user' " ;
+		$this->db->query($sql);
 	}
 
 }
