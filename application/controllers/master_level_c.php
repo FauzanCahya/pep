@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_departemen_c extends CI_Controller {
+class Master_level_c extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('m_departemen_m','depart');
+		$this->load->model('master_level_m','depart');
 		$data = $this->session->userdata('sign_in');
         $nama = $data['id'];
 
@@ -17,16 +17,16 @@ class M_departemen_c extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-				'title' 	 => 'Master Departemen',
-				'page'  	 => 'm_departemen_v',
+				'title' 	 => 'Master level',
+				'page'  	 => 'master_level_v',
 				'sub_menu' 	 => 'master data',
-				'sub_menu1'	 => 'master departemen',
+				'sub_menu1'	 => 'master level',
 				'menu' 	   	 => 'master_data',
 				'menu2'		 => 'departemen',
 				'lihat_data' => $this->depart->lihat_data_depart(),
-				'url_simpan' => base_url().'m_departemen_c/simpan',
-				'url_hapus'  => base_url().'m_departemen_c/hapus',
-				'url_ubah'	 => base_url().'m_departemen_c/ubah_depart',
+				'url_simpan' => base_url().'master_level_c/simpan',
+				'url_hapus'  => base_url().'master_level_c/hapus',
+				'url_ubah'	 => base_url().'master_level_c/ubah_depart',
 			);
 		
 		$this->load->view('home_v',$data);
@@ -34,22 +34,19 @@ class M_departemen_c extends CI_Controller {
 
 	function simpan()
 	{
-		$id 		 = $this->input->post('id');
-		$kode_depart = $this->input->post('kode_depart');
 		$nama_depart = $this->input->post('nama_depart');
-		$ass_depart = $this->input->post('ass_depart');
 
-		$this->depart->simpan_data_depart($kode_depart,$nama_depart,$ass_depart);
+		$this->depart->simpan_data_depart($nama_depart);
 		$this->session->set_flashdata('sukses','1');
-		redirect('m_departemen_c');
+		redirect('master_level_c');
 	}
 
 	function hapus()
 	{
 		$id = $this->input->post('id_hapus');
-		$this->depart->hapus_depart($id);
+	$this->depart->hapus_depart($id);
 		$this->session->set_flashdata('hapus','1');
-		redirect('m_departemen_c');
+		redirect('master_level_c');
 	}
 
 	function data_depart_id()
@@ -62,12 +59,11 @@ class M_departemen_c extends CI_Controller {
 	function ubah_depart()
 	{
 		$id 	   			= $this->input->post('id_depart_modal');
-		$kode_depart_modal  = $this->input->post('kode_depart_modal');
 		$nama_depart_modal  = $this->input->post('nama_depart_modal');
 		
-		$this->depart->ubah_data_depart($id,$kode_depart_modal,$nama_depart_modal);
+		$this->depart->ubah_data_depart($id,$nama_depart_modal);
 		$this->session->set_flashdata('sukses','1');
-		redirect('m_departemen_c');	
+		redirect('master_level_c');	
 		// echo "1";
 	}
 }

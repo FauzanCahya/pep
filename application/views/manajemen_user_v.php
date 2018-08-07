@@ -317,8 +317,19 @@ function cek_password(){
 							<label class="col-md-2 control-label" for="form_control_1">Level</label>
 							<div class="col-md-3">
 								<select class="form-control" name="level">
-									<option value="direktur">Direktur</option>
-									<option value="manager">Manager</option>
+									<?php 
+
+										$sql = $this->db->query("SELECT * FROM master_level")->result();
+
+										foreach ($sql as $key => $value) {
+											
+
+									?>
+										<option value="<?=$value->LEVEL;?>"><?=$value->LEVEL;?></option> 
+
+									<?php } ?>
+
+								
 								</select>
 							</div>
 						</div>

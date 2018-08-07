@@ -86,16 +86,14 @@ function ubah_data_depart(id)
 		$('#popup_ubah').show();
 	
 		$.ajax({
-			url : '<?php echo base_url(); ?>m_departemen_c/data_depart_id',
+			url : '<?php echo base_url(); ?>tipe_departemen_c/data_depart_id',
 			data : {id:id},
 			type : "POST",
 			dataType : "json",
 			async : false,
 			success : function(row){
 				$('#id_depart_modal').val(id);
-				$('#kode_depart_modal').val(row['kode_depart']);
-				$('#nama_depart_modal').val(row['nama_depart']);
-				$('#ass_nama_depart').val(row['ass_depart']);
+				$('#nama_depart_modal').val(row['NAMA_DEPARTEMEN']);
 			}
 		});
 }
@@ -127,7 +125,7 @@ function berhasil(){
 			<div class="portlet-title">
 				<div class="caption font-green-haze">
 					<i class="icon-settings font-green-haze"></i>
-					<span class="caption-subject bold uppercase"> Form Departemen </span>
+					<span class="caption-subject bold uppercase"> Form Tipe Departemen </span>
 				</div>
 				<div class="actions">
 					<a class="btn btn-circle btn-icon-only blue" href="javascript:;">
@@ -147,42 +145,9 @@ function berhasil(){
 				<form role="form" class="form-horizontal" method="post" action="<?php echo $url_simpan; ?>">
 					<div class="form-body">
 						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Kode Departemen</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="kode_depart" name="kode_depart" >
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
 							<label class="col-md-2 control-label" for="form_control_1">Nama Departemen</label>
 							<div class="col-md-3">
-								<select name="nama_depart" id="nama_depart" class="form-control">
-									
-									<?php 
-
-										$sql = $this->db->query("SELECT * FROM master_tipe_departemen")->result();
-
-										foreach ($sql as $key => $value) {
-											# code...
-										
-									?>
-										<option value="<?=$value->NAMA_DEPARTEMEN;?>"><?=$value->NAMA_DEPARTEMEN;?></option>
-									<?php } ?>
-
-
-									<!-- <option value="MNG_KEUANGAN">MNG_KEUANGAN</option>
-									<option value="MNG_PLANT">MNG_PLANT</option>
-									<option value="MNG_HRD_UMUM">MNG_HRD_UMUM</option> -->
-								</select>
-								<div class="form-control-focus">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-md-line-input">
-							<label class="col-md-2 control-label" for="form_control_1">Asisten Departemen</label>
-							<div class="col-md-3">
-								<input type="text" class="form-control" id="ass_depart" name="ass_depart" >
+								<input type="text" class="form-control" id="nama_depart" name="nama_depart" >
 								<div class="form-control-focus">
 								</div>
 							</div>
@@ -234,8 +199,6 @@ Tambah Data Departemen <i class="fa fa-plus"></i>
 				<tr>
 					<th style="text-align:center;"> No</th>
 					<th style="text-align:center;"> Kode Departemen</th>
-					<th style="text-align:center;"> Nama Departemen</th>
-					<th style="text-align:center;"> Nama Ass Departemen</th>
 					<th style="text-align:center;"> Aksi </th>
 				</tr>
 				</thead>
@@ -247,12 +210,10 @@ Tambah Data Departemen <i class="fa fa-plus"></i>
 					?>
 				<tr>
 					<td style="text-align:center; vertical-align:"><?php echo $no; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->kode_depart; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->nama_depart; ?></td>
-					<td style="text-align:center; vertical-align:"><?php echo $value->ass_depart; ?></td>
+					<td style="text-align:center; vertical-align:"><?php echo $value->NAMA_DEPARTEMEN; ?></td>
 					<td style="text-align:center; vertical-align: middle;">
-						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_depart(<?php echo $value->id_depart?>);"><i class="fa fa-edit"></i> Ubah </a>
-						<a class="btn default btn-xs red" id="hapus" onclick="hapus_depart(<?php echo $value->id_depart?>);"><i class="fa fa-trash-o"></i> Hapus </a>
+						<a class="btn default btn-xs purple" id="ubah" onclick="ubah_data_depart(<?php echo $value->ID?>);"><i class="fa fa-edit"></i> Ubah </a>
+						<a class="btn default btn-xs red" id="hapus" onclick="hapus_depart(<?php echo $value->ID?>);"><i class="fa fa-trash-o"></i> Hapus </a>
 					</td>
 				</tr>
 					<?php 
@@ -284,28 +245,11 @@ Tambah Data Departemen <i class="fa fa-plus"></i>
 						<div class="form-body">
 							<input type="hidden" name="id_depart_modal" id="id_depart_modal">
 
-							<div class="form-group form-md-line-input">
-								<label class="col-md-3 control-label" for="form_control_1">Kode Depart</label>
-								<div class="col-md-4">
-									<input required type="text" class="form-control" name="kode_depart_modal" id="kode_depart_modal" >
-									<div class="form-control-focus">
-									</div>
-								</div>
-							</div>
-
+							
 							<div class="form-group form-md-line-input">
 								<label class="col-md-3 control-label" for="form_control_1">Nama Depart</label>
 								<div class="col-md-4">
-									<input type="text" class="form-control" name="nama_depart_modal" id="nama_depart_modal" readonly="readonly">
-									<div class="form-control-focus">
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group form-md-line-input">
-								<label class="col-md-3 control-label" for="form_control_1">Ass Departemen</label>
-								<div class="col-md-4">
-									<input required type="text" class="form-control" name="ass_nama_depart" id="ass_nama_depart" >
+									<input type="text" class="form-control" name="nama_depart_modal" id="nama_depart_modal">
 									<div class="form-control-focus">
 									</div>
 								</div>
